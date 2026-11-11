@@ -1,7 +1,9 @@
 """Build the small LLM cache that the CI eval gate replays.
 
 Replays WhyBot on the 20-scenario smoke subset from the full local cache, then writes
-only the entries it used to bench/cache/smoke/. Run after a dev eval:
+only the LLM entries it used, plus the document IDs every search returned, to
+bench/cache/smoke/. CI replays both, so the gate does not depend on tiny numeric
+differences between machines in the ONNX models. Run after a dev eval:
 
   python -m bench.make_smoke_cache
 """
@@ -27,7 +29,9 @@ def main() -> None:
     with open(out / "llm_cache.jsonl", "w") as f:
         for key in sorted(llm.used_keys):
             f.write(json.dumps({"key": key, "result": llm._cache[key]}, sort_keys=True) + "\n")
-    print(f"wrote {len(llm.used_keys)} cache entries to {out}")
+    searches = dict(sorted(workers.shared.recorded.items()))
+    (out / "search_cache.json").write_text(json.dumps(searches, indent=0) + "\n")
+    print(f"wrote {len(llm.used_keys)} LLM entries and {len(searches)} searches to {out}")
 
 
 if __name__ == "__main__":

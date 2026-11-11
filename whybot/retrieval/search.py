@@ -69,6 +69,10 @@ class Retriever:
         self.bm25: BM25Index | None = None
         self._embedder: Embedder | None = None
         self._reranker: Reranker | None = None
+        # Search replay, used by the CI eval gate. ONNX scores differ in the last bits between
+        # machines, which can reorder near-ties. Replaying recorded result IDs keeps the gate stable.
+        self.recorded: dict[str, list[str]] = {}  # search key -> document IDs returned
+        self.replay: dict[str, list[str]] | None = None  # if set, known searches return these IDs
 
     def share(self, conn: Conn) -> Retriever:
         """A copy bound to another connection that reuses the loaded index and models.
@@ -76,7 +80,9 @@ class Retriever:
         self.load_index()
         other = Retriever(conn, self.models_dir)
         other.chunks, other.bm25 = self.chunks, self.bm25
-        other._embedder, other._reranker = self.embedder, self.reranker
+        other.recorded, other.replay = self.recorded, self.replay
+        if self.replay is None:  # replays do not need the models
+            other._embedder, other._reranker = self.embedder, self.reranker
         return other
 
     # The models and the BM25 index are loaded on first use, so a cold start only pays for what it needs.
@@ -141,6 +147,9 @@ class Retriever:
         source: str | None = None,
         k: int = 8,
     ) -> list[EvidenceCard]:
+        key = f"{query}|{config}|{date_from}|{date_to}|{source}|{k}"
+        if self.replay is not None and key in self.replay:
+            return self.fetch_cards(self.replay[key])
         self.load_index()
         assert self.bm25 is not None
         rankings: list[list[int]] = []
@@ -160,6 +169,7 @@ class Retriever:
         for chunk_id, score in fused:  # already sorted, so the first hit per document is its best
             best_per_doc.setdefault(self.chunks[chunk_id].doc_id, score)
         doc_ids = list(best_per_doc)[:k]
+        self.recorded[key] = doc_ids
         return self.fetch_cards(doc_ids, best_per_doc)
 
     def fetch_cards(self, doc_ids: list[str], scores: dict[str, float] | None = None) -> list[EvidenceCard]:

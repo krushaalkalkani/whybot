@@ -1,0 +1,365 @@
+{
+"Android SDK update OS update app crash checkout bug|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-03|2024-03-09|None|8": [
+"ISS-0019",
+"ISS-0018",
+"TKT-00261",
+"TKT-00255",
+"TKT-00260",
+"TKT-00253",
+"TKT-00266",
+"CHG-0031"
+],
+"Android app orders drop checkout failure release|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-04|2024-03-08|None|8": [
+"TKT-00255",
+"ISS-0019",
+"TKT-00253",
+"TKT-00266",
+"TKT-00261",
+"TKT-00258",
+"TKT-00264",
+"TKT-00260"
+],
+"EU checkout conversion drop payment errors release|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-07|2024-05-11|None|8": [
+"ISS-0053",
+"CHG-0074",
+"ISS-0052",
+"TKT-00556",
+"TKT-00562",
+"TKT-00563",
+"TKT-00546",
+"TKT-00565"
+],
+"North America outage checkout payment failure revenue drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-23|2024-05-27|None|8": [
+"ISS-0060",
+"TKT-00621",
+"TKT-00625",
+"TKT-00607",
+"TKT-00630",
+"TKT-00617",
+"TKT-00633",
+"TKT-00624"
+],
+"android app orders not completing crash payment|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-26|2024-07-30|None|8": [
+"ISS-0091",
+"TKT-00918",
+"TKT-00902",
+"TKT-00919",
+"TKT-00916",
+"TKT-00921",
+"TKT-00917",
+"ISS-0090"
+],
+"android release deploy checkout app regression|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-26|2024-07-30|None|8": [
+"ISS-0091",
+"TKT-00916",
+"TKT-00921",
+"TKT-00901",
+"TKT-00907",
+"ISS-0090",
+"TKT-00918",
+"TKT-00902"
+],
+"apac outage sessions drop site errors|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-20|2024-03-23|None|8": [
+"ISS-0030",
+"TKT-00332",
+"TKT-00328",
+"TKT-00326",
+"TKT-00331",
+"TKT-00329",
+"TKT-00322",
+"CHG-0042"
+],
+"checkout broken conversion fell orders dropped|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-15|2024-05-21|changelog|10": [
+"CHG-0079",
+"CHG-0081",
+"CHG-0082",
+"CHG-0080"
+],
+"checkout broken payment error incident|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-06-08|2024-06-12|issue|8": [
+"ISS-0068",
+"ISS-0069",
+"ISS-0067",
+"ISS-0066"
+],
+"checkout button not working cannot submit payment page stuck|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-16|2024-05-19|None|10": [
+"TKT-00592",
+"TKT-00593",
+"TKT-00585",
+"TKT-00581",
+"TKT-00583",
+"TKT-00589",
+"TKT-00582",
+"TKT-00587",
+"TKT-00579",
+"CHG-0080"
+],
+"checkout conversion drop deploy release payment|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-16|2024-05-20|None|10": [
+"TKT-00592",
+"TKT-00593",
+"ISS-0056",
+"TKT-00589",
+"TKT-00596",
+"TKT-00585",
+"TKT-00581",
+"TKT-00583",
+"CHG-0081",
+"TKT-00595"
+],
+"checkout conversion drop deploy release|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-06-08|2024-06-12|changelog|8": [
+"CHG-0097",
+"CHG-0096",
+"CHG-0098"
+],
+"customer cannot complete checkout or payment declined|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-06-08|2024-06-12|ticket|8": [
+"TKT-00692",
+"TKT-00700",
+"TKT-00689",
+"TKT-00696",
+"TKT-00691",
+"TKT-00685",
+"TKT-00690",
+"TKT-00695"
+],
+"deploy checkout payment service release configuration change|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-14|2024-05-18|changelog|10": [
+"CHG-0079",
+"CHG-0078",
+"CHG-0080"
+],
+"deploy checkout payment service release|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-06-16|2024-06-20|changelog|8": [
+"CHG-0103",
+"CHG-0102",
+"CHG-0104"
+],
+"deploy checkout payments release|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-12|2024-03-16|None|8": [
+"CHG-0036",
+"CHG-0035",
+"ISS-0025",
+"TKT-00292",
+"TKT-00289",
+"TKT-00288",
+"TKT-00293",
+"TKT-00294"
+],
+"deploy frontend tracking change social landing pages|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-08-04|2024-08-08|None|8": [
+"TKT-00957",
+"TKT-00956",
+"TKT-00948",
+"TKT-00950",
+"TKT-00952",
+"TKT-00961",
+"TKT-00949",
+"TKT-00947"
+],
+"deploy release change latam traffic|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-11-16|2024-11-20|None|10": [
+"ISS-0131",
+"TKT-01411",
+"TKT-01418",
+"CHG-0198",
+"CHG-0199",
+"TKT-01410",
+"TKT-01398",
+"CHG-0200",
+"TKT-01414",
+"TKT-01404"
+],
+"deploy release change social channel tracking|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-18|2024-07-22|None|8": [
+"CHG-0119",
+"TKT-00876",
+"CHG-0121",
+"TKT-00878",
+"TKT-00868",
+"TKT-00872",
+"TKT-00859",
+"TKT-00864"
+],
+"deploy release checkout payment change|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-11|2024-07-15|None|8": [
+"TKT-00849",
+"TKT-00850",
+"TKT-00841",
+"ISS-0087",
+"TKT-00846",
+"TKT-00835",
+"TKT-00838",
+"TKT-00836"
+],
+"deploy release config change North America edge|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-05-22|2024-05-27|changelog|8": [
+"CHG-0084",
+"CHG-0086",
+"CHG-0085",
+"CHG-0087",
+"CHG-0083"
+],
+"deploy release config change eu region|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-04-04|2024-04-07|changelog|10": [
+"CHG-0052"
+],
+"deploy release configuration change apac|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-20|2024-03-23|None|8": [
+"ISS-0030",
+"CHG-0042",
+"CHG-0040",
+"TKT-00329",
+"TKT-00312",
+"TKT-00316",
+"TKT-00334",
+"TKT-00324"
+],
+"eu outage sessions drop checkout traffic|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-04-05|2024-04-09|None|10": [
+"ISS-0035",
+"TKT-00401",
+"TKT-00404",
+"TKT-00392",
+"TKT-00411",
+"TKT-00407",
+"TKT-00398",
+"TKT-00399",
+"TKT-00400",
+"CHG-0052"
+],
+"iOS checkout broken conversion drop, customers cannot complete purchase|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-04-14|2024-04-18|None|8": [
+"TKT-00443",
+"TKT-00454",
+"TKT-00439",
+"TKT-00451",
+"TKT-00453",
+"ISS-0038",
+"CHG-0056",
+"TKT-00458"
+],
+"ios checkout release deploy payment|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-04-14|2024-04-18|changelog|8": [
+"CHG-0056",
+"CHG-0057",
+"CHG-0055"
+],
+"latam outage degraded service sessions drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-11-16|2024-11-20|None|10": [
+"ISS-0131",
+"CHG-0198",
+"TKT-01408",
+"ISS-0130",
+"CHG-0200",
+"TKT-01400",
+"TKT-01417",
+"TKT-01418",
+"TKT-01410",
+"TKT-01411"
+],
+"north america outage, checkout, deploy, payment problem|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-02-17|2024-02-21|None|8": [
+"ISS-0015",
+"TKT-00193",
+"TKT-00196",
+"TKT-00202",
+"TKT-00198",
+"TKT-00201",
+"TKT-00190",
+"CHG-0021"
+],
+"outage payment errors orders drop checkout failing|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-12|2024-03-16|None|8": [
+"TKT-00292",
+"TKT-00289",
+"ISS-0025",
+"TKT-00288",
+"TKT-00293",
+"CHG-0035",
+"TKT-00298",
+"TKT-00287"
+],
+"outage, deploy, payment failure, checkout incident, orders drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-28|2024-04-01|None|8": [
+"TKT-00378",
+"TKT-00376",
+"TKT-00359",
+"TKT-00363",
+"TKT-00368",
+"TKT-00367",
+"TKT-00370",
+"ISS-0034"
+],
+"paid search campaign ended or paused|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-11|2024-07-15|None|8": [
+"ISS-0088",
+"CHG-0114",
+"TKT-00837",
+"TKT-00839",
+"TKT-00844",
+"ISS-0086",
+"TKT-00841",
+"TKT-00850"
+],
+"payment SDK vendor card form crash Android update|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-02-20|2024-03-06|changelog|8": [
+"CHG-0025",
+"CHG-0027",
+"CHG-0023",
+"CHG-0026",
+"CHG-0028",
+"CHG-0022",
+"CHG-0024",
+"CHG-0029"
+],
+"payment failures declines checkout errors|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-06-16|2024-06-20|None|10": [
+"TKT-00733",
+"TKT-00727",
+"TKT-00726",
+"TKT-00734",
+"ISS-0071",
+"TKT-00730",
+"TKT-00719",
+"TKT-00729",
+"TKT-00732",
+"CHG-0102"
+],
+"pricing-config shipping threshold handling fee change|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-03-25|2024-04-02|changelog|8": [
+"CHG-0048",
+"CHG-0047",
+"CHG-0045",
+"CHG-0050",
+"CHG-0046",
+"CHG-0044",
+"CHG-0049"
+],
+"social campaign ended paused traffic drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-18|2024-07-22|None|8": [
+"CHG-0119",
+"TKT-00876",
+"TKT-00862",
+"TKT-00874",
+"TKT-00859",
+"TKT-00864",
+"TKT-00865",
+"TKT-00863"
+],
+"social campaign paused ended paid social|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-08-04|2024-08-08|None|8": [
+"TKT-00954",
+"TKT-00960",
+"TKT-00948",
+"TKT-00953",
+"CHG-0130",
+"TKT-00957",
+"TKT-00949",
+"TKT-00950"
+],
+"social links not loading traffic from social drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-08-04|2024-08-08|None|8": [
+"TKT-00954",
+"TKT-00960",
+"TKT-00950",
+"TKT-00952",
+"TKT-00961",
+"TKT-00956",
+"TKT-00947",
+"TKT-00959"
+],
+"social media campaign budget end paid social ads|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-07-25|2024-08-15|changelog|8": [
+"CHG-0128",
+"CHG-0126",
+"CHG-0133",
+"CHG-0135",
+"CHG-0132",
+"CHG-0125",
+"CHG-0131",
+"CHG-0124"
+],
+"web checkout deploy release bug orders drop|RetrievalConfig(use_bm25=True, use_dense=True, use_rerank=True, candidates=30, rerank_top=20)|2024-09-04|2024-09-08|None|8": [
+"ISS-0105",
+"CHG-0151",
+"CHG-0152",
+"TKT-01100",
+"TKT-01091",
+"TKT-01102",
+"TKT-01097",
+"TKT-01101"
+]
+}

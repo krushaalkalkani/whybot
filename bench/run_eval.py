@@ -70,10 +70,11 @@ RESULTS_DIR = REPO_ROOT / "results"
 class Workers:
     """Gives each thread its own database connections. The models and the BM25 index are shared."""
 
-    def __init__(self) -> None:
+    def __init__(self, search_replay: dict[str, list[str]] | None = None) -> None:
         self.settings = get_settings()
         self.local = threading.local()
         self.shared = Retriever(connect(self.settings.database_url), self.settings.models_dir)
+        self.shared.replay = search_replay
         self.shared.share(self.shared.conn)  # loads the index and both models once, before the threads start
 
     def context(self, retrieval: RetrievalConfig) -> ToolContext:
@@ -155,7 +156,9 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     scenarios = read_scenarios(args.split, smoke=args.smoke)
-    workers = Workers()
+    search_file = Path(args.cache_dir) / "search_cache.json"
+    search_replay = json.loads(search_file.read_text()) if args.replay and search_file.exists() else None
+    workers = Workers(search_replay)
     llm = ClaudeLLM(cache_dir=Path(args.cache_dir), replay_only=args.replay)
     metrics_path = out_dir / "metrics.json"
     all_metrics = json.loads(metrics_path.read_text()) if metrics_path.exists() else {"systems": {}}

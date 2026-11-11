@@ -359,7 +359,7 @@ export const howItWorks = {
       bullets: [
         "All data is synthetic. Real company data is messier.",
         "It answers one kind of question: why one metric moved on one date.",
-        "There are 7 known cause types. A cause outside that list will not be named.",
+        "There are 6 planted cause types plus seasonality. A cause outside that list will not be named.",
         "The verifier checks that a citation supports a claim. It does not prove the claim is the true cause.",
         "The benchmark is small. Small differences between systems may be noise.",
         "Questions are capped at 400 characters, and each run has a step limit and a timeout.",

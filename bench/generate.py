@@ -11,7 +11,10 @@ Because the causes are planted by this script, the eval can score any system
 against known answers.
 
 Run:  python -m bench.generate            (writes bench/data/v1/)
-The same seed always writes the same files. MANIFEST.json holds their hashes.
+The same seed writes the same files on the same platform. Across platforms the numpy
+sampling can differ in the last bits (macOS arm64 vs Linux x86), which changes some
+questions. So the committed files in bench/data/v1 ARE benchmark v1; MANIFEST.json holds
+their hashes and bench/verify_data.py checks them. Do not regenerate v1 on another machine.
 """
 
 from __future__ import annotations

@@ -127,7 +127,7 @@ SQL safety, three layers:
 
 ## 7. The benchmark
 
-File: `bench/generate.py`. Seed 7. Same seed, same files; CI checks this.
+File: `bench/generate.py`. Seed 7. Same seed, same files on the same machine type (a unit test checks this). I learned in CI that Linux and macOS give slightly different random draws, so the committed files are the benchmark and CI checks their SHA-256 hashes (`bench/verify_data.py`).
 
 - Metrics: 731 days x 5 regions x 3 platforms x 4 channels. A funnel: sessions, checkout starts, payment attempts, failures, orders, revenue. Weekly pattern, slow growth, random noise.
 - An incident changes one funnel rate for one segment for a few days. Example: a payment provider error sets the failure rate to 20-45% in one region.

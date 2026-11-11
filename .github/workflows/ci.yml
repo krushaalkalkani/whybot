@@ -31,10 +31,8 @@ jobs:
         run: .venv/bin/ruff check . && .venv/bin/ruff format --check whybot bench tests api
       - name: Type-check
         run: .venv/bin/mypy
-      - name: Benchmark files match the generator
-        run: |
-          .venv/bin/python -m bench.generate > /dev/null
-          git diff --exit-code bench/data/v1/scenarios.jsonl bench/data/v1/documents.jsonl bench/data/v1/MANIFEST.json
+      - name: Benchmark files match their recorded hashes
+        run: .venv/bin/python -m bench.verify_data
       - uses: actions/cache@v4
         with:
           path: models

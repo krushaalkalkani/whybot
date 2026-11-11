@@ -44,8 +44,9 @@ def split_block(name: str) -> dict[str, Any] | None:
     for system in SYSTEM_ORDER:
         if system in data["systems"]:
             entry = data["systems"][system]
-            systems.append({"system": system, "label": entry["label"], "group": entry["group"],
-                            "metrics": {k: entry["metrics"].get(k) for k in TABLE_METRICS},
+            complete = entry["metrics"]["errors"] == 0  # an interrupted run shows as "not run yet"
+            systems.append({"system": system, "label": entry["label"], "group": entry["group"], "complete": complete,
+                            "metrics": {k: entry["metrics"].get(k) if complete else None for k in TABLE_METRICS},
                             "extra": {k: v for k, v in entry["metrics"].items() if k not in TABLE_METRICS}})  # fmt: skip
     return {"run_date": data["run_date"], "n": data["n"], "systems": systems}
 

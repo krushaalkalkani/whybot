@@ -1,0 +1,739 @@
+{
+ "id": "ex-S020",
+ "created_at": "2026-11-11T17:37:07.880577+00:00",
+ "question": "Why did orders drop 6% on 2024-07-20?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: orders on 2024-07-20",
+   "detail": "Pull daily orders for 2024-07-20 and the prior comparable days to confirm the 6% drop against baseline. | Break the orders change down by region, platform and channel to find where the drop is concentrated. | Check whether the drop is a normal repeating pattern such as a weekday or weekend dip before treating it as an incident. | Look up deploy changelog entries (CHG-...), GitHub issues (ISS-...) and support tickets (TKT-...) dated around 2024-07-20 for matching changes. | Match the concentrated segment and timing to one cause type and summarize the evidence with metric result IDs.",
+   "input": {},
+   "output": {
+    "metric": "orders",
+    "date": "2024-07-20",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily orders for 2024-07-20 and the prior comparable days to confirm the 6% drop against baseline.",
+     "Break the orders change down by region, platform and channel to find where the drop is concentrated.",
+     "Check whether the drop is a normal repeating pattern such as a weekday or weekend dip before treating it as an incident.",
+     "Look up deploy changelog entries (CHG-...), GitHub issues (ISS-...) and support tickets (TKT-...) dated around 2024-07-20 for matching changes.",
+     "Match the concentrated segment and timing to one cause type and summarize the evidence with metric result IDs."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2304,
+   "input_tokens": 1354,
+   "output_tokens": 252,
+   "cost_usd": 0.00026139999999999996
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: orders on 2024-07-20",
+   "detail": "orders on 2024-07-20 (Saturday) was 1.333e+04. The same weekday in the 6 weeks before had a median of 1.416e+04. Change vs that baseline: -5.9% (z = -4.9). Change vs the day before: -24.7%. This is unusual (|z| >= 3).",
+   "input": {
+    "metric": "orders",
+    "date": "2024-07-20"
+   },
+   "output": {
+    "metric": "orders",
+    "date": "2024-07-20",
+    "filters": {},
+    "value": 13331.0,
+    "baseline": 14164.0,
+    "pct_change": -5.88,
+    "z_score": -4.89,
+    "day_before_value": 17700.0,
+    "pct_change_vs_day_before": -24.68,
+    "is_anomaly": true,
+    "explanation": "orders on 2024-07-20 (Saturday) was 1.333e+04. The same weekday in the 6 weeks before had a median of 1.416e+04. Change vs that baseline: -5.9% (z = -4.9). Change vs the day before: -24.7%. This is unusual (|z| >= 3)."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: orders on 2024-07-20",
+   "detail": "Overall orders changed -5.9% on 2024-07-20. The change is concentrated in: channel=social (-53.8%). Other slices moved much less.",
+   "input": {
+    "metric": "orders",
+    "date": "2024-07-20"
+   },
+   "output": {
+    "metric": "orders",
+    "date": "2024-07-20",
+    "overall_pct_change": -5.88,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 5278.0,
+      "baseline": 5633.5,
+      "pct_change": -6.31,
+      "z_score": -2.07
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 3470.0,
+      "baseline": 3549.0,
+      "pct_change": -2.23,
+      "z_score": -2.23
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 1606.0,
+      "baseline": 1684.0,
+      "pct_change": -4.63,
+      "z_score": -1.81
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 1680.0,
+      "baseline": 1862.0,
+      "pct_change": -9.77,
+      "z_score": -3.51
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 1297.0,
+      "baseline": 1393.5,
+      "pct_change": -6.93,
+      "z_score": -2.03
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 6644.0,
+      "baseline": 6950.0,
+      "pct_change": -4.4,
+      "z_score": -2.21
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 4286.0,
+      "baseline": 4578.0,
+      "pct_change": -6.38,
+      "z_score": -3.86
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 2401.0,
+      "baseline": 2656.5,
+      "pct_change": -9.62,
+      "z_score": -6.76
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 5860.0,
+      "baseline": 5744.0,
+      "pct_change": 2.02,
+      "z_score": 1.84
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 3659.0,
+      "baseline": 3542.0,
+      "pct_change": 3.3,
+      "z_score": 0.67
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 2825.0,
+      "baseline": 2787.5,
+      "pct_change": 1.35,
+      "z_score": 1.35
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 987.0,
+      "baseline": 2136.0,
+      "pct_change": -53.79,
+      "z_score": -18.9
+     }
+    ],
+    "concentrated_in": [
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 987.0,
+      "baseline": 2136.0,
+      "pct_change": -53.79,
+      "z_score": -18.9
+     }
+    ],
+    "explanation": "Overall orders changed -5.9% on 2024-07-20. The change is concentrated in: channel=social (-53.8%). Other slices moved much less."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 2,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2080,
+   "input_tokens": 3433,
+   "output_tokens": 485,
+   "cost_usd": 0.0005857999999999999
+  },
+  {
+   "index": 4,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: social campaign ended paused traffic drop",
+   "detail": "8 documents: CHG-0119, TKT-00876, TKT-00862, TKT-00874, TKT-00859, TKT-00864, TKT-00865, TKT-00863",
+   "input": {
+    "date_from": "2024-07-18",
+    "date_to": "2024-07-22",
+    "k": 8,
+    "query": "social campaign ended paused traffic drop"
+   },
+   "output": {
+    "query": "social campaign ended paused traffic drop",
+    "results": [
+     {
+      "id": "CHG-0119",
+      "title": "marketing-config v3.22.4",
+      "date": "2024-07-20",
+      "score": 2.102
+     },
+     {
+      "id": "TKT-00876",
+      "title": "Newsletter unsubscribe",
+      "date": "2024-07-22",
+      "score": -11.2083
+     },
+     {
+      "id": "TKT-00862",
+      "title": "Update my card",
+      "date": "2024-07-18",
+      "score": -11.3323
+     },
+     {
+      "id": "TKT-00874",
+      "title": "Update my card",
+      "date": "2024-07-21",
+      "score": -11.3323
+     },
+     {
+      "id": "TKT-00859",
+      "title": "Gift card balance",
+      "date": "2024-07-18",
+      "score": -11.3997
+     },
+     {
+      "id": "TKT-00864",
+      "title": "Gift card balance",
+      "date": "2024-07-18",
+      "score": -11.3997
+     },
+     {
+      "id": "TKT-00865",
+      "title": "Gift card balance",
+      "date": "2024-07-19",
+      "score": -11.3997
+     },
+     {
+      "id": "TKT-00863",
+      "title": "Do you accept Apple Pay?",
+      "date": "2024-07-18",
+      "score": -11.403
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0119",
+    "TKT-00876",
+    "TKT-00862",
+    "TKT-00874",
+    "TKT-00859",
+    "TKT-00864",
+    "TKT-00865",
+    "TKT-00863"
+   ],
+   "is_error": false,
+   "latency_ms": 33,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 5,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: deploy release change social channel tracking",
+   "detail": "8 documents: CHG-0119, TKT-00876, CHG-0121, TKT-00878, TKT-00868, TKT-00872, TKT-00859, TKT-00864",
+   "input": {
+    "date_from": "2024-07-18",
+    "date_to": "2024-07-22",
+    "k": 8,
+    "query": "deploy release change social channel tracking"
+   },
+   "output": {
+    "query": "deploy release change social channel tracking",
+    "results": [
+     {
+      "id": "CHG-0119",
+      "title": "marketing-config v3.22.4",
+      "date": "2024-07-20",
+      "score": -10.6631
+     },
+     {
+      "id": "TKT-00876",
+      "title": "Newsletter unsubscribe",
+      "date": "2024-07-22",
+      "score": -11.1084
+     },
+     {
+      "id": "CHG-0121",
+      "title": "recommendations v5.22.0",
+      "date": "2024-07-22",
+      "score": -11.1447
+     },
+     {
+      "id": "TKT-00878",
+      "title": "Wrong size sent",
+      "date": "2024-07-22",
+      "score": -11.3504
+     },
+     {
+      "id": "TKT-00868",
+      "title": "Where is my order?",
+      "date": "2024-07-20",
+      "score": -11.3641
+     },
+     {
+      "id": "TKT-00872",
+      "title": "Promo code question",
+      "date": "2024-07-21",
+      "score": -11.3717
+     },
+     {
+      "id": "TKT-00859",
+      "title": "Gift card balance",
+      "date": "2024-07-18",
+      "score": -11.3758
+     },
+     {
+      "id": "TKT-00864",
+      "title": "Gift card balance",
+      "date": "2024-07-18",
+      "score": -11.3758
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0119",
+    "TKT-00876",
+    "CHG-0121",
+    "TKT-00878",
+    "TKT-00868",
+    "TKT-00872",
+    "TKT-00859",
+    "TKT-00864"
+   ],
+   "is_error": false,
+   "latency_ms": 34,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 6,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "Run metric query",
+   "detail": "19 rows",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(revenue) AS revenue FROM daily_metrics WHERE channel='social' AND date BETWEEN '2024-07-06' AND '2024-07-24' GROUP BY date ORDER BY date"
+   },
+   "output": {
+    "columns": [
+     "date",
+     "sessions",
+     "orders",
+     "revenue"
+    ],
+    "rows": [
+     [
+      "2024-07-06",
+      25873,
+      2089,
+      123059.59
+     ],
+     [
+      "2024-07-07",
+      24283,
+      1977,
+      115349.64
+     ],
+     [
+      "2024-07-08",
+      32330,
+      2767,
+      160774.11
+     ],
+     [
+      "2024-07-09",
+      33028,
+      2785,
+      166862.66
+     ],
+     [
+      "2024-07-10",
+      33644,
+      2782,
+      163006.64
+     ],
+     [
+      "2024-07-11",
+      33203,
+      2813,
+      166342.89
+     ],
+     [
+      "2024-07-12",
+      31242,
+      2563,
+      150327.13
+     ],
+     [
+      "2024-07-13",
+      25919,
+      2123,
+      126584.13
+     ],
+     [
+      "2024-07-14",
+      24857,
+      1970,
+      117419.46
+     ],
+     [
+      "2024-07-15",
+      32525,
+      2822,
+      167075.39
+     ],
+     [
+      "2024-07-16",
+      32717,
+      2675,
+      157715.49
+     ],
+     [
+      "2024-07-17",
+      33532,
+      2896,
+      173480.04
+     ],
+     [
+      "2024-07-18",
+      33259,
+      2779,
+      163547.36
+     ],
+     [
+      "2024-07-19",
+      30993,
+      2615,
+      155777.92
+     ],
+     [
+      "2024-07-20",
+      12215,
+      987,
+      58042.78
+     ],
+     [
+      "2024-07-21",
+      11761,
+      959,
+      56337.02
+     ],
+     [
+      "2024-07-22",
+      15310,
+      1212,
+      72442.98
+     ],
+     [
+      "2024-07-23",
+      15736,
+      1265,
+      74922.55
+     ],
+     [
+      "2024-07-24",
+      15881,
+      1263,
+      73794.69
+     ]
+    ],
+    "row_count": 19,
+    "truncated": false
+   },
+   "evidence_ids": [
+    "M3"
+   ],
+   "is_error": false,
+   "latency_ms": 2,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 7,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Finished investigating",
+   "detail": "Orders fell on 2024-07-20 because the 'Summer Clearance' social campaign ended and its social sends were paused, which is a campaign_end.\n\n- **Size and timing:** Orders were 13,330 against a same-weekday median of 14,160 (-5.9%, z = -4.9, M1).\n- **Where it sits:** Social orders fell 53.8% (z = -18.9), while every other channel was flat to up (M2).\n- **Cause:** Changelog CHG-0119 (marketing-config ",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 3047,
+   "input_tokens": 5774,
+   "output_tokens": 506,
+   "cost_usd": 0.0008304
+  },
+  {
+   "index": 8,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "Summer Clearance social sends paused after campaign end date",
+   "input": {},
+   "output": {
+    "abstain": false,
+    "abstain_reason": "",
+    "summary": "Orders fell 5.9% versus the same-weekday baseline on 2024-07-20, and the drop is almost entirely in the social channel. A marketing-config change paused the 'Summer Clearance' social sends on the same day because the campaign reached its end date, so the cause is a campaign end.",
+    "causes": [
+     {
+      "cause_type": "campaign_end",
+      "segment_dimension": "channel",
+      "segment_value": "social",
+      "title": "Summer Clearance social sends paused after campaign end date",
+      "confidence": "high",
+      "claims": [
+       {
+        "text": "The marketing-config v3.22.4 change on 2024-07-20 paused the 'Summer Clearance' social sends because the campaign reached its end date.",
+        "evidence_ids": [
+         "CHG-0119"
+        ]
+       },
+       {
+        "text": "On 2024-07-20, orders in the social channel fell by 53.8% versus the weekday baseline, while every other channel moved by 3.3% or less.",
+        "evidence_ids": [
+         "M2"
+        ]
+       },
+       {
+        "text": "Social-channel orders dropped to 987 on 2024-07-20 from 2615 the previous day, while social sessions fell from 30993 to 12215.",
+        "evidence_ids": [
+         "M3"
+        ]
+       },
+       {
+        "text": "Overall orders on 2024-07-20 were 5.9% below the same-weekday median, a statistically unusual drop.",
+        "evidence_ids": [
+         "M1"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4804,
+   "input_tokens": 4075,
+   "output_tokens": 829,
+   "cost_usd": 0.000822
+  },
+  {
+   "index": 9,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "4 claims supported, 0 dropped",
+   "input": {},
+   "output": {
+    "kept": 4,
+    "dropped": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 3965,
+   "input_tokens": 2219,
+   "output_tokens": 690,
+   "cost_usd": 0.0005669
+  },
+  {
+   "index": 10,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: answered",
+   "detail": "",
+   "input": {},
+   "output": {
+    "verdict": "answered",
+    "notes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "answered",
+  "summary": "Orders fell 5.9% versus the same-weekday baseline on 2024-07-20, and the drop is almost entirely in the social channel. A marketing-config change paused the 'Summer Clearance' social sends on the same day because the campaign reached its end date, so the cause is a campaign end.",
+  "causes": [
+   {
+    "rank": 1,
+    "cause_type": "campaign_end",
+    "segment_dimension": "channel",
+    "segment_value": "social",
+    "title": "Summer Clearance social sends paused after campaign end date",
+    "confidence": "high",
+    "claims": [
+     {
+      "text": "The marketing-config v3.22.4 change on 2024-07-20 paused the 'Summer Clearance' social sends because the campaign reached its end date.",
+      "evidence_ids": [
+       "CHG-0119"
+      ],
+      "verified": true,
+      "note": "The changelog entry for marketing-config v3.22.4 on 2024-07-20 states the 'Summer Clearance' social sends were paused because the campaign reached its end date."
+     },
+     {
+      "text": "On 2024-07-20, orders in the social channel fell by 53.8% versus the weekday baseline, while every other channel moved by 3.3% or less.",
+      "evidence_ids": [
+       "M2"
+      ],
+      "verified": true,
+      "note": "The decomposition shows social orders at -53.8% versus baseline, and all other listed channels moved between +2.0% and +3.3%, within the claimed 3.3% bound."
+     },
+     {
+      "text": "Social-channel orders dropped to 987 on 2024-07-20 from 2615 the previous day, while social sessions fell from 30993 to 12215.",
+      "evidence_ids": [
+       "M3"
+      ],
+      "verified": true,
+      "note": "The metric table shows social orders of 987 on 2024-07-20 versus 2615 on 2024-07-19, and sessions of 12215 versus 30993."
+     },
+     {
+      "text": "Overall orders on 2024-07-20 were 5.9% below the same-weekday median, a statistically unusual drop.",
+      "evidence_ids": [
+       "M1"
+      ],
+      "verified": true,
+      "note": "The anomaly output reports overall orders of 1.333e+04 against a same-weekday median of 1.416e+04, a -5.9% change with z = -4.9, flagged as unusual since |z| >= 3."
+     }
+    ]
+   }
+  ],
+  "evidence": {
+   "CHG-0119": {
+    "id": "CHG-0119",
+    "source": "changelog",
+    "title": "marketing-config v3.22.4",
+    "date": "2024-07-20",
+    "body": "Pause 'Summer Clearance' social sends. Campaign reached its end date.",
+    "meta": {
+     "service": "marketing-config"
+    },
+    "score": 2.102,
+    "quarantined": false
+   },
+   "M2": {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: orders on 2024-07-20",
+    "date": "2024-07-20",
+    "body": "Overall orders changed -5.9% on 2024-07-20. The change is concentrated in: channel=social (-53.8%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: -6.3% (z -2.1)\n  region=eu: -2.2% (z -2.2)\n  region=uk: -4.6% (z -1.8)\n  region=apac: -9.8% (z -3.5)\n  region=latam: -6.9% (z -2.0)\n  platform=web: -4.4% (z -2.2)\n  platform=ios: -6.4% (z -3.9)\n  platform=android: -9.6% (z -6.8)\n  channel=organic: +2.0% (z +1.8)\n  channel=paid_search: +3.3% (z +0.7)\n  channel=email: +1.4% (z +1.4)\n  channel=social: -53.8% (z -18.9)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M3": {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-07-20",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(revenue) AS revenue FROM daily_metrics WHERE channel='social' AND date BETWEEN '2024-07-06' AND '2024-07-24' GROUP BY date ORDER BY date\ndate | sessions | orders | revenue\n2024-07-06 | 25873 | 2089 | 123059.59\n2024-07-07 | 24283 | 1977 | 115349.64\n2024-07-08 | 32330 | 2767 | 160774.11\n2024-07-09 | 33028 | 2785 | 166862.66\n2024-07-10 | 33644 | 2782 | 163006.64\n2024-07-11 | 33203 | 2813 | 166342.89\n2024-07-12 | 31242 | 2563 | 150327.13\n2024-07-13 | 25919 | 2123 | 126584.13\n2024-07-14 | 24857 | 1970 | 117419.46\n2024-07-15 | 32525 | 2822 | 167075.39\n2024-07-16 | 32717 | 2675 | 157715.49\n2024-07-17 | 33532 | 2896 | 173480.04\n2024-07-18 | 33259 | 2779 | 163547.36\n2024-07-19 | 30993 | 2615 | 155777.92\n2024-07-20 | 12215 | 987 | 58042.78\n2024-07-21 | 11761 | 959 | 56337.02\n2024-07-22 | 15310 | 1212 | 72442.98\n2024-07-23 | 15736 | 1265 | 74922.55\n2024-07-24 | 15881 | 1263 | 73794.69",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M1": {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: orders on 2024-07-20",
+    "date": "2024-07-20",
+    "body": "orders on 2024-07-20 (Saturday) was 1.333e+04. The same weekday in the 6 weeks before had a median of 1.416e+04. Change vs that baseline: -5.9% (z = -4.9). Change vs the day before: -24.7%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  },
+  "dropped_claims": [],
+  "quarantined_ids": [],
+  "notes": [],
+  "totals": {
+   "latency_ms": 16271,
+   "input_tokens": 16855,
+   "output_tokens": 2762,
+   "cost_usd": 0.003066,
+   "llm_calls": 5,
+   "tool_calls": 5
+  }
+ },
+ "error": null
+}

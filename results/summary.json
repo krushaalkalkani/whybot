@@ -14,12 +14,400 @@
     "metric_rows": 43860
   },
   "models": {
-    "agent": null,
-    "judge": null
+    "agent": "claude-haiku-5-5",
+    "judge": "claude-sonnet-5-5"
   },
   "splits": {
-    "dev": null,
-    "test": null
+    "dev": {
+      "run_date": "2026-11-11",
+      "n": 40,
+      "systems": [
+        {
+          "system": "llm_only",
+          "label": "A. LLM only",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.325,
+            "accuracy_at_3": 0.45,
+            "citation_precision": null,
+            "citation_recall": 0.0,
+            "faithfulness": 0.0,
+            "abstention_accuracy": 0.9,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 4.99,
+            "latency_p95_s": 6.3,
+            "cost_per_query_usd": 0.000634,
+            "mean_tool_calls": 0.0
+          },
+          "extra": {
+            "abstain_recall": 0.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 147,
+            "n": 40,
+            "type_accuracy_at_1": 0.35
+          }
+        },
+        {
+          "system": "rag",
+          "label": "B. Vector RAG, no tools",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.275,
+            "accuracy_at_3": 0.275,
+            "citation_precision": 1.0,
+            "citation_recall": 0.1515,
+            "faithfulness": 0.9231,
+            "abstention_accuracy": 0.275,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 3.34,
+            "latency_p95_s": 4.87,
+            "cost_per_query_usd": 0.000565,
+            "mean_tool_calls": 1.0
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.8056,
+            "judged_claims": 13,
+            "n": 40,
+            "type_accuracy_at_1": 0.275
+          }
+        },
+        {
+          "system": "whybot",
+          "label": "C. WhyBot (full)",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9545,
+            "faithfulness": 0.9118,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.41,
+            "latency_p95_s": 23.05,
+            "cost_per_query_usd": 0.003663,
+            "mean_tool_calls": 5.3
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 136,
+            "n": 40,
+            "type_accuracy_at_1": 1.0
+          }
+        },
+        {
+          "system": "whybot_no_rerank",
+          "label": "C without reranker",
+          "group": "ablation",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.975,
+            "accuracy_at_3": 0.975,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9545,
+            "faithfulness": 0.9,
+            "abstention_accuracy": 0.975,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 18.06,
+            "latency_p95_s": 24.06,
+            "cost_per_query_usd": 0.003732,
+            "mean_tool_calls": 5.375
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0278,
+            "judged_claims": 130,
+            "n": 40,
+            "type_accuracy_at_1": 0.975
+          }
+        },
+        {
+          "system": "whybot_no_verifier",
+          "label": "C without verifier",
+          "group": "ablation",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9848,
+            "faithfulness": 0.8591,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 13.51,
+            "latency_p95_s": 17.46,
+            "cost_per_query_usd": 0.003052,
+            "mean_tool_calls": 5.3
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 149,
+            "n": 40,
+            "type_accuracy_at_1": 1.0
+          }
+        },
+        {
+          "system": "whybot_bm25_only",
+          "label": "C with BM25 only",
+          "group": "ablation",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 1.0,
+            "faithfulness": 0.8958,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.79,
+            "latency_p95_s": 22.81,
+            "cost_per_query_usd": 0.003626,
+            "mean_tool_calls": 5.5
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 144,
+            "n": 40,
+            "type_accuracy_at_1": 1.0
+          }
+        },
+        {
+          "system": "whybot_dense_only",
+          "label": "C with dense only",
+          "group": "ablation",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9545,
+            "faithfulness": 0.8849,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.54,
+            "latency_p95_s": 23.21,
+            "cost_per_query_usd": 0.003655,
+            "mean_tool_calls": 5.3
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 139,
+            "n": 40,
+            "type_accuracy_at_1": 1.0
+          }
+        }
+      ]
+    },
+    "test": {
+      "run_date": "2026-11-11",
+      "n": 40,
+      "systems": [
+        {
+          "system": "llm_only",
+          "label": "A. LLM only",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.375,
+            "accuracy_at_3": 0.525,
+            "citation_precision": null,
+            "citation_recall": 0.0,
+            "faithfulness": 0.0,
+            "abstention_accuracy": 0.875,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 4.78,
+            "latency_p95_s": 5.85,
+            "cost_per_query_usd": 0.000627,
+            "mean_tool_calls": 0.0
+          },
+          "extra": {
+            "abstain_recall": 0.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0278,
+            "judged_claims": 137,
+            "n": 40,
+            "type_accuracy_at_1": 0.4
+          }
+        },
+        {
+          "system": "rag",
+          "label": "B. Vector RAG, no tools",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.3,
+            "accuracy_at_3": 0.3,
+            "citation_precision": 0.9375,
+            "citation_recall": 0.2424,
+            "faithfulness": 0.875,
+            "abstention_accuracy": 0.3,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 3.44,
+            "latency_p95_s": 4.75,
+            "cost_per_query_usd": 0.00056,
+            "mean_tool_calls": 1.0
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.7778,
+            "judged_claims": 16,
+            "n": 40,
+            "type_accuracy_at_1": 0.3
+          }
+        },
+        {
+          "system": "whybot",
+          "label": "C. WhyBot (full)",
+          "group": "main",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.975,
+            "accuracy_at_3": 0.975,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9697,
+            "faithfulness": 0.9023,
+            "abstention_accuracy": 0.975,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.86,
+            "latency_p95_s": 21.59,
+            "cost_per_query_usd": 0.003782,
+            "mean_tool_calls": 5.225
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0278,
+            "judged_claims": 133,
+            "n": 40,
+            "type_accuracy_at_1": 0.975
+          }
+        },
+        {
+          "system": "whybot_no_rerank",
+          "label": "C without reranker",
+          "group": "ablation",
+          "complete": false,
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 24,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 58,
+            "n": 40,
+            "type_accuracy_at_1": 0.4
+          }
+        },
+        {
+          "system": "whybot_no_verifier",
+          "label": "C without verifier",
+          "group": "ablation",
+          "complete": false,
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 13,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 96,
+            "n": 40,
+            "type_accuracy_at_1": 0.675
+          }
+        },
+        {
+          "system": "whybot_bm25_only",
+          "label": "C with BM25 only",
+          "group": "ablation",
+          "complete": false,
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          },
+          "extra": {
+            "abstain_recall": null,
+            "errors": 36,
+            "false_abstain_rate": 0.0,
+            "judged_claims": 13,
+            "n": 40,
+            "type_accuracy_at_1": 0.1
+          }
+        },
+        {
+          "system": "whybot_dense_only",
+          "label": "C with dense only",
+          "group": "ablation",
+          "complete": true,
+          "metrics": {
+            "accuracy_at_1": 0.975,
+            "accuracy_at_3": 0.975,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9697,
+            "faithfulness": 0.9023,
+            "abstention_accuracy": 0.975,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.91,
+            "latency_p95_s": 21.66,
+            "cost_per_query_usd": 0.003782,
+            "mean_tool_calls": 5.225
+          },
+          "extra": {
+            "abstain_recall": 1.0,
+            "errors": 0,
+            "false_abstain_rate": 0.0278,
+            "judged_claims": 133,
+            "n": 40,
+            "type_accuracy_at_1": 0.975
+          }
+        }
+      ]
+    }
   },
   "retrieval": {
     "split": "dev",
@@ -225,5 +613,72 @@
       }
     ]
   },
-  "error_analysis": null
+  "error_analysis": [
+    {
+      "category": "WhyBot: verifier dropped a correct cause, so the answer became 'not enough evidence'",
+      "count": 1,
+      "example_ids": [
+        "S061"
+      ],
+      "fix": "Let the verifier return 'partly supported' and keep the supported part of a claim. Ask the ranker for one fact per claim so one wrong detail does not sink the cause."
+    },
+    {
+      "category": "WhyBot: right answer, but at least one kept claim was rejected by the judge",
+      "count": 11,
+      "example_ids": [
+        "S042",
+        "S051",
+        "S054",
+        "S055"
+      ],
+      "fix": "Use the stronger model for verification, or verify each claim in its own call. Check the 30 hand labels first: some of these are judge strictness, not real errors."
+    },
+    {
+      "category": "RAG: abstained although documents explained the move (the key documents were not in the top 8)",
+      "count": 28,
+      "example_ids": [
+        "S041",
+        "S042",
+        "S043",
+        "S044"
+      ],
+      "fix": "Search with a date filter and with queries built from the affected segment, not the raw question. This is what the agent's tools do."
+    },
+    {
+      "category": "RAG: named a cause, but the wrong one or the wrong segment",
+      "count": 0,
+      "example_ids": [],
+      "fix": "Give the model metric tools so it can check which segment moved before trusting a document."
+    },
+    {
+      "category": "LLM only: guessed the wrong cause type",
+      "count": 20,
+      "example_ids": [
+        "S041",
+        "S045",
+        "S046",
+        "S047"
+      ],
+      "fix": "No fix without data. A model that sees only the question can only guess the most common cause."
+    },
+    {
+      "category": "LLM only: right cause type, wrong segment",
+      "count": 1,
+      "example_ids": [
+        "S068"
+      ],
+      "fix": "Needs the segment breakdown from the metrics. The question alone rarely names the segment."
+    },
+    {
+      "category": "LLM only: answered a question that has no supporting evidence",
+      "count": 4,
+      "example_ids": [
+        "S057",
+        "S060",
+        "S064",
+        "S080"
+      ],
+      "fix": "Abstain rules need evidence to check against. Without retrieval the model cannot know that nothing explains the move."
+    }
+  ]
 }

@@ -9,6 +9,7 @@ export interface SystemRow {
   system: string;
   label?: string | null;
   group?: string | null;
+  complete?: boolean | null;
   metrics?: Record<string, N> | null;
 }
 

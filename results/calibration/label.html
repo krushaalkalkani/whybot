@@ -1,0 +1,311 @@
+<!doctype html><meta charset="utf-8"><title>WhyBot judge calibration</title>
+<style>body{font:16px system-ui;max-width:860px;margin:2rem auto;padding:0 1rem}section{border:1px solid #ccc;border-radius:8px;padding:1rem;margin:1rem 0}
+.claim{font-size:1.1rem;font-weight:600}.ev{background:#f4f4f4;padding:.5rem;margin:.5rem 0;border-radius:6px}pre{white-space:pre-wrap;margin:.3rem 0 0}
+button{font:inherit;padding:.4rem 1rem;cursor:pointer}.done{border-color:#2a7}#bar{position:sticky;top:0;background:#fff;padding:.5rem 0;border-bottom:1px solid #ccc}</style>
+<div id="bar"><b>Judge calibration.</b> For each claim: does the evidence shown support it? Supported = the evidence states it or
+directly shows it. If the claim says more than the evidence, pick Not supported. <span id="count">0</span>/30 done.
+<button id="save" disabled>Download labels.csv</button></div>
+<section data-id='1'><h3>Claim 1 of 30</h3><p class='claim'>The payment failure rate on 2024-11-09 was 0.0283, in line with earlier days, so the drop does not come from payment provider errors.</p><div class='ev'><b>M3</b> - metric - 2024-11-09 - Run metric query<pre>SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN &#x27;2024-10-26&#x27; AND &#x27;2024-11-12&#x27; GROUP BY date ORDER BY date
+date | sessions | checkout_starts | payment_attempts | payment_failure_rate | orders | conversion_rate
+2024-10-26 | 179076 | 21932 | 15394 | 0.030726 | 14921 | 0.083322
+2024-10-27 | 170943 | 20748 | 14500 | 0.029103 | 14078 | 0.082355
+2024-10-28 | 224744 | 27460 | 19181 | 0.029561 | 18614 | 0.082823
+2024-10-29 | 228484 | 28145 | 19769 | 0.028024 | 19215 | 0.084098
+2024-10-30 | 231237 | 28459 | 19948 | 0.031682 | 19316 | 0.083533
+2024-10-31 | 229652 | 27932 | 19431 | 0.030158 | 18845 | 0.082059
+2024-11-01 | 218439 | 26541 | 17062 | 0.029129 | 16565 | 0.075834
+2024-11-02 | 180687 | 21998 | 14295 | 0.029521 | 13873 | 0.076779
+2024-11-03 | 172059 | 21165 | 13800 | 0.03029 | 13382 | 0.077776
+2024-11-04 | 223634 | 27292 | 17635 | 0.026368 | 17170 | 0.076777
+2024-11-05 | 230036 | 28196 | 19769 | 0.031008 | 19156 | 0.083274
+2024-11-06 | 231854 | 28087 | 19569 | 0.03107 | 18961 | 0.08178
+2024-11-07 | 230789 | 28263 | 19760 | 0.030921 | 19149 | 0.082972
+2024-11-08 | 218931 | 27108 | 19099 | 0.029216 | 18541 | 0.084689
+2024-11-09 | 180982 | 22245 | 11416 | 0.028294 | 11093 | 0.061293
+2024-11-10 | 171754 | 21061 | 10951 | 0.029952 | 10623 | 0.06185
+2024-11-11 | 226121 | 27724 | 14314 | 0.028783 | 13902 | 0.06148
+2024-11-12 | 229217 | 27856 | 14389 | 0.029884 | 13959 | 0.060899</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='2'><h3>Claim 2 of 30</h3><p class='claim'>The decline is concentrated in the social channel, which fell 40.6% while the other channels stayed within about 2% of baseline.</p><div class='ev'><b>M2</b> - metric - 2024-09-15 - decompose_by_segment: sessions on 2024-09-15<pre>Overall sessions changed -5.1% on 2024-09-15. The change is concentrated in: channel=social (-40.6%). Other slices moved much less.
+Change vs weekday baseline, per slice:
+  region=na: -4.6% (z -4.1)
+  region=eu: -5.2% (z -5.0)
+  region=uk: -4.9% (z -3.0)
+  region=apac: -5.8% (z -5.8)
+  region=latam: -5.2% (z -3.2)
+  platform=web: -4.6% (z -2.9)
+  platform=ios: -6.0% (z -3.6)
+  platform=android: -3.5% (z -3.5)
+  channel=organic: +1.2% (z +1.2)
+  channel=paid_search: -0.6% (z -0.6)
+  channel=email: +2.0% (z +1.1)
+  channel=social: -40.6% (z -37.5)</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='3'><h3>Claim 3 of 30</h3><p class='claim'>Conversion rate on 2024-11-09 was 0.0613, down 26.1% from the same-weekday baseline of 0.0829.</p><div class='ev'><b>M1</b> - metric - 2024-11-09 - detect_anomaly: conversion_rate on 2024-11-09<pre>conversion_rate on 2024-11-09 (Saturday) was 0.06129. The same weekday in the 6 weeks before had a median of 0.08292. Change vs that baseline: -26.1% (z = -12.8). Change vs the day before: -27.6%. This is unusual (|z| &gt;= 3).</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='4'><h3>Claim 4 of 30</h3><p class='claim'>checkout-service v3.28.8 was released on 2024-12-11, migrating the session store and removing the legacy cart serializer.</p><div class='ev'><b>CHG-0212</b> - changelog - 2024-12-11 - checkout-service v3.28.8<pre>Migrate session store to the new cache cluster. Remove legacy cart serializer.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='5'><h3>Claim 5 of 30</h3><p class='claim'>Sessions in the na, eu, uk and apac regions moved by between -0.0% and +2.0% on 2024-11-18, so the drop is limited to latam.</p><div class='ev'><b>M2</b> - metric - 2024-11-18 - decompose_by_segment: sessions on 2024-11-18<pre>Overall sessions changed -5.4% on 2024-11-18. The change is concentrated in: region=latam (-64.7%). Other slices moved much less.
+Change vs weekday baseline, per slice:
+  region=na: +1.3% (z +1.2)
+  region=eu: +0.2% (z +0.2)
+  region=uk: +2.0% (z +2.0)
+  region=apac: +1.0% (z +1.0)
+  region=latam: -64.7% (z -64.7)
+  platform=web: -5.4% (z -5.4)
+  platform=ios: -4.9% (z -4.9)
+  platform=android: -5.6% (z -5.6)
+  channel=organic: -6.2% (z -6.2)
+  channel=paid_search: -4.7% (z -4.7)
+  channel=email: -5.2% (z -5.2)
+  channel=social: -5.4% (z -5.4)</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='6'><h3>Claim 6 of 30</h3><p class='claim'>Web-frontend v9.29.5 was released on 2024-09-06 and enabled a new address normalizer for all orders.</p><div class='ev'><b>CHG-0152</b> - changelog - 2024-09-06 - web-frontend v9.29.5<pre>Enable new address normalizer for all orders. Clean up feature flags from last quarter.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='7'><h3>Claim 7 of 30</h3><p class='claim'>On 2024-04-16 iOS conversion rate was 0.0395, while web and Android were flat versus their weekday baseline.</p><div class='ev'><b>M2</b> - metric - 2024-04-16 - decompose_by_segment: conversion_rate on 2024-04-16<pre>Overall conversion_rate changed -17.8% on 2024-04-16. The change is concentrated in: platform=ios (-55.6%). Other slices moved much less.
+Change vs weekday baseline, per slice:
+  region=na: -16.8% (z -9.2)
+  region=eu: -18.2% (z -4.7)
+  region=uk: -15.4% (z -14.0)
+  region=apac: -19.1% (z -5.8)
+  region=latam: -17.5% (z -5.9)
+  platform=web: +0.7% (z +0.6)
+  platform=ios: -55.6% (z -55.6)
+  platform=android: -0.0% (z -0.0)
+  channel=organic: -19.4% (z -8.1)
+  channel=paid_search: -17.6% (z -11.0)
+  channel=email: -15.9% (z -6.7)
+  channel=social: -15.9% (z -8.0)</pre></div><div class='ev'><b>M3</b> - metric - 2024-04-16 - Run metric query<pre>SQL: SELECT date, platform, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE platform=&#x27;ios&#x27; AND date BETWEEN &#x27;2024-04-12&#x27; AND &#x27;2024-04-20&#x27; GROUP BY date, platform ORDER BY date
+date | platform | sessions | checkout_starts | payment_attempts | payment_failure_rate | conversion_rate
+2024-04-12 | ios | 61002 | 7965 | 5542 | 0.029412 | 0.088177
+2024-04-13 | ios | 49240 | 6574 | 4592 | 0.025044 | 0.090922
+2024-04-14 | ios | 47553 | 6406 | 4500 | 0.029333 | 0.091855
+2024-04-15 | ios | 62738 | 8232 | 2561 | 0.030457 | 0.039577
+2024-04-16 | ios | 63801 | 8470 | 2599 | 0.029242 | 0.039545
+2024-04-17 | ios | 64597 | 8593 | 6064 | 0.032982 | 0.090778
+2024-04-18 | ios | 63852 | 8369 | 5853 | 0.026824 | 0.089206
+2024-04-19 | ios | 60918 | 7853 | 5517 | 0.03172 | 0.087692
+2024-04-20 | ios | 49962 | 6479 | 4584 | 0.032723 | 0.088747</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='8'><h3>Claim 8 of 30</h3><p class='claim'>Sessions on Saturday 2024-05-04 were 167,648, down from 203,796 on Friday 2024-05-03, a drop of about 17.7%.</p><div class='ev'><b>M3</b> - metric - 2024-05-04 - Run metric query<pre>SQL: SELECT date, to_char(date,&#x27;Dy&#x27;) AS dow, SUM(sessions) AS sessions FROM daily_metrics WHERE date BETWEEN &#x27;2024-04-20&#x27; AND &#x27;2024-05-06&#x27; GROUP BY date ORDER BY date
+date | dow | sessions
+2024-04-20 | Sat | 167858
+2024-04-21 | Sun | 158888
+2024-04-22 | Mon | 207672
+2024-04-23 | Tue | 212700
+2024-04-24 | Wed | 216184
+2024-04-25 | Thu | 212290
+2024-04-26 | Fri | 202803
+2024-04-27 | Sat | 168593
+2024-04-28 | Sun | 159642
+2024-04-29 | Mon | 209505
+2024-04-30 | Tue | 211962
+2024-05-01 | Wed | 215511
+2024-05-02 | Thu | 213568
+2024-05-03 | Fri | 203796
+2024-05-04 | Sat | 167648
+2024-05-05 | Sun | 159793
+2024-05-06 | Mon | 209877</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='9'><h3>Claim 9 of 30</h3><p class='claim'>Several North American customers reported on 2024-12-19 that the site would not load or showed timeouts, while other sites worked.</p><div class='ev'><b>TKT-01576</b> - ticket - 2024-12-19 - Website will not load<pre>Your site has not loaded for me all day. Other sites work fine.</pre></div><div class='ev'><b>TKT-01574</b> - ticket - 2024-12-19 - Is the site down?<pre>I keep getting a timeout page. Is the shop down in my country?</pre></div><div class='ev'><b>TKT-01577</b> - ticket - 2024-12-19 - Cannot open the shop<pre>Page just spins and then shows an error. Tried on wifi and mobile data. Thanks.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='10'><h3>Claim 10 of 30</h3><p class='claim'>The same issue reports that order value per order rose, which fits a shipping-threshold change that reduced the number of orders while raising the value of those that remained.</p><div class='ev'><b>ISS-0134</b> - issue - 2024-11-26 - Review impact of new shipping threshold (North America)<pre>Since pricing-config v4.17.2 customers in North America add less to cart and leave at the shipping step. Order value per order went up. Need a decision on keeping the change.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='11'><h3>Claim 11 of 30</h3><p class='claim'>Issue ISS-0124 reports that after the v3.16.2 rollout the place-order endpoint error rate rose from under 1% to roughly 46% across all regions and platforms.</p><div class='ev'><b>ISS-0124</b> - issue - 2024-10-24 - Place order returns HTTP 500 since checkout-service v3.16.2<pre>After the v3.16.2 rollout the place-order endpoint fails for a large share of carts. Error rate on POST /orders went from under 1% to roughly 46%. Stack trace points at the new validation code. Affects all regions and platforms. Rollback under discussion.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='12'><h3>Claim 12 of 30</h3><p class='claim'>Payment attempts fell from about 18,000 to 10,209 on 2024-03-14 while the payment failure rate stayed near 2.9%, so the loss happened before payment rather than at the provider.</p><div class='ev'><b>M3</b> - metric - 2024-03-14 - Run metric query<pre>SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE date &gt;= &#x27;2024-03-04&#x27; AND date &lt;= &#x27;2024-03-18&#x27; GROUP BY date ORDER BY date
+date | sessions | checkout_starts | payment_attempts | payment_failures | orders | conversion_rate | payment_failure_rate
+2024-03-04 | 204705 | 24958 | 17399 | 519 | 16880 | 0.08246 | 0.029829
+2024-03-05 | 209252 | 25414 | 17688 | 490 | 17198 | 0.082188 | 0.027702
+2024-03-06 | 211274 | 25912 | 16061 | 470 | 15591 | 0.073795 | 0.029263
+2024-03-07 | 208314 | 25391 | 15693 | 455 | 15238 | 0.073149 | 0.028994
+2024-03-08 | 198831 | 24474 | 15209 | 405 | 14804 | 0.074455 | 0.026629
+2024-03-09 | 164541 | 20158 | 14213 | 408 | 13805 | 0.0839 | 0.028706
+2024-03-10 | 156083 | 19038 | 13382 | 391 | 12991 | 0.083231 | 0.029218
+2024-03-11 | 204824 | 25139 | 17608 | 526 | 17082 | 0.083398 | 0.029873
+2024-03-12 | 209660 | 25591 | 17981 | 545 | 17436 | 0.083163 | 0.03031
+2024-03-13 | 212334 | 26107 | 18285 | 530 | 17755 | 0.083618 | 0.028986
+2024-03-14 | 210565 | 25961 | 10209 | 301 | 9908 | 0.047054 | 0.029484
+2024-03-15 | 199922 | 24798 | 9729 | 291 | 9438 | 0.047208 | 0.029911
+2024-03-16 | 164214 | 19817 | 14039 | 408 | 13631 | 0.083008 | 0.029062
+2024-03-17 | 156384 | 19243 | 13357 | 406 | 12951 | 0.082815 | 0.030396
+2024-03-18 | 205330 | 25007 | 17554 | 553 | 17001 | 0.082798 | 0.031503</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='13'><h3>Claim 13 of 30</h3><p class='claim'>Android sessions stayed near normal while conversion fell from about 7.6% to about 3.2% and checkout starts did not drop, so users reached checkout but could not complete it.</p><div class='ev'><b>M3</b> - metric - 2024-03-06 - Run metric query<pre>SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(checkout_starts) AS checkout_starts, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE platform = &#x27;android&#x27; AND date &gt;= &#x27;2024-03-01&#x27; AND date &lt;= &#x27;2024-03-12&#x27; GROUP BY date ORDER BY date
+date | orders | sessions | conversion_rate | checkout_starts | payment_failure_rate
+2024-03-01 | 2948 | 39576 | 0.07449 | 4398 | 0.034076
+2024-03-02 | 2559 | 33191 | 0.077099 | 3790 | 0.035068
+2024-03-03 | 2396 | 31199 | 0.076797 | 3558 | 0.029567
+2024-03-04 | 3184 | 40899 | 0.07785 | 4718 | 0.029268
+2024-03-05 | 3163 | 41647 | 0.075948 | 4733 | 0.030647
+2024-03-06 | 1354 | 42316 | 0.031997 | 4868 | 0.035613
+2024-03-07 | 1324 | 42194 | 0.031379 | 4832 | 0.031456
+2024-03-08 | 1295 | 39535 | 0.032756 | 4604 | 0.03286
+2024-03-09 | 2513 | 32666 | 0.07693 | 3700 | 0.025591
+2024-03-10 | 2430 | 31312 | 0.077606 | 3541 | 0.029553
+2024-03-11 | 3169 | 41008 | 0.077278 | 4653 | 0.02851
+2024-03-12 | 3175 | 41628 | 0.076271 | 4691 | 0.027565</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='14'><h3>Claim 14 of 30</h3><p class='claim'>Conversion fell from about 8.3% on 2024-06-01 to about 6.6% on 2024-06-02 through 2024-06-04 while sessions stayed near normal levels.</p><div class='ev'><b>M3</b> - metric - 2024-06-03 - Run metric query<pre>SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN &#x27;2024-05-20&#x27; AND &#x27;2024-06-10&#x27; GROUP BY date ORDER BY date
+date | sessions | checkout_starts | payment_attempts | payment_failures | orders | revenue | conversion_rate
+2024-05-20 | 210723 | 25782 | 18041 | 511 | 17530 | 1045686.76 | 0.08319
+2024-05-21 | 216503 | 26694 | 18605 | 558 | 18047 | 1061219.14 | 0.083357
+2024-05-22 | 218615 | 26644 | 18628 | 545 | 18083 | 1077942.79 | 0.082716
+2024-05-23 | 214794 | 26250 | 18401 | 541 | 17860 | 1046957.98 | 0.083149
+2024-05-24 | 205159 | 25073 | 17526 | 533 | 16993 | 996782.44 | 0.082828
+2024-05-25 | 122494 | 14968 | 10576 | 333 | 10243 | 604142.34 | 0.08362
+2024-05-26 | 115444 | 14241 | 9962 | 266 | 9696 | 564786.55 | 0.083989
+2024-05-27 | 210751 | 25739 | 18024 | 510 | 17514 | 1034120.03 | 0.083103
+2024-05-28 | 217690 | 26695 | 18751 | 563 | 18188 | 1065273.9 | 0.08355
+2024-05-29 | 218437 | 26797 | 18810 | 567 | 18243 | 1082525.78 | 0.083516
+2024-05-30 | 216345 | 26415 | 18598 | 554 | 18044 | 1075655.84 | 0.083404
+2024-05-31 | 206125 | 25062 | 17473 | 495 | 16978 | 1003174.54 | 0.082367
+2024-06-01 | 169890 | 20894 | 14551 | 403 | 14148 | 840514.63 | 0.083277
+2024-06-02 | 162304 | 15913 | 11229 | 324 | 10905 | 696544.89 | 0.067189
+2024-06-03 | 213267 | 20650 | 14526 | 440 | 14086 | 892589.32 | 0.066049
+2024-06-04 | 216805 | 21021 | 14654 | 443 | 14211 | 900104.05 | 0.065547
+2024-06-05 | 220302 | 26868 | 18930 | 570 | 18360 | 1089652.42 | 0.08334
+2024-06-06 | 217924 | 26588 | 18497 | 547 | 17950 | 1072352.17 | 0.082368
+2024-06-07 | 206536 | 25226 | 17510 | 500 | 17010 | 1014870.08 | 0.082359
+2024-06-08 | 171269 | 20958 | 14703 | 437 | 14266 | 847147.93 | 0.083296
+2024-06-09 | 161255 | 19658 | 13702 | 409 | 13293 | 785293.01 | 0.082435
+2024-06-10 | 214540 | 26216 | 10950 | 315 | 10635 | 629477.34 | 0.049571</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='15'><h3>Claim 15 of 30</h3><p class='claim'>Paid search sessions fell from 55322 on 2024-07-11 to 32545 on 2024-07-12 and 27002 on 2024-07-13, while paid search conversion stayed near 0.083.</p><div class='ev'><b>M3</b> - metric - 2024-07-13 - Run metric query<pre>SQL: SELECT date, channel, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conv FROM daily_metrics WHERE date BETWEEN &#x27;2024-07-06&#x27; AND &#x27;2024-07-20&#x27; GROUP BY date, channel ORDER BY channel, date
+date | channel | sessions | orders | conv
+2024-07-06 | email | 34568 | 2797 | 0.080913
+2024-07-07 | email | 33257 | 2747 | 0.082599
+2024-07-08 | email | 42541 | 3530 | 0.082979
+2024-07-09 | email | 44050 | 3665 | 0.083201
+2024-07-10 | email | 43887 | 3681 | 0.083874
+2024-07-11 | email | 44188 | 3658 | 0.082783
+2024-07-12 | email | 41142 | 3414 | 0.082981
+2024-07-13 | email | 35130 | 2995 | 0.085255
+2024-07-14 | email | 32839 | 2712 | 0.082585
+2024-07-15 | email | 42557 | 3556 | 0.083559
+2024-07-16 | email | 43424 | 3583 | 0.082512
+2024-07-17 | email | 44537 | 3605 | 0.080944
+2024-07-18 | email | 44055 | 3647 | 0.082783
+2024-07-19 | email | 42096 | 3574 | 0.084901
+2024-07-20 | email | 35036 | 2825 | 0.080631
+2024-07-06 | organic | 70005 | 5763 | 0.082323
+2024-07-07 | organic | 65061 | 5417 | 0.08326
+2024-07-08 | organic | 85415 | 7086 | 0.08296
+2024-07-09 | organic | 88298 | 7247 | 0.082074
+2024-07-10 | organic | 89222 | 7403 | 0.082973
+2024-07-11 | organic | 88911 | 7257 | 0.081621
+2024-07-12 | organic | 82245 | 6724 | 0.081756
+2024-07-13 | organic | 68675 | 5810 | 0.084601
+2024-07-14 | organic | 65102 | 5478 | 0.084145
+2024-07-15 | organic | 85323 | 7040 | 0.08251
+2024-07-16 | organic | 88642 | 7434 | 0.083865
+2024-07-17 | organic | 88859 | 7369 | 0.082929
+2024-07-18 | organic | 89473 | 7473 | 0.083522
+2024-07-19 | organic | 84523 | 7023 | 0.08309
+2024-07-20 | organic | 69050 | 5860 | 0.084866
+2024-07-06 | paid_search | 42525 | 3404 | 0.080047
+2024-07-07 | paid_search | 40374 | 3397 | 0.084138
+2024-07-08 | paid_search | 53791 | 4499 | 0.083639
+2024-07-09 | paid_search | 54696 | 4527 | 0.082767
+2024-07-10 | paid_search | 55313 | 4594 | 0.083055
+2024-07-11 | paid_search | 55322 | 4546 | 0.082173
+2024-07-12 | paid_search | 32545 | 2712 | 0.083331
+2024-07-13 | paid_search | 27002 | 2274 | 0.084216
+2024-07-14 | paid_search | 25320 | 2082 | 0.082227
+2024-07-15 | paid_search | 34037 | 2709 | 0.07959
+... 20 more rows</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='16'><h3>Claim 16 of 30</h3><p class='claim'>Checkout starts stayed near normal levels on 2024-09-30 while payment attempts fell to about 14,300 and conversion dropped to 6.2% from about 8.3%.</p><div class='ev'><b>M3</b> - metric - 2024-09-30 - Run metric query<pre>SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN &#x27;2024-09-16&#x27; AND &#x27;2024-10-04&#x27; GROUP BY date ORDER BY date
+date | orders | sessions | checkout_starts | attempts | payment_failure_rate | conversion_rate
+2024-09-16 | 17315 | 207771 | 25572 | 17874 | 0.031274 | 0.083337
+2024-09-17 | 17579 | 212060 | 25908 | 18131 | 0.030445 | 0.082896
+2024-09-18 | 17379 | 213288 | 25592 | 17912 | 0.029757 | 0.081481
+2024-09-19 | 18649 | 226731 | 27643 | 19255 | 0.031472 | 0.082252
+2024-09-20 | 17757 | 214097 | 26051 | 18264 | 0.02776 | 0.082939
+2024-09-21 | 14779 | 177285 | 21824 | 15225 | 0.029294 | 0.083363
+2024-09-22 | 9110 | 166522 | 20519 | 9403 | 0.03116 | 0.054707
+2024-09-23 | 12101 | 221586 | 27123 | 12445 | 0.027642 | 0.054611
+2024-09-24 | 12251 | 225428 | 27812 | 12614 | 0.028778 | 0.054346
+2024-09-25 | 19017 | 228852 | 28099 | 19628 | 0.031129 | 0.083097
+2024-09-26 | 18913 | 227890 | 27743 | 19489 | 0.029555 | 0.082992
+2024-09-27 | 18013 | 215522 | 26467 | 18569 | 0.029942 | 0.083578
+2024-09-28 | 14742 | 178662 | 21810 | 15186 | 0.029237 | 0.082513
+2024-09-29 | 14211 | 169335 | 20835 | 14687 | 0.03241 | 0.083922
+2024-09-30 | 13831 | 223339 | 27327 | 14275 | 0.031103 | 0.061928
+2024-10-01 | 14046 | 226931 | 27649 | 14493 | 0.030842 | 0.061895
+2024-10-02 | 13996 | 228937 | 27959 | 14434 | 0.030345 | 0.061135
+2024-10-03 | 14284 | 227070 | 27943 | 14749 | 0.031528 | 0.062906
+2024-10-04 | 18038 | 216064 | 26526 | 18605 | 0.030476 | 0.083485</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='17'><h3>Claim 17 of 30</h3><p class='claim'>An incident issue dated 2024-03-22 reports DNS resolution failures for APAC users caused by a DNS provider problem.</p><div class='ev'><b>ISS-0030</b> - issue - 2024-03-22 - INC: DNS resolution failures for APAC users<pre>A DNS provider problem makes our domain fail to resolve for many users in APAC. Sessions from the region dropped. No impact elsewhere.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='18'><h3>Claim 18 of 30</h3><p class='claim'>An issue reports a spike in declined payments through Adyon in North America, with banks saying the cards are fine and the provider rejecting them.</p><div class='ev'><b>ISS-0015</b> - issue - 2024-02-19 - Spike in declined payments via Adyon (North America)<pre>Decline rate through Adyon is far above normal for North America. Banks report the cards are fine, so the provider is rejecting them. Considering a failover to the backup provider.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='19'><h3>Claim 19 of 30</h3><p class='claim'>APAC conversion fell from about 8.0% on 2024-08-28 to 6.4% on 2024-08-29 and 6.2% on 2024-08-30, against a weekday baseline of about 8.3%.</p><div class='ev'><b>M1</b> - metric - 2024-08-30 - detect_anomaly: conversion_rate on 2024-08-30 (region=apac)<pre>conversion_rate for region=apac on 2024-08-30 (Friday) was 0.06215. The same weekday in the 6 weeks before had a median of 0.08329. Change vs that baseline: -25.4% (z = -22.9). Change vs the day before: -2.6%. This is unusual (|z| &gt;= 3).</pre></div><div class='ev'><b>M3</b> - metric - 2024-08-30 - Run metric query<pre>SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS pa, SUM(payment_failures) AS pf, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conv, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS pfr FROM daily_metrics WHERE region=&#x27;apac&#x27; AND date BETWEEN &#x27;2024-08-16&#x27; AND &#x27;2024-09-02&#x27; GROUP BY date ORDER BY date
+date | sessions | checkout_starts | pa | pf | orders | conv | pfr
+2024-08-16 | 27595 | 3362 | 2373 | 78 | 2295 | 0.083167 | 0.03287
+2024-08-17 | 22597 | 2789 | 1938 | 64 | 1874 | 0.082931 | 0.033024
+2024-08-18 | 21526 | 2631 | 1868 | 51 | 1817 | 0.08441 | 0.027302
+2024-08-19 | 28704 | 3511 | 2458 | 83 | 2375 | 0.082741 | 0.033767
+2024-08-20 | 28505 | 3532 | 2445 | 65 | 2380 | 0.083494 | 0.026585
+2024-08-21 | 27149 | 3264 | 2304 | 56 | 2248 | 0.082802 | 0.024306
+2024-08-22 | 27292 | 3285 | 2326 | 73 | 2253 | 0.082552 | 0.031384
+2024-08-23 | 25378 | 3049 | 2156 | 39 | 2117 | 0.083419 | 0.018089
+2024-08-24 | 20939 | 2536 | 1821 | 60 | 1761 | 0.084101 | 0.032949
+2024-08-25 | 20514 | 2517 | 1762 | 45 | 1717 | 0.083699 | 0.025539
+2024-08-26 | 28371 | 3432 | 2382 | 72 | 2310 | 0.081421 | 0.030227
+2024-08-27 | 29561 | 3596 | 2497 | 69 | 2428 | 0.082135 | 0.027633
+2024-08-28 | 28986 | 3479 | 2420 | 86 | 2334 | 0.080522 | 0.035537
+2024-08-29 | 28937 | 2704 | 1895 | 48 | 1847 | 0.063828 | 0.02533
+2024-08-30 | 27528 | 2500 | 1764 | 53 | 1711 | 0.062155 | 0.030045
+2024-08-31 | 22833 | 2035 | 1408 | 34 | 1374 | 0.060176 | 0.024148
+2024-09-01 | 21860 | 2735 | 1916 | 47 | 1869 | 0.085499 | 0.02453
+2024-09-02 | 28453 | 3502 | 2439 | 60 | 2379 | 0.083612 | 0.0246</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='20'><h3>Claim 20 of 30</h3><p class='claim'>An incident report states that a DNS provider problem made the company domain fail to resolve for many Latin American users, and that sessions from the region dropped with no impact elsewhere.</p><div class='ev'><b>ISS-0082</b> - issue - 2024-07-04 - INC: DNS resolution failures for Latin America users<pre>A DNS provider problem makes our domain fail to resolve for many users in Latin America. Sessions from the region dropped. No impact elsewhere.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='21'><h3>Claim 21 of 30</h3><p class='claim'>Issue ISS-0143 reports that stricter validation in v3.28.8 rejects valid addresses so customers cannot continue to payment, and that this reproduces across all regions and platforms.</p><div class='ev'><b>ISS-0143</b> - issue - 2024-12-11 - Regression: checkout step 2 rejects valid addresses (checkout-service v3.28.8)<pre>The stricter validation shipped in v3.28.8 rejects addresses with unit numbers. Customers cannot continue to payment. Reproduced on all regions and platforms. Needs a hotfix or rollback.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='22'><h3>Claim 22 of 30</h3><p class='claim'>iOS payment attempts fell from about 4,500 per day to about 2,600 on 2024-04-15 and 2024-04-16, then recovered to about 6,000 on 2024-04-17.</p><div class='ev'><b>M3</b> - metric - 2024-04-16 - Run metric query<pre>SQL: SELECT date, platform, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE platform=&#x27;ios&#x27; AND date BETWEEN &#x27;2024-04-12&#x27; AND &#x27;2024-04-20&#x27; GROUP BY date, platform ORDER BY date
+date | platform | sessions | checkout_starts | payment_attempts | payment_failure_rate | conversion_rate
+2024-04-12 | ios | 61002 | 7965 | 5542 | 0.029412 | 0.088177
+2024-04-13 | ios | 49240 | 6574 | 4592 | 0.025044 | 0.090922
+2024-04-14 | ios | 47553 | 6406 | 4500 | 0.029333 | 0.091855
+2024-04-15 | ios | 62738 | 8232 | 2561 | 0.030457 | 0.039577
+2024-04-16 | ios | 63801 | 8470 | 2599 | 0.029242 | 0.039545
+2024-04-17 | ios | 64597 | 8593 | 6064 | 0.032982 | 0.090778
+2024-04-18 | ios | 63852 | 8369 | 5853 | 0.026824 | 0.089206
+2024-04-19 | ios | 60918 | 7853 | 5517 | 0.03172 | 0.087692
+2024-04-20 | ios | 49962 | 6479 | 4584 | 0.032723 | 0.088747</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='23'><h3>Claim 23 of 30</h3><p class='claim'>Payment failures on 2024-08-13 were 6,135 out of 19,126 attempts, up from about 500 failures a day in the days before.</p><div class='ev'><b>M3</b> - metric - 2024-08-13 - Run metric query<pre>SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures FROM daily_metrics WHERE date BETWEEN &#x27;2024-08-05&#x27; AND &#x27;2024-08-20&#x27; GROUP BY date ORDER BY date
+date | orders | sessions | checkout_starts | attempts | failures
+2024-08-05 | 17130 | 205220 | 25173 | 17660 | 530
+2024-08-06 | 17524 | 211319 | 25866 | 18051 | 527
+2024-08-07 | 17593 | 211875 | 25920 | 18107 | 514
+2024-08-08 | 17528 | 210542 | 25800 | 18040 | 512
+2024-08-09 | 16698 | 200540 | 24499 | 17207 | 509
+2024-08-10 | 14420 | 173459 | 21161 | 14836 | 416
+2024-08-11 | 13691 | 165472 | 20125 | 14127 | 436
+2024-08-12 | 18141 | 219046 | 26695 | 18710 | 569
+2024-08-13 | 12991 | 221787 | 27193 | 19126 | 6135
+2024-08-14 | 18913 | 224112 | 27666 | 19445 | 532
+2024-08-15 | 18282 | 223247 | 27064 | 18886 | 604
+2024-08-16 | 17624 | 212647 | 25955 | 18182 | 558
+2024-08-17 | 14574 | 176319 | 21416 | 15064 | 490
+2024-08-18 | 14035 | 166650 | 20543 | 14449 | 414
+2024-08-19 | 18052 | 219647 | 26729 | 18630 | 578
+2024-08-20 | 18453 | 223209 | 27363 | 19015 | 562</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='24'><h3>Claim 24 of 30</h3><p class='claim'>Customers reported that the card payment screen in the Android app crashed or did not respond after a phone update, starting 2024-03-06.</p><div class='ev'><b>TKT-00253</b> - ticket - 2024-03-06 - Payment screen broken in app<pre>After the latest phone update I cannot pay in your app. The button is grey and does not react. Order #NW55605.</pre></div><div class='ev'><b>TKT-00255</b> - ticket - 2024-03-06 - Cannot check out on my phone<pre>Checkout works on my laptop but not in the app on my phone. The payment screen flashes and disappears. Order #NW55605.</pre></div><div class='ev'><b>TKT-00257</b> - ticket - 2024-03-07 - Pay button does nothing<pre>I tap Pay in the app and nothing happens. I updated my phone yesterday, maybe related? Please help.</pre></div><div class='ev'><b>TKT-00260</b> - ticket - 2024-03-07 - Payment screen broken in app<pre>After the latest phone update I cannot pay in your app. The button is grey and does not react. Thanks.</pre></div><div class='ev'><b>TKT-00261</b> - ticket - 2024-03-07 - App closes when I try to pay<pre>The app crashes right when the card form should show. It worked last week. This is urgent.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='25'><h3>Claim 25 of 30</h3><p class='claim'>iOS orders fell from about 6,000 a day before 2024-10-16 to about 4,000 from 2024-10-16 onward while checkout starts stayed near 9,000, so customers reached checkout but did not complete payment attempts.</p><div class='ev'><b>M3</b> - metric - 2024-10-17 - Run metric query<pre>SQL: SELECT date, platform, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures FROM daily_metrics WHERE date BETWEEN &#x27;2024-10-10&#x27; AND &#x27;2024-10-20&#x27; AND platform=&#x27;ios&#x27; GROUP BY date, platform ORDER BY date
+date | platform | orders | sessions | checkout_starts | attempts | failures
+2024-10-10 | ios | 5571 | 62618 | 8206 | 5745 | 174
+2024-10-11 | ios | 5384 | 60220 | 7909 | 5554 | 170
+2024-10-12 | ios | 4465 | 49862 | 6547 | 4601 | 136
+2024-10-13 | ios | 4493 | 50710 | 6572 | 4642 | 149
+2024-10-14 | ios | 6059 | 67045 | 8844 | 6253 | 194
+2024-10-15 | ios | 6047 | 68300 | 8896 | 6250 | 203
+2024-10-16 | ios | 4074 | 69975 | 9324 | 4205 | 131
+2024-10-17 | ios | 4002 | 68890 | 9132 | 4121 | 119
+2024-10-18 | ios | 3726 | 64394 | 8459 | 3842 | 116
+2024-10-19 | ios | 3046 | 53270 | 6957 | 3146 | 100
+2024-10-20 | ios | 4448 | 50449 | 6639 | 4596 | 148</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='26'><h3>Claim 26 of 30</h3><p class='claim'>On 2024-07-20, orders in the social channel fell by 53.8% versus the weekday baseline, while every other channel moved by 3.3% or less.</p><div class='ev'><b>M2</b> - metric - 2024-07-20 - decompose_by_segment: orders on 2024-07-20<pre>Overall orders changed -5.9% on 2024-07-20. The change is concentrated in: channel=social (-53.8%). Other slices moved much less.
+Change vs weekday baseline, per slice:
+  region=na: -6.3% (z -2.1)
+  region=eu: -2.2% (z -2.2)
+  region=uk: -4.6% (z -1.8)
+  region=apac: -9.8% (z -3.5)
+  region=latam: -6.9% (z -2.0)
+  platform=web: -4.4% (z -2.2)
+  platform=ios: -6.4% (z -3.9)
+  platform=android: -9.6% (z -6.8)
+  channel=organic: +2.0% (z +1.8)
+  channel=paid_search: +3.3% (z +0.7)
+  channel=email: +1.4% (z +1.4)
+  channel=social: -53.8% (z -18.9)</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='27'><h3>Claim 27 of 30</h3><p class='claim'>Customers in the UK, North America, and Latin America reported that their cards were declined at payment while checkout otherwise worked.</p><div class='ev'><b>TKT-00977</b> - ticket - 2024-08-13 - Cannot pay<pre>Checkout works until I pay, then it says declined. My card works everywhere else. This is urgent.</pre></div><div class='ev'><b>TKT-00981</b> - ticket - 2024-08-13 - Cannot pay<pre>Checkout works until I pay, then it says declined. My card works everywhere else. Please help.</pre></div><div class='ev'><b>TKT-00979</b> - ticket - 2024-08-13 - Payment failed<pre>I get &#x27;payment could not be processed&#x27; every time. Different cards, same result. Order #NW69239.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='28'><h3>Claim 28 of 30</h3><p class='claim'>Support ticket TKT-01200 reports that applying a coupon makes checkout fail.</p><div class='ev'><b>TKT-01200</b> - ticket - 2024-10-01 - Coupon makes checkout fail<pre>When I apply my coupon the order fails. Without the coupon it also fails sometimes. Very frustrating. This is urgent.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='29'><h3>Claim 29 of 30</h3><p class='claim'>Customer tickets from 2024-06-10 and 2024-06-11 say the checkout page will not accept a valid address.</p><div class='ev'><b>TKT-00692</b> - ticket - 2024-06-10 - Cannot finish my purchase<pre>The checkout page will not accept my address even though it is the same one I always use. Please fix this, I want to order. Please help.</pre></div><div class='ev'><b>TKT-00700</b> - ticket - 2024-06-11 - Cannot finish my purchase<pre>The checkout page will not accept my address even though it is the same one I always use. Please fix this, I want to order. Please help.</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section><section data-id='30'><h3>Claim 30 of 30</h3><p class='claim'>Payment attempts fell from 19712 to 10609 on 2024-10-24 while checkout starts stayed near 28000 and the payment failure rate stayed near 3%, so orders were lost before payment rather than declined by a provider.</p><div class='ev'><b>M3</b> - metric - 2024-10-24 - Run metric query<pre>SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate FROM daily_metrics WHERE date BETWEEN &#x27;2024-10-10&#x27; AND &#x27;2024-10-26&#x27; GROUP BY date ORDER BY date
+date | sessions | checkout_starts | payment_attempts | payment_failures | orders | revenue | conversion_rate | payment_failure_rate
+2024-10-10 | 208493 | 25525 | 17896 | 548 | 17348 | 1029743.17 | 0.083207 | 0.030621
+2024-10-11 | 198811 | 24196 | 17028 | 523 | 16505 | 981482.57 | 0.083019 | 0.030714
+2024-10-12 | 165243 | 20355 | 14315 | 436 | 13879 | 823481.14 | 0.083991 | 0.030458
+2024-10-13 | 170008 | 20792 | 14547 | 447 | 14100 | 832833.12 | 0.082937 | 0.030728
+2024-10-14 | 224633 | 27485 | 19331 | 555 | 18776 | 1114808.04 | 0.083585 | 0.02871
+2024-10-15 | 227698 | 27837 | 19477 | 625 | 18852 | 1123846.6 | 0.082794 | 0.032089
+2024-10-16 | 231445 | 28357 | 17598 | 485 | 17113 | 1014765.33 | 0.07394 | 0.02756
+2024-10-17 | 227534 | 27901 | 17104 | 514 | 16590 | 982270.19 | 0.072912 | 0.030051
+2024-10-18 | 217236 | 26412 | 16431 | 505 | 15926 | 950445.96 | 0.073312 | 0.030735
+2024-10-19 | 178428 | 22019 | 13567 | 424 | 13143 | 782208.71 | 0.07366 | 0.031252
+2024-10-20 | 168837 | 20612 | 14307 | 444 | 13863 | 825802.93 | 0.082109 | 0.031034
+2024-10-21 | 225707 | 27560 | 19280 | 585 | 18695 | 1104800.39 | 0.082829 | 0.030342
+2024-10-22 | 228180 | 27770 | 19433 | 582 | 18851 | 1107798.41 | 0.082615 | 0.029949
+2024-10-23 | 230021 | 28143 | 19712 | 563 | 19149 | 1125552.53 | 0.083249 | 0.028561
+2024-10-24 | 228176 | 27989 | 10609 | 306 | 10303 | 611040.27 | 0.045154 | 0.028843
+2024-10-25 | 217085 | 26559 | 10136 | 317 | 9819 | 585337.1 | 0.045231 | 0.031275
+2024-10-26 | 179076 | 21932 | 15394 | 473 | 14921 | 882527.92 | 0.083322 | 0.030726</pre></div><button data-v='1'>Supported</button> <button data-v='0'>Not supported</button> <span class='picked'></span></section>
+<script>
+const labels = {};
+document.querySelectorAll('section button').forEach(b => b.onclick = () => {
+  const s = b.closest('section'); labels[s.dataset.id] = b.dataset.v; s.classList.add('done');
+  s.querySelector('.picked').textContent = b.dataset.v === '1' ? 'You chose: Supported' : 'You chose: Not supported';
+  const n = Object.keys(labels).length; document.getElementById('count').textContent = n;
+  document.getElementById('save').disabled = n < 30;
+});
+document.getElementById('save').onclick = () => {
+  const csv = 'item_id,human_supported\n' + Object.entries(labels).map(([k, v]) => k + ',' + v).join('\n') + '\n';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
+  a.download = 'labels.csv'; a.click();
+};
+</script>

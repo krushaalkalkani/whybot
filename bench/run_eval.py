@@ -112,6 +112,7 @@ def run_one(
         ]  # fmt: skip
     except Exception as error:  # one failed scenario must not stop the whole eval
         record["error"] = f"{type(error).__name__}: {error}"
+        record.pop("scores", None)  # a run whose judge call failed is incomplete, not scored
     return record
 
 
@@ -128,6 +129,11 @@ def main() -> None:
     parser.add_argument("--out", default="", help="output folder (default results/<split>[_smoke])")
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--force", action="store_true", help="allow re-running the frozen test split")
+    parser.add_argument(
+        "--only-incomplete",
+        action="store_true",
+        help="re-run only systems whose last run had crashed scenarios",
+    )
     args = parser.parse_args()
 
     names = (
@@ -138,7 +144,11 @@ def main() -> None:
         else args.systems.split(",")
     )
     out_dir = Path(args.out) if args.out else RESULTS_DIR / (args.split + ("_smoke" if args.smoke else ""))
-    if args.split == "test" and (out_dir / "metrics.json").exists() and not args.force:
+    if (
+        args.split == "test"
+        and (out_dir / "metrics.json").exists()
+        and not (args.force or args.only_incomplete)
+    ):
         raise SystemExit(
             "The test split has already been run. It is frozen; use --force only with a written reason."
         )
@@ -151,6 +161,9 @@ def main() -> None:
     all_metrics = json.loads(metrics_path.read_text()) if metrics_path.exists() else {"systems": {}}
 
     for name in names:
+        previous = all_metrics["systems"].get(name)
+        if args.only_incomplete and previous and previous["metrics"]["errors"] == 0:
+            continue  # finished runs are never repeated
         started = time.time()
         with ThreadPoolExecutor(max_workers=args.threads) as pool:
             records = list(

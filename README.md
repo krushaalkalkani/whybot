@@ -4,7 +4,7 @@ An agent that explains why a business metric moved, with proof.
 
 Ask "Why did checkout conversion drop 12% on 2025-10-03?". WhyBot investigates a company's data and returns up to 3 likely root causes, ranked. Every claim links to the evidence behind it: a metric query result, a GitHub issue, a support ticket or a deploy changelog entry. If the evidence is weak it says "not enough evidence" and does not guess.
 
-- Live demo: not deployed yet
+- Live demo: https://whybot-ecru.vercel.app
 - API: https://whybot-api.vercel.app/docs (health: https://whybot-api.vercel.app/health?deep=true)
 - Dataset: not published yet
 
@@ -52,27 +52,47 @@ Limits on every run: 8 tool calls, 90 seconds, one question of at most 400 chara
 Every number below is written by `scripts/readme_results.py` from files in `results/`. Nothing is typed by hand. A cell that has not been run says "not run yet".
 
 <!-- results:start -->
-Benchmark v1 (seed 7): 80 scenarios, 40 dev and 40 test, with 12 decoys, 8 unanswerable and 8 prompt-injection scenarios. Agent model: `not run yet`. Judge model: `not run yet`.
+Benchmark v1 (seed 7): 80 scenarios, 40 dev and 40 test, with 12 decoys, 8 unanswerable and 8 prompt-injection scenarios. Agent model: `claude-haiku-5-5`. Judge model: `claude-sonnet-5-5`.
 
 ### Test split (frozen, run once)
 
-Source: `results/test/metrics.json`.
+Source: `results/test/metrics.json`. Run 2026-11-11, n = 40.
 
-Not run yet.
+| System | Acc@1 | Acc@3 | Cite P | Cite R | Faithful | Abstain acc | Injection | p50 | p95 | USD/query | Tools |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| A. LLM only | 37.5% | 52.5% | n/a | 0.0% | 0.0% | 87.5% | 100.0% | 4.8s | 5.8s | $0.0006 | 0.0 |
+| B. Vector RAG, no tools | 30.0% | 30.0% | 93.8% | 24.2% | 87.5% | 30.0% | 100.0% | 3.4s | 4.8s | $0.0006 | 1.0 |
+| C. WhyBot (full) | 97.5% | 97.5% | 100.0% | 97.0% | 90.2% | 97.5% | 100.0% | 17.9s | 21.6s | $0.0038 | 5.2 |
 
 Ablations of WhyBot on the test split:
 
-Not run yet.
+| System | Acc@1 | Acc@3 | Cite P | Cite R | Faithful | Abstain acc | Injection | p50 | p95 | USD/query | Tools |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| C. WhyBot (full) | 97.5% | 97.5% | 100.0% | 97.0% | 90.2% | 97.5% | 100.0% | 17.9s | 21.6s | $0.0038 | 5.2 |
+| C without reranker | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
+| C without verifier | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
+| C with BM25 only | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
+| C with dense only | 97.5% | 97.5% | 100.0% | 97.0% | 90.2% | 97.5% | 100.0% | 17.9s | 21.7s | $0.0038 | 5.2 |
 
 ### Dev split (used while building)
 
-Source: `results/dev/metrics.json`.
+Source: `results/dev/metrics.json`. Run 2026-11-11, n = 40.
 
-Not run yet.
+| System | Acc@1 | Acc@3 | Cite P | Cite R | Faithful | Abstain acc | Injection | p50 | p95 | USD/query | Tools |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| A. LLM only | 32.5% | 45.0% | n/a | 0.0% | 0.0% | 90.0% | 100.0% | 5.0s | 6.3s | $0.0006 | 0.0 |
+| B. Vector RAG, no tools | 27.5% | 27.5% | 100.0% | 15.2% | 92.3% | 27.5% | 100.0% | 3.3s | 4.9s | $0.0006 | 1.0 |
+| C. WhyBot (full) | 100.0% | 100.0% | 100.0% | 95.5% | 91.2% | 100.0% | 100.0% | 17.4s | 23.1s | $0.0037 | 5.3 |
 
 Ablations of WhyBot on the dev split:
 
-Not run yet.
+| System | Acc@1 | Acc@3 | Cite P | Cite R | Faithful | Abstain acc | Injection | p50 | p95 | USD/query | Tools |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| C. WhyBot (full) | 100.0% | 100.0% | 100.0% | 95.5% | 91.2% | 100.0% | 100.0% | 17.4s | 23.1s | $0.0037 | 5.3 |
+| C without reranker | 97.5% | 97.5% | 100.0% | 95.5% | 90.0% | 97.5% | 100.0% | 18.1s | 24.1s | $0.0037 | 5.4 |
+| C without verifier | 100.0% | 100.0% | 100.0% | 98.5% | 85.9% | 100.0% | 100.0% | 13.5s | 17.5s | $0.0031 | 5.3 |
+| C with BM25 only | 100.0% | 100.0% | 100.0% | 100.0% | 89.6% | 100.0% | 100.0% | 17.8s | 22.8s | $0.0036 | 5.5 |
+| C with dense only | 100.0% | 100.0% | 100.0% | 95.5% | 88.5% | 100.0% | 100.0% | 17.5s | 23.2s | $0.0037 | 5.3 |
 
 ### Retrieval only (dev, no LLM)
 
@@ -104,8 +124,27 @@ Source: `results/security.json` (pytest). 34 of 34 test cases pass.
 
 ### Error analysis (test split)
 
-Not run yet.
+| Failure category | Count | Example scenarios | What would fix it |
+| --- | ---: | --- | --- |
+| WhyBot: verifier dropped a correct cause, so the answer became 'not enough evidence' | 1 | S061 | Let the verifier return 'partly supported' and keep the supported part of a claim. Ask the ranker for one fact per claim so one wrong detail does not sink the cause. |
+| WhyBot: right answer, but at least one kept claim was rejected by the judge | 11 | S042, S051, S054, S055 | Use the stronger model for verification, or verify each claim in its own call. Check the 30 hand labels first: some of these are judge strictness, not real errors. |
+| RAG: abstained although documents explained the move (the key documents were not in the top 8) | 28 | S041, S042, S043, S044 | Search with a date filter and with queries built from the affected segment, not the raw question. This is what the agent's tools do. |
+| RAG: named a cause, but the wrong one or the wrong segment | 0 |  | Give the model metric tools so it can check which segment moved before trusting a document. |
+| LLM only: guessed the wrong cause type | 20 | S041, S045, S046, S047 | No fix without data. A model that sees only the question can only guess the most common cause. |
+| LLM only: right cause type, wrong segment | 1 | S068 | Needs the segment breakdown from the metrics. The question alone rarely names the segment. |
+| LLM only: answered a question that has no supporting evidence | 4 | S057, S060, S064, S080 | Abstain rules need evidence to check against. Without retrieval the model cannot know that nothing explains the move. |
 <!-- results:end -->
+
+### What the results say
+
+- WhyBot beats both baselines by a wide margin on accuracy. Plain RAG mostly abstains: the raw question rarely retrieves the documents that name the cause. LLM-only can only guess.
+- LLM-only scores higher than RAG on accuracy@1. It always guesses and sometimes hits; RAG, told to abstain without proof, abstains. RAG is still the better system on faithfulness.
+- The benchmark is too easy for the full system. Dev accuracy is at the ceiling, so the ablations cannot be told apart on accuracy. I do not claim that the reranker, BM25 or dense search helps end to end: the data does not show it.
+- The verifier has a measurable cost and benefit on dev: faithfulness is higher with it, but in the first dev run it wrongly dropped two correct causes (`results/dev_v0/metrics.json`). I relaxed its prompt once, on dev only. On test it still dropped one correct cause.
+- Injection resistance is 100% for every system, including the baselines. So these 8 scenarios do not separate the systems; the model resisted on its own. The defences are tested in code (`tests/test_security.py`), but the benchmark does not prove they were needed.
+- Faithfulness for LLM-only is 0% by definition: it has no evidence to cite.
+- Three test ablation rows say "not run yet". The API key reached its monthly usage limit during the test run. Finished systems are final. The missing rows can be completed with `python -m bench.run_eval --split test --only-incomplete`, which never re-runs a finished system.
+- USD per query uses list prices from the Anthropic docs (`whybot/llm.py`). Check the Console usage page for the billed amount.
 
 ### How to read the metrics
 

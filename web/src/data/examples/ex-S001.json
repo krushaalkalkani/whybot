@@ -1,0 +1,716 @@
+{
+ "id": "ex-S001",
+ "created_at": "2026-11-11T17:37:07.718252+00:00",
+ "question": "What caused the 12% drop in revenue on 2024-02-19?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: revenue on 2024-02-19",
+   "detail": "Pull daily revenue for 2024-02-19 and compare it with the same weekday in prior weeks to size the 12% drop. | Break revenue down by region, platform and channel to find which segments account for most of the decline. | Check whether sessions or conversion_rate fell, to separate a traffic loss from a checkout problem. | Review deploy changelog entries (CHG-...), GitHub issues (ISS-...) and support tickets (TKT-...) dated around 2024-02-19 for matching changes or incidents. | Rule out seasonality such as the weekend dip, and match the drop to one cause type before concluding.",
+   "input": {},
+   "output": {
+    "metric": "revenue",
+    "date": "2024-02-19",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily revenue for 2024-02-19 and compare it with the same weekday in prior weeks to size the 12% drop.",
+     "Break revenue down by region, platform and channel to find which segments account for most of the decline.",
+     "Check whether sessions or conversion_rate fell, to separate a traffic loss from a checkout problem.",
+     "Review deploy changelog entries (CHG-...), GitHub issues (ISS-...) and support tickets (TKT-...) dated around 2024-02-19 for matching changes or incidents.",
+     "Rule out seasonality such as the weekend dip, and match the drop to one cause type before concluding."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4681,
+   "input_tokens": 1357,
+   "output_tokens": 391,
+   "cost_usd": 0.00033120000000000003
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: revenue on 2024-02-19",
+   "detail": "revenue on 2024-02-19 (Monday) was 8.776e+05. The same weekday in the 6 weeks before had a median of 9.975e+05. Change vs that baseline: -12.0% (z = -8.5). Change vs the day before: +14.9%. This is unusual (|z| >= 3).",
+   "input": {
+    "metric": "revenue",
+    "date": "2024-02-19"
+   },
+   "output": {
+    "metric": "revenue",
+    "date": "2024-02-19",
+    "filters": {},
+    "value": 877616.06,
+    "baseline": 997490.25,
+    "pct_change": -12.02,
+    "z_score": -8.5,
+    "day_before_value": 763981.78,
+    "pct_change_vs_day_before": 14.87,
+    "is_anomaly": true,
+    "explanation": "revenue on 2024-02-19 (Monday) was 8.776e+05. The same weekday in the 6 weeks before had a median of 9.975e+05. Change vs that baseline: -12.0% (z = -8.5). Change vs the day before: +14.9%. This is unusual (|z| >= 3)."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 2,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: revenue on 2024-02-19",
+   "detail": "Overall revenue changed -12.0% on 2024-02-19. The change is concentrated in: region=na (-28.6%). Other slices moved much less.",
+   "input": {
+    "metric": "revenue",
+    "date": "2024-02-19"
+   },
+   "output": {
+    "metric": "revenue",
+    "date": "2024-02-19",
+    "overall_pct_change": -12.02,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 289228.84,
+      "baseline": 404832.115,
+      "pct_change": -28.56,
+      "z_score": -14.83
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 279222.51,
+      "baseline": 277976.06,
+      "pct_change": 0.45,
+      "z_score": 0.45
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 135319.43,
+      "baseline": 139171.53,
+      "pct_change": -2.77,
+      "z_score": -0.94
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 102168.25,
+      "baseline": 104523.88,
+      "pct_change": -2.25,
+      "z_score": -1.35
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 71677.03,
+      "baseline": 70480.975,
+      "pct_change": 1.7,
+      "z_score": 0.73
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 437508.36,
+      "baseline": 491092.26,
+      "pct_change": -10.91,
+      "z_score": -4.94
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 278288.99,
+      "baseline": 322257.725,
+      "pct_change": -13.64,
+      "z_score": -13.64
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 161818.71,
+      "baseline": 184065.175,
+      "pct_change": -12.09,
+      "z_score": -5.8
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 356034.72,
+      "baseline": 398328.33,
+      "pct_change": -10.62,
+      "z_score": -7.16
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 218889.16,
+      "baseline": 251862.185,
+      "pct_change": -13.09,
+      "z_score": -6.5
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 174504.76,
+      "baseline": 198681.945,
+      "pct_change": -12.17,
+      "z_score": -5.57
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 128187.42,
+      "baseline": 151502.635,
+      "pct_change": -15.39,
+      "z_score": -3.5
+     }
+    ],
+    "concentrated_in": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 289228.84,
+      "baseline": 404832.115,
+      "pct_change": -28.56,
+      "z_score": -14.83
+     }
+    ],
+    "explanation": "Overall revenue changed -12.0% on 2024-02-19. The change is concentrated in: region=na (-28.6%). Other slices moved much less."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2024,
+   "input_tokens": 3439,
+   "output_tokens": 435,
+   "cost_usd": 0.0005614000000000001
+  },
+  {
+   "index": 4,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "Run metric query",
+   "detail": "21 rows",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate FROM daily_metrics WHERE region='na' AND date BETWEEN '2024-02-05' AND '2024-02-25' GROUP BY date ORDER BY date"
+   },
+   "output": {
+    "columns": [
+     "date",
+     "sessions",
+     "orders",
+     "revenue",
+     "conversion_rate",
+     "payment_failure_rate"
+    ],
+    "rows": [
+     [
+      "2024-02-05",
+      81674,
+      6861,
+      409773.41,
+      0.084005,
+      0.032572
+     ],
+     [
+      "2024-02-06",
+      82328,
+      6768,
+      411660.31,
+      0.082208,
+      0.028005
+     ],
+     [
+      "2024-02-07",
+      84448,
+      6968,
+      418519.75,
+      0.082512,
+      0.030876
+     ],
+     [
+      "2024-02-08",
+      82307,
+      6906,
+      413798.6,
+      0.083905,
+      0.032909
+     ],
+     [
+      "2024-02-09",
+      79005,
+      6621,
+      399305.92,
+      0.083805,
+      0.033431
+     ],
+     [
+      "2024-02-10",
+      64564,
+      5359,
+      324855.87,
+      0.083003,
+      0.026698
+     ],
+     [
+      "2024-02-11",
+      61447,
+      5105,
+      306035.01,
+      0.08308,
+      0.031125
+     ],
+     [
+      "2024-02-12",
+      82385,
+      6911,
+      415910.18,
+      0.083887,
+      0.029081
+     ],
+     [
+      "2024-02-13",
+      84369,
+      7065,
+      421988.32,
+      0.083739,
+      0.031661
+     ],
+     [
+      "2024-02-14",
+      84632,
+      7018,
+      421996.4,
+      0.082924,
+      0.029859
+     ],
+     [
+      "2024-02-15",
+      82726,
+      6929,
+      416133.01,
+      0.083758,
+      0.031722
+     ],
+     [
+      "2024-02-16",
+      79129,
+      6551,
+      399437.25,
+      0.082789,
+      0.029769
+     ],
+     [
+      "2024-02-17",
+      64962,
+      5401,
+      326006.52,
+      0.083141,
+      0.031385
+     ],
+     [
+      "2024-02-18",
+      62229,
+      5109,
+      307330.96,
+      0.0821,
+      0.027968
+     ],
+     [
+      "2024-02-19",
+      81815,
+      4771,
+      289228.84,
+      0.058314,
+      0.316574
+     ],
+     [
+      "2024-02-20",
+      83647,
+      4939,
+      294455.96,
+      0.059046,
+      0.309327
+     ],
+     [
+      "2024-02-21",
+      84590,
+      5011,
+      299526.41,
+      0.059239,
+      0.31375
+     ],
+     [
+      "2024-02-22",
+      83897,
+      7021,
+      422885.0,
+      0.083686,
+      0.030383
+     ],
+     [
+      "2024-02-23",
+      79133,
+      6624,
+      403103.39,
+      0.083707,
+      0.029308
+     ],
+     [
+      "2024-02-24",
+      64941,
+      5372,
+      322024.46,
+      0.082721,
+      0.026812
+     ],
+     [
+      "2024-02-25",
+      61829,
+      5186,
+      308882.11,
+      0.083876,
+      0.029747
+     ]
+    ],
+    "row_count": 21,
+    "truncated": false
+   },
+   "evidence_ids": [
+    "M3"
+   ],
+   "is_error": false,
+   "latency_ms": 8,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 5,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: north america outage, checkout, deploy, payment problem",
+   "detail": "8 documents: ISS-0015, TKT-00193, TKT-00196, TKT-00202, TKT-00198, TKT-00201, TKT-00190, CHG-0021",
+   "input": {
+    "date_from": "2024-02-17",
+    "date_to": "2024-02-21",
+    "query": "north america outage, checkout, deploy, payment problem"
+   },
+   "output": {
+    "query": "north america outage, checkout, deploy, payment problem",
+    "results": [
+     {
+      "id": "ISS-0015",
+      "title": "Spike in declined payments via Adyon (North America)",
+      "date": "2024-02-19",
+      "score": -2.5697
+     },
+     {
+      "id": "TKT-00193",
+      "title": "Cannot pay",
+      "date": "2024-02-19",
+      "score": -8.3951
+     },
+     {
+      "id": "TKT-00196",
+      "title": "Cannot pay",
+      "date": "2024-02-19",
+      "score": -8.3951
+     },
+     {
+      "id": "TKT-00202",
+      "title": "Cannot pay",
+      "date": "2024-02-20",
+      "score": -8.3951
+     },
+     {
+      "id": "TKT-00198",
+      "title": "Cannot pay",
+      "date": "2024-02-19",
+      "score": -8.5037
+     },
+     {
+      "id": "TKT-00201",
+      "title": "Question about checkout",
+      "date": "2024-02-20",
+      "score": -9.9319
+     },
+     {
+      "id": "TKT-00190",
+      "title": "Payment failed",
+      "date": "2024-02-19",
+      "score": -10.4956
+     },
+     {
+      "id": "CHG-0021",
+      "title": "android-app v8.7.0",
+      "date": "2024-02-19",
+      "score": -11.377
+     }
+    ]
+   },
+   "evidence_ids": [
+    "ISS-0015",
+    "TKT-00193",
+    "TKT-00196",
+    "TKT-00202",
+    "TKT-00198",
+    "TKT-00201",
+    "TKT-00190",
+    "CHG-0021"
+   ],
+   "is_error": false,
+   "latency_ms": 222,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 6,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Finished investigating",
+   "detail": "The 12% revenue drop on 2024-02-19 was caused by a payment provider error in North America: the Adyon provider was declining valid cards, and the NA payment failure rate jumped from about 3% to 32%. NA sessions stayed normal (81.8k), but conversion fell from about 8.3% to 5.8%, which accounts for the NA revenue drop of -28.6%. Support tickets from NA customers on iOS and web report \"declined\" card",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2140,
+   "input_tokens": 5635,
+   "output_tokens": 363,
+   "cost_usd": 0.000745
+  },
+  {
+   "index": 7,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "Adyon rejecting North American card payments on 2024-02-19",
+   "input": {},
+   "output": {
+    "abstain": false,
+    "abstain_reason": "",
+    "summary": "Revenue on 2024-02-19 fell 12% versus the weekday baseline, and the drop was concentrated in North America (-28.6%). In North America, the payment failure rate jumped to about 32% while sessions stayed normal, and an issue reports declines through the Adyen provider. The most likely cause is a payment provider error in North America.",
+    "causes": [
+     {
+      "cause_type": "payment_provider_error",
+      "segment_dimension": "region",
+      "segment_value": "na",
+      "title": "Adyon rejecting North American card payments on 2024-02-19",
+      "confidence": "high",
+      "claims": [
+       {
+        "text": "Revenue on 2024-02-19 was 12.0% below the same-weekday baseline, with a z-score of -8.5.",
+        "evidence_ids": [
+         "M1"
+        ]
+       },
+       {
+        "text": "The revenue drop was concentrated in region na, which fell 28.6% versus baseline while the other regions moved by less than 3%.",
+        "evidence_ids": [
+         "M2"
+        ]
+       },
+       {
+        "text": "In region na the payment failure rate rose to 31.7% on 2024-02-19 from about 3% on surrounding days, while sessions stayed near normal levels.",
+        "evidence_ids": [
+         "M3"
+        ]
+       },
+       {
+        "text": "An issue reports a spike in declined payments through Adyon in North America, with banks saying the cards are fine and the provider rejecting them.",
+        "evidence_ids": [
+         "ISS-0015"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4687,
+   "input_tokens": 4302,
+   "output_tokens": 898,
+   "cost_usd": 0.0008792
+  },
+  {
+   "index": 8,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "4 claims supported, 0 dropped",
+   "input": {},
+   "output": {
+    "kept": 4,
+    "dropped": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 3745,
+   "input_tokens": 2672,
+   "output_tokens": 637,
+   "cost_usd": 0.0005857000000000001
+  },
+  {
+   "index": 9,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: answered",
+   "detail": "",
+   "input": {},
+   "output": {
+    "verdict": "answered",
+    "notes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "answered",
+  "summary": "Revenue on 2024-02-19 fell 12% versus the weekday baseline, and the drop was concentrated in North America (-28.6%). In North America, the payment failure rate jumped to about 32% while sessions stayed normal, and an issue reports declines through the Adyen provider. The most likely cause is a payment provider error in North America.",
+  "causes": [
+   {
+    "rank": 1,
+    "cause_type": "payment_provider_error",
+    "segment_dimension": "region",
+    "segment_value": "na",
+    "title": "Adyon rejecting North American card payments on 2024-02-19",
+    "confidence": "high",
+    "claims": [
+     {
+      "text": "Revenue on 2024-02-19 was 12.0% below the same-weekday baseline, with a z-score of -8.5.",
+      "evidence_ids": [
+       "M1"
+      ],
+      "verified": true,
+      "note": "The evidence states -12.0% versus the same-weekday median baseline with z = -8.5 on 2024-02-19."
+     },
+     {
+      "text": "The revenue drop was concentrated in region na, which fell 28.6% versus baseline while the other regions moved by less than 3%.",
+      "evidence_ids": [
+       "M2"
+      ],
+      "verified": true,
+      "note": "The evidence gives region=na at -28.6% and the other regions at +0.5%, -2.8%, -2.2% and +1.7%, all under 3% in magnitude."
+     },
+     {
+      "text": "In region na the payment failure rate rose to 31.7% on 2024-02-19 from about 3% on surrounding days, while sessions stayed near normal levels.",
+      "evidence_ids": [
+       "M3"
+      ],
+      "verified": true,
+      "note": "The na payment_failure_rate on 2024-02-19 is 0.316574 (31.7%), surrounding days run about 2.7% to 3.4%, and sessions were 81,815, close to nearby days."
+     },
+     {
+      "text": "An issue reports a spike in declined payments through Adyon in North America, with banks saying the cards are fine and the provider rejecting them.",
+      "evidence_ids": [
+       "ISS-0015"
+      ],
+      "verified": true,
+      "note": "The issue describes a spike in declined payments through Adyon in North America, banks saying the cards are fine, and the provider rejecting them."
+     }
+    ]
+   }
+  ],
+  "evidence": {
+   "M1": {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: revenue on 2024-02-19",
+    "date": "2024-02-19",
+    "body": "revenue on 2024-02-19 (Monday) was 8.776e+05. The same weekday in the 6 weeks before had a median of 9.975e+05. Change vs that baseline: -12.0% (z = -8.5). Change vs the day before: +14.9%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M2": {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: revenue on 2024-02-19",
+    "date": "2024-02-19",
+    "body": "Overall revenue changed -12.0% on 2024-02-19. The change is concentrated in: region=na (-28.6%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: -28.6% (z -14.8)\n  region=eu: +0.5% (z +0.5)\n  region=uk: -2.8% (z -0.9)\n  region=apac: -2.2% (z -1.4)\n  region=latam: +1.7% (z +0.7)\n  platform=web: -10.9% (z -4.9)\n  platform=ios: -13.6% (z -13.6)\n  platform=android: -12.1% (z -5.8)\n  channel=organic: -10.6% (z -7.2)\n  channel=paid_search: -13.1% (z -6.5)\n  channel=email: -12.2% (z -5.6)\n  channel=social: -15.4% (z -3.5)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M3": {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-02-19",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate FROM daily_metrics WHERE region='na' AND date BETWEEN '2024-02-05' AND '2024-02-25' GROUP BY date ORDER BY date\ndate | sessions | orders | revenue | conversion_rate | payment_failure_rate\n2024-02-05 | 81674 | 6861 | 409773.41 | 0.084005 | 0.032572\n2024-02-06 | 82328 | 6768 | 411660.31 | 0.082208 | 0.028005\n2024-02-07 | 84448 | 6968 | 418519.75 | 0.082512 | 0.030876\n2024-02-08 | 82307 | 6906 | 413798.6 | 0.083905 | 0.032909\n2024-02-09 | 79005 | 6621 | 399305.92 | 0.083805 | 0.033431\n2024-02-10 | 64564 | 5359 | 324855.87 | 0.083003 | 0.026698\n2024-02-11 | 61447 | 5105 | 306035.01 | 0.08308 | 0.031125\n2024-02-12 | 82385 | 6911 | 415910.18 | 0.083887 | 0.029081\n2024-02-13 | 84369 | 7065 | 421988.32 | 0.083739 | 0.031661\n2024-02-14 | 84632 | 7018 | 421996.4 | 0.082924 | 0.029859\n2024-02-15 | 82726 | 6929 | 416133.01 | 0.083758 | 0.031722\n2024-02-16 | 79129 | 6551 | 399437.25 | 0.082789 | 0.029769\n2024-02-17 | 64962 | 5401 | 326006.52 | 0.083141 | 0.031385\n2024-02-18 | 62229 | 5109 | 307330.96 | 0.0821 | 0.027968\n2024-02-19 | 81815 | 4771 | 289228.84 | 0.058314 | 0.316574\n2024-02-20 | 83647 | 4939 | 294455.96 | 0.059046 | 0.309327\n2024-02-21 | 84590 | 5011 | 299526.41 | 0.059239 | 0.31375\n2024-02-22 | 83897 | 7021 | 422885.0 | 0.083686 | 0.030383\n2024-02-23 | 79133 | 6624 | 403103.39 | 0.083707 | 0.029308\n2024-02-24 | 64941 | 5372 | 322024.46 | 0.082721 | 0.026812\n2024-02-25 | 61829 | 5186 | 308882.11 | 0.083876 | 0.029747",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "ISS-0015": {
+    "id": "ISS-0015",
+    "source": "issue",
+    "title": "Spike in declined payments via Adyon (North America)",
+    "date": "2024-02-19",
+    "body": "Decline rate through Adyon is far above normal for North America. Banks report the cards are fine, so the provider is rejecting them. Considering a failover to the backup provider.",
+    "meta": {
+     "labels": [
+      "incident",
+      "payments"
+     ]
+    },
+    "score": -2.5697,
+    "quarantined": false
+   }
+  },
+  "dropped_claims": [],
+  "quarantined_ids": [],
+  "notes": [],
+  "totals": {
+   "latency_ms": 17512,
+   "input_tokens": 17405,
+   "output_tokens": 2724,
+   "cost_usd": 0.003103,
+   "llm_calls": 5,
+   "tool_calls": 4
+  }
+ },
+ "error": null
+}

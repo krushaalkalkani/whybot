@@ -1,0 +1,68 @@
+[
+  {
+    "category": "WhyBot: verifier dropped a correct cause, so the answer became 'not enough evidence'",
+    "count": 1,
+    "example_ids": [
+      "S061"
+    ],
+    "fix": "Let the verifier return 'partly supported' and keep the supported part of a claim. Ask the ranker for one fact per claim so one wrong detail does not sink the cause."
+  },
+  {
+    "category": "WhyBot: right answer, but at least one kept claim was rejected by the judge",
+    "count": 11,
+    "example_ids": [
+      "S042",
+      "S051",
+      "S054",
+      "S055"
+    ],
+    "fix": "Use the stronger model for verification, or verify each claim in its own call. Check the 30 hand labels first: some of these are judge strictness, not real errors."
+  },
+  {
+    "category": "RAG: abstained although documents explained the move (the key documents were not in the top 8)",
+    "count": 28,
+    "example_ids": [
+      "S041",
+      "S042",
+      "S043",
+      "S044"
+    ],
+    "fix": "Search with a date filter and with queries built from the affected segment, not the raw question. This is what the agent's tools do."
+  },
+  {
+    "category": "RAG: named a cause, but the wrong one or the wrong segment",
+    "count": 0,
+    "example_ids": [],
+    "fix": "Give the model metric tools so it can check which segment moved before trusting a document."
+  },
+  {
+    "category": "LLM only: guessed the wrong cause type",
+    "count": 20,
+    "example_ids": [
+      "S041",
+      "S045",
+      "S046",
+      "S047"
+    ],
+    "fix": "No fix without data. A model that sees only the question can only guess the most common cause."
+  },
+  {
+    "category": "LLM only: right cause type, wrong segment",
+    "count": 1,
+    "example_ids": [
+      "S068"
+    ],
+    "fix": "Needs the segment breakdown from the metrics. The question alone rarely names the segment."
+  },
+  {
+    "category": "LLM only: answered a question that has no supporting evidence",
+    "count": 4,
+    "example_ids": [
+      "S057",
+      "S060",
+      "S064",
+      "S080"
+    ],
+    "fix": "Abstain rules need evidence to check against. Without retrieval the model cannot know that nothing explains the move."
+  }
+]

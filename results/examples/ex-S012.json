@@ -1,0 +1,962 @@
+{
+ "id": "ex-S012",
+ "created_at": "2026-11-11T17:37:07.994342+00:00",
+ "question": "What caused the 35% fall in checkout conversion on 2024-05-18?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: conversion_rate on 2024-05-18",
+   "detail": "Pull daily conversion_rate for 2024-05-18 and the prior two weeks to confirm the 35% drop and its size against normal variation. | Break the drop down by region, platform and channel to find which segments carry most of the decline. | Check the deploy changelog (CHG-...) for releases shipped on or just before 2024-05-18 that touch checkout or the affected segments. | Check payment_failure_rate and avg_order_value on the same date to separate payment provider errors and pricing changes from site-side problems. | Search GitHub issues (ISS-...) and support tickets (TKT-...) from that date for matching reports, then match the evidence to one cause type.",
+   "input": {},
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-05-18",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily conversion_rate for 2024-05-18 and the prior two weeks to confirm the 35% drop and its size against normal variation.",
+     "Break the drop down by region, platform and channel to find which segments carry most of the decline.",
+     "Check the deploy changelog (CHG-...) for releases shipped on or just before 2024-05-18 that touch checkout or the affected segments.",
+     "Check payment_failure_rate and avg_order_value on the same date to separate payment provider errors and pricing changes from site-side problems.",
+     "Search GitHub issues (ISS-...) and support tickets (TKT-...) from that date for matching reports, then match the evidence to one cause type."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2549,
+   "input_tokens": 1360,
+   "output_tokens": 271,
+   "cost_usd": 0.0002715
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: conversion_rate on 2024-05-18",
+   "detail": "conversion_rate on 2024-05-18 (Saturday) was 0.05398. The same weekday in the 6 weeks before had a median of 0.08312. Change vs that baseline: -35.1% (z = -16.8). Change vs the day before: -1.1%. This is unusual (|z| >= 3).",
+   "input": {
+    "metric": "conversion_rate",
+    "date": "2024-05-18"
+   },
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-05-18",
+    "filters": {},
+    "value": 0.053984,
+    "baseline": 0.08312,
+    "pct_change": -35.05,
+    "z_score": -16.8,
+    "day_before_value": 0.054586,
+    "pct_change_vs_day_before": -1.1,
+    "is_anomaly": true,
+    "explanation": "conversion_rate on 2024-05-18 (Saturday) was 0.05398. The same weekday in the 6 weeks before had a median of 0.08312. Change vs that baseline: -35.1% (z = -16.8). Change vs the day before: -1.1%. This is unusual (|z| >= 3)."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: conversion_rate on 2024-05-18",
+   "detail": "Overall conversion_rate changed -35.1% on 2024-05-18. No single region, platform or channel stands out; the slices moved about the same.",
+   "input": {
+    "metric": "conversion_rate",
+    "date": "2024-05-18"
+   },
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-05-18",
+    "overall_pct_change": -35.05,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 0.053444,
+      "baseline": 0.084053,
+      "pct_change": -36.42,
+      "z_score": -21.59
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 0.054149,
+      "baseline": 0.082708,
+      "pct_change": -34.53,
+      "z_score": -16.1
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 0.053147,
+      "baseline": 0.083255,
+      "pct_change": -36.16,
+      "z_score": -15.71
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 0.054054,
+      "baseline": 0.084263,
+      "pct_change": -35.85,
+      "z_score": -18.33
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 0.056625,
+      "baseline": 0.083402,
+      "pct_change": -32.11,
+      "z_score": -32.11
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 0.053602,
+      "baseline": 0.08161,
+      "pct_change": -34.32,
+      "z_score": -9.13
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 0.057791,
+      "baseline": 0.088844,
+      "pct_change": -34.95,
+      "z_score": -34.95
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 0.049221,
+      "baseline": 0.077995,
+      "pct_change": -36.89,
+      "z_score": -20.31
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 0.053769,
+      "baseline": 0.082998,
+      "pct_change": -35.22,
+      "z_score": -18.15
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 0.054176,
+      "baseline": 0.082607,
+      "pct_change": -34.42,
+      "z_score": -14.21
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 0.053237,
+      "baseline": 0.083082,
+      "pct_change": -35.92,
+      "z_score": -16.66
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 0.055232,
+      "baseline": 0.083344,
+      "pct_change": -33.73,
+      "z_score": -14.81
+     }
+    ],
+    "concentrated_in": [],
+    "explanation": "Overall conversion_rate changed -35.1% on 2024-05-18. No single region, platform or channel stands out; the slices moved about the same."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 2,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2267,
+   "input_tokens": 3459,
+   "output_tokens": 517,
+   "cost_usd": 0.0006044000000000001
+  },
+  {
+   "index": 4,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "run_metric_query failed",
+   "detail": "Could not parse SQL: Error tokenizing '01' AND '2024-05-25' GROUP BY date ORDER BY date\"'",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(revenue)/NULLIF(SUM(orders),0) AS aov FROM daily_metrics WHERE date BETWEEN '2024-05-01' AND '2024-05-25' GROUP BY date ORDER BY date\"}"
+   },
+   "output": {},
+   "evidence_ids": [],
+   "is_error": true,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 5,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: checkout conversion drop deploy release payment",
+   "detail": "10 documents: TKT-00592, TKT-00593, ISS-0056, TKT-00589, TKT-00596, TKT-00585, TKT-00581, TKT-00583, CHG-0081, TKT-00595",
+   "input": {
+    "date_from": "2024-05-16",
+    "date_to": "2024-05-20",
+    "k": 10,
+    "query": "checkout conversion drop deploy release payment"
+   },
+   "output": {
+    "query": "checkout conversion drop deploy release payment",
+    "results": [
+     {
+      "id": "TKT-00592",
+      "title": "Question about checkout",
+      "date": "2024-05-19",
+      "score": -10.5086
+     },
+     {
+      "id": "TKT-00593",
+      "title": "Question about checkout",
+      "date": "2024-05-19",
+      "score": -10.5086
+     },
+     {
+      "id": "ISS-0056",
+      "title": "Dashboard: conversion chart y-axis starts at wrong value",
+      "date": "2024-05-20",
+      "score": -11.2185
+     },
+     {
+      "id": "TKT-00589",
+      "title": "Invoice needed",
+      "date": "2024-05-18",
+      "score": -11.3079
+     },
+     {
+      "id": "TKT-00596",
+      "title": "Invoice needed",
+      "date": "2024-05-20",
+      "score": -11.3079
+     },
+     {
+      "id": "TKT-00585",
+      "title": "Cancel my order",
+      "date": "2024-05-17",
+      "score": -11.3322
+     },
+     {
+      "id": "TKT-00581",
+      "title": "Where is my order?",
+      "date": "2024-05-16",
+      "score": -11.3433
+     },
+     {
+      "id": "TKT-00583",
+      "title": "Where is my order?",
+      "date": "2024-05-17",
+      "score": -11.3433
+     },
+     {
+      "id": "CHG-0081",
+      "title": "ios-app v5.21.2",
+      "date": "2024-05-20",
+      "score": -11.3467
+     },
+     {
+      "id": "TKT-00595",
+      "title": "Refund status",
+      "date": "2024-05-20",
+      "score": -11.3572
+     }
+    ]
+   },
+   "evidence_ids": [
+    "TKT-00592",
+    "TKT-00593",
+    "ISS-0056",
+    "TKT-00589",
+    "TKT-00596",
+    "TKT-00585",
+    "TKT-00581",
+    "TKT-00583",
+    "CHG-0081",
+    "TKT-00595"
+   ],
+   "is_error": false,
+   "latency_ms": 37,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 6,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2383,
+   "input_tokens": 4811,
+   "output_tokens": 571,
+   "cost_usd": 0.0007666
+  },
+  {
+   "index": 7,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "Run metric query",
+   "detail": "25 rows",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(revenue)/NULLIF(SUM(orders),0) AS aov FROM daily_metrics WHERE date BETWEEN '2024-05-01' AND '2024-05-25' GROUP BY date ORDER BY date"
+   },
+   "output": {
+    "columns": [
+     "date",
+     "sessions",
+     "checkout_starts",
+     "attempts",
+     "failures",
+     "orders",
+     "revenue",
+     "conversion_rate",
+     "payment_failure_rate",
+     "aov"
+    ],
+    "rows": [
+     [
+      "2024-05-01",
+      215511,
+      26200,
+      18337,
+      552,
+      17785,
+      1047964.69,
+      0.082525,
+      0.030103,
+      58.92407590666292
+     ],
+     [
+      "2024-05-02",
+      213568,
+      26124,
+      18280,
+      517,
+      17763,
+      1051302.79,
+      0.083173,
+      0.028282,
+      59.1849794516692
+     ],
+     [
+      "2024-05-03",
+      203796,
+      24816,
+      17293,
+      527,
+      16766,
+      994317.87,
+      0.082269,
+      0.030475,
+      59.305610759871165
+     ],
+     [
+      "2024-05-04",
+      167648,
+      20698,
+      14542,
+      418,
+      14124,
+      834451.7,
+      0.084248,
+      0.028744,
+      59.08040923251204
+     ],
+     [
+      "2024-05-05",
+      159793,
+      19614,
+      13800,
+      427,
+      13373,
+      794270.83,
+      0.08369,
+      0.030942,
+      59.393616241681
+     ],
+     [
+      "2024-05-06",
+      209877,
+      25728,
+      17953,
+      560,
+      17393,
+      1022647.84,
+      0.082872,
+      0.031193,
+      58.7965181394814
+     ],
+     [
+      "2024-05-07",
+      215030,
+      26491,
+      18554,
+      542,
+      18012,
+      1065339.99,
+      0.083765,
+      0.029212,
+      59.14612425049967
+     ],
+     [
+      "2024-05-08",
+      216790,
+      26437,
+      18440,
+      540,
+      17900,
+      1069841.95,
+      0.082568,
+      0.029284,
+      59.76770670391061
+     ],
+     [
+      "2024-05-09",
+      214882,
+      24962,
+      17597,
+      508,
+      17089,
+      1041202.2,
+      0.079527,
+      0.028869,
+      60.92821112996665
+     ],
+     [
+      "2024-05-10",
+      205238,
+      23459,
+      16499,
+      506,
+      15993,
+      979272.14,
+      0.077924,
+      0.030669,
+      61.23129744263115
+     ],
+     [
+      "2024-05-11",
+      168614,
+      19739,
+      13862,
+      415,
+      13447,
+      809417.61,
+      0.07975,
+      0.029938,
+      60.193173942143225
+     ],
+     [
+      "2024-05-12",
+      160798,
+      19839,
+      13956,
+      414,
+      13542,
+      800980.29,
+      0.084217,
+      0.029665,
+      59.147857775808596
+     ],
+     [
+      "2024-05-13",
+      211938,
+      25938,
+      18116,
+      574,
+      17542,
+      1036610.26,
+      0.082769,
+      0.031685,
+      59.09304868316042
+     ],
+     [
+      "2024-05-14",
+      216108,
+      26263,
+      18407,
+      532,
+      17875,
+      1055771.55,
+      0.082713,
+      0.028902,
+      59.06414265734266
+     ],
+     [
+      "2024-05-15",
+      219975,
+      27008,
+      19030,
+      567,
+      18463,
+      1094495.71,
+      0.083932,
+      0.029795,
+      59.280491252775825
+     ],
+     [
+      "2024-05-16",
+      214606,
+      26300,
+      18476,
+      512,
+      17964,
+      1058188.35,
+      0.083707,
+      0.027712,
+      58.906053774215096
+     ],
+     [
+      "2024-05-17",
+      206041,
+      25348,
+      11584,
+      337,
+      11247,
+      657792.61,
+      0.054586,
+      0.029092,
+      58.486050502356186
+     ],
+     [
+      "2024-05-18",
+      168790,
+      20596,
+      9394,
+      282,
+      9112,
+      538295.31,
+      0.053984,
+      0.030019,
+      59.075429104477614
+     ],
+     [
+      "2024-05-19",
+      160072,
+      19586,
+      8965,
+      271,
+      8694,
+      515503.95,
+      0.054313,
+      0.030229,
+      59.294220151828846
+     ],
+     [
+      "2024-05-20",
+      210723,
+      25782,
+      18041,
+      511,
+      17530,
+      1045686.76,
+      0.08319,
+      0.028324,
+      59.6512698231603
+     ],
+     [
+      "2024-05-21",
+      216503,
+      26694,
+      18605,
+      558,
+      18047,
+      1061219.14,
+      0.083357,
+      0.029992,
+      58.803077519809385
+     ],
+     [
+      "2024-05-22",
+      218615,
+      26644,
+      18628,
+      545,
+      18083,
+      1077942.79,
+      0.082716,
+      0.029257,
+      59.6108383564674
+     ],
+     [
+      "2024-05-23",
+      214794,
+      26250,
+      18401,
+      541,
+      17860,
+      1046957.98,
+      0.083149,
+      0.029401,
+      58.62026763717805
+     ],
+     [
+      "2024-05-24",
+      205159,
+      25073,
+      17526,
+      533,
+      16993,
+      996782.44,
+      0.082828,
+      0.030412,
+      58.6584146413229
+     ],
+     [
+      "2024-05-25",
+      122494,
+      14968,
+      10576,
+      333,
+      10243,
+      604142.34,
+      0.08362,
+      0.031486,
+      58.98099580201113
+     ]
+    ],
+    "row_count": 25,
+    "truncated": false
+   },
+   "evidence_ids": [
+    "M3"
+   ],
+   "is_error": false,
+   "latency_ms": 5,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 8,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: checkout broken conversion fell orders dropped",
+   "detail": "4 documents: CHG-0079, CHG-0081, CHG-0082, CHG-0080",
+   "input": {
+    "date_from": "2024-05-15",
+    "date_to": "2024-05-21",
+    "k": 10,
+    "query": "checkout broken conversion fell orders dropped",
+    "source": "changelog"
+   },
+   "output": {
+    "query": "checkout broken conversion fell orders dropped",
+    "results": [
+     {
+      "id": "CHG-0079",
+      "title": "web-frontend v7.28.9",
+      "date": "2024-05-15",
+      "score": -11.3144
+     },
+     {
+      "id": "CHG-0081",
+      "title": "ios-app v5.21.2",
+      "date": "2024-05-20",
+      "score": -11.4332
+     },
+     {
+      "id": "CHG-0082",
+      "title": "notification-service v5.16.6",
+      "date": "2024-05-21",
+      "score": -11.4386
+     },
+     {
+      "id": "CHG-0080",
+      "title": "search-service v2.7.6",
+      "date": "2024-05-18",
+      "score": -11.4438
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0079",
+    "CHG-0081",
+    "CHG-0082",
+    "CHG-0080"
+   ],
+   "is_error": false,
+   "latency_ms": 11,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 9,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4604,
+   "input_tokens": 7633,
+   "output_tokens": 940,
+   "cost_usd": 0.0012333
+  },
+  {
+   "index": 10,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: checkout button not working cannot submit payment page stuck",
+   "detail": "10 documents: TKT-00592, TKT-00593, TKT-00585, TKT-00581, TKT-00583, TKT-00589, TKT-00582, TKT-00587, TKT-00579, CHG-0080",
+   "input": {
+    "date_from": "2024-05-16",
+    "date_to": "2024-05-19",
+    "k": 10,
+    "query": "checkout button not working cannot submit payment page stuck"
+   },
+   "output": {
+    "query": "checkout button not working cannot submit payment page stuck",
+    "results": [
+     {
+      "id": "TKT-00592",
+      "title": "Question about checkout",
+      "date": "2024-05-19",
+      "score": -9.7891
+     },
+     {
+      "id": "TKT-00593",
+      "title": "Question about checkout",
+      "date": "2024-05-19",
+      "score": -9.7891
+     },
+     {
+      "id": "TKT-00585",
+      "title": "Cancel my order",
+      "date": "2024-05-17",
+      "score": -11.277
+     },
+     {
+      "id": "TKT-00581",
+      "title": "Where is my order?",
+      "date": "2024-05-16",
+      "score": -11.3864
+     },
+     {
+      "id": "TKT-00583",
+      "title": "Where is my order?",
+      "date": "2024-05-17",
+      "score": -11.3864
+     },
+     {
+      "id": "TKT-00589",
+      "title": "Invoice needed",
+      "date": "2024-05-18",
+      "score": -11.393
+     },
+     {
+      "id": "TKT-00582",
+      "title": "Damaged box",
+      "date": "2024-05-17",
+      "score": -11.3971
+     },
+     {
+      "id": "TKT-00587",
+      "title": "Damaged box",
+      "date": "2024-05-18",
+      "score": -11.3971
+     },
+     {
+      "id": "TKT-00579",
+      "title": "Gift card balance",
+      "date": "2024-05-16",
+      "score": -11.4064
+     },
+     {
+      "id": "CHG-0080",
+      "title": "search-service v2.7.6",
+      "date": "2024-05-18",
+      "score": -11.4124
+     }
+    ]
+   },
+   "evidence_ids": [
+    "TKT-00592",
+    "TKT-00593",
+    "TKT-00585",
+    "TKT-00581",
+    "TKT-00583",
+    "TKT-00589",
+    "TKT-00582",
+    "TKT-00587",
+    "TKT-00579",
+    "CHG-0080"
+   ],
+   "is_error": false,
+   "latency_ms": 37,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 11,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: deploy checkout payment service release configuration change",
+   "detail": "3 documents: CHG-0079, CHG-0078, CHG-0080",
+   "input": {
+    "date_from": "2024-05-14",
+    "date_to": "2024-05-18",
+    "k": 10,
+    "query": "deploy checkout payment service release configuration change",
+    "source": "changelog"
+   },
+   "output": {
+    "query": "deploy checkout payment service release configuration change",
+    "results": [
+     {
+      "id": "CHG-0079",
+      "title": "web-frontend v7.28.9",
+      "date": "2024-05-15",
+      "score": -11.0898
+     },
+     {
+      "id": "CHG-0078",
+      "title": "cart-service v3.6.9",
+      "date": "2024-05-14",
+      "score": -11.3356
+     },
+     {
+      "id": "CHG-0080",
+      "title": "search-service v2.7.6",
+      "date": "2024-05-18",
+      "score": -11.3632
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0079",
+    "CHG-0078",
+    "CHG-0080"
+   ],
+   "is_error": false,
+   "latency_ms": 10,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 12,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "Abstain: The metrics show the drop began on 2024-05-17 and was uniform across every region, platform and channel. Payment attempts fell by about 37% while the payment failure rate stayed near 3%, so the loss is in checkout starts converting to payment attempts, not payment errors. No document describes a pricing change, outage, payment provider error, campaign end, or deploy that affects checkout at that time. The checkout-related tickets are unrelated questions, and the changelog entries (search ranking, notifications, help-page copy, log cleanup) do not touch checkout. The evidence is not enough to name a cause.",
+   "input": {},
+   "output": {
+    "abstain": true,
+    "abstain_reason": "The metrics show the drop began on 2024-05-17 and was uniform across every region, platform and channel. Payment attempts fell by about 37% while the payment failure rate stayed near 3%, so the loss is in checkout starts converting to payment attempts, not payment errors. No document describes a pricing change, outage, payment provider error, campaign end, or deploy that affects checkout at that time. The checkout-related tickets are unrelated questions, and the changelog entries (search ranking, notifications, help-page copy, log cleanup) do not touch checkout. The evidence is not enough to name a cause.",
+    "summary": "Conversion on 2024-05-18 fell about 35% against the same-weekday baseline, and the drop was spread evenly across all slices. The fall came from fewer payment attempts after checkout starts, while payment failure rates stayed flat. No document in the evidence explains this drop, so no cause is named.",
+    "causes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 6783,
+   "input_tokens": 5731,
+   "output_tokens": 945,
+   "cost_usd": 0.0010455999999999998
+  },
+  {
+   "index": 13,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "0 claims supported, 0 dropped",
+   "input": {},
+   "output": {
+    "kept": 0,
+    "dropped": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 14,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: insufficient_evidence",
+   "detail": "The model judged the evidence too weak to name a cause.",
+   "input": {},
+   "output": {
+    "verdict": "insufficient_evidence",
+    "notes": [
+     "The model judged the evidence too weak to name a cause."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "insufficient_evidence",
+  "summary": "Not enough evidence to name a cause. The metrics show the drop began on 2024-05-17 and was uniform across every region, platform and channel. Payment attempts fell by about 37% while the payment failure rate stayed near 3%, so the loss is in checkout starts converting to payment attempts, not payment errors. No document describes a pricing change, outage, payment provider error, campaign end, or deploy that affects checkout at that time. The checkout-related tickets are unrelated questions, and the changelog entries (search ranking, notifications, help-page copy, log cleanup) do not touch checkout. The evidence is not enough to name a cause.",
+  "causes": [],
+  "evidence": {},
+  "dropped_claims": [],
+  "quarantined_ids": [],
+  "notes": [
+   "Stopped investigating: tool budget of 8 calls used.",
+   "The model judged the evidence too weak to name a cause."
+  ],
+  "totals": {
+   "latency_ms": 18688,
+   "input_tokens": 22994,
+   "output_tokens": 3244,
+   "cost_usd": 0.003921,
+   "llm_calls": 5,
+   "tool_calls": 8
+  }
+ },
+ "error": null
+}

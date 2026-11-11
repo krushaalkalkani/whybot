@@ -121,6 +121,7 @@ class ClaudeLLM:
     replay_only: bool = False  # if true, never call the API; raise CacheMiss instead
     _cache: dict[str, dict[str, Any]] = field(default_factory=dict)
     _client: Any = None
+    used_keys: set[str] = field(default_factory=set)  # cache entries read in this process
     _lock: threading.Lock = field(default_factory=threading.Lock)  # the eval runs scenarios in threads
 
     def __post_init__(self) -> None:
@@ -154,6 +155,7 @@ class ClaudeLLM:
 
         key = hashlib.sha256(json.dumps(request, sort_keys=True).encode()).hexdigest()
         if key in self._cache:
+            self.used_keys.add(key)
             return LLMResult(**self._cache[key], cached=True)
         if self.replay_only:
             raise CacheMiss(f"LLM request {key[:12]} is not in the cache and replay_only is on.")
@@ -188,6 +190,7 @@ class ClaudeLLM:
 
     def _store(self, key: str, result: dict[str, Any]) -> None:
         with self._lock:
+            self.used_keys.add(key)
             self._cache[key] = result
             if self.cache_dir:
                 self.cache_dir.mkdir(parents=True, exist_ok=True)

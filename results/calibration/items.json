@@ -1,0 +1,897 @@
+[
+ {
+  "claim": "The payment failure rate on 2024-11-09 was 0.0283, in line with earlier days, so the drop does not come from payment provider errors.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-11-09",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN '2024-10-26' AND '2024-11-12' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | payment_attempts | payment_failure_rate | orders | conversion_rate\n2024-10-26 | 179076 | 21932 | 15394 | 0.030726 | 14921 | 0.083322\n2024-10-27 | 170943 | 20748 | 14500 | 0.029103 | 14078 | 0.082355\n2024-10-28 | 224744 | 27460 | 19181 | 0.029561 | 18614 | 0.082823\n2024-10-29 | 228484 | 28145 | 19769 | 0.028024 | 19215 | 0.084098\n2024-10-30 | 231237 | 28459 | 19948 | 0.031682 | 19316 | 0.083533\n2024-10-31 | 229652 | 27932 | 19431 | 0.030158 | 18845 | 0.082059\n2024-11-01 | 218439 | 26541 | 17062 | 0.029129 | 16565 | 0.075834\n2024-11-02 | 180687 | 21998 | 14295 | 0.029521 | 13873 | 0.076779\n2024-11-03 | 172059 | 21165 | 13800 | 0.03029 | 13382 | 0.077776\n2024-11-04 | 223634 | 27292 | 17635 | 0.026368 | 17170 | 0.076777\n2024-11-05 | 230036 | 28196 | 19769 | 0.031008 | 19156 | 0.083274\n2024-11-06 | 231854 | 28087 | 19569 | 0.03107 | 18961 | 0.08178\n2024-11-07 | 230789 | 28263 | 19760 | 0.030921 | 19149 | 0.082972\n2024-11-08 | 218931 | 27108 | 19099 | 0.029216 | 18541 | 0.084689\n2024-11-09 | 180982 | 22245 | 11416 | 0.028294 | 11093 | 0.061293\n2024-11-10 | 171754 | 21061 | 10951 | 0.029952 | 10623 | 0.06185\n2024-11-11 | 226121 | 27724 | 14314 | 0.028783 | 13902 | 0.06148\n2024-11-12 | 229217 | 27856 | 14389 | 0.029884 | 13959 | 0.060899",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot",
+  "scenario_id": "S034",
+  "item_id": 1
+ },
+ {
+  "claim": "The decline is concentrated in the social channel, which fell 40.6% while the other channels stayed within about 2% of baseline.",
+  "evidence_ids": [
+   "M2"
+  ],
+  "evidence": [
+   {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: sessions on 2024-09-15",
+    "date": "2024-09-15",
+    "body": "Overall sessions changed -5.1% on 2024-09-15. The change is concentrated in: channel=social (-40.6%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: -4.6% (z -4.1)\n  region=eu: -5.2% (z -5.0)\n  region=uk: -4.9% (z -3.0)\n  region=apac: -5.8% (z -5.8)\n  region=latam: -5.2% (z -3.2)\n  platform=web: -4.6% (z -2.9)\n  platform=ios: -6.0% (z -3.6)\n  platform=android: -3.5% (z -3.5)\n  channel=organic: +1.2% (z +1.2)\n  channel=paid_search: -0.6% (z -0.6)\n  channel=email: +2.0% (z +1.1)\n  channel=social: -40.6% (z -37.5)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S027",
+  "item_id": 2
+ },
+ {
+  "claim": "Conversion rate on 2024-11-09 was 0.0613, down 26.1% from the same-weekday baseline of 0.0829.",
+  "evidence_ids": [
+   "M1"
+  ],
+  "evidence": [
+   {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: conversion_rate on 2024-11-09",
+    "date": "2024-11-09",
+    "body": "conversion_rate on 2024-11-09 (Saturday) was 0.06129. The same weekday in the 6 weeks before had a median of 0.08292. Change vs that baseline: -26.1% (z = -12.8). Change vs the day before: -27.6%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S034",
+  "item_id": 3
+ },
+ {
+  "claim": "checkout-service v3.28.8 was released on 2024-12-11, migrating the session store and removing the legacy cart serializer.",
+  "evidence_ids": [
+   "CHG-0212"
+  ],
+  "evidence": [
+   {
+    "id": "CHG-0212",
+    "source": "changelog",
+    "title": "checkout-service v3.28.8",
+    "date": "2024-12-11",
+    "body": "Migrate session store to the new cache cluster. Remove legacy cart serializer.",
+    "meta": {
+     "service": "checkout-service"
+    },
+    "score": -10.0339,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S038",
+  "item_id": 4
+ },
+ {
+  "claim": "Sessions in the na, eu, uk and apac regions moved by between -0.0% and +2.0% on 2024-11-18, so the drop is limited to latam.",
+  "evidence_ids": [
+   "M2"
+  ],
+  "evidence": [
+   {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: sessions on 2024-11-18",
+    "date": "2024-11-18",
+    "body": "Overall sessions changed -5.4% on 2024-11-18. The change is concentrated in: region=latam (-64.7%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: +1.3% (z +1.2)\n  region=eu: +0.2% (z +0.2)\n  region=uk: +2.0% (z +2.0)\n  region=apac: +1.0% (z +1.0)\n  region=latam: -64.7% (z -64.7)\n  platform=web: -5.4% (z -5.4)\n  platform=ios: -4.9% (z -4.9)\n  platform=android: -5.6% (z -5.6)\n  channel=organic: -6.2% (z -6.2)\n  channel=paid_search: -4.7% (z -4.7)\n  channel=email: -5.2% (z -5.2)\n  channel=social: -5.4% (z -5.4)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S035",
+  "item_id": 5
+ },
+ {
+  "claim": "Web-frontend v9.29.5 was released on 2024-09-06 and enabled a new address normalizer for all orders.",
+  "evidence_ids": [
+   "CHG-0152"
+  ],
+  "evidence": [
+   {
+    "id": "CHG-0152",
+    "source": "changelog",
+    "title": "web-frontend v9.29.5",
+    "date": "2024-09-06",
+    "body": "Enable new address normalizer for all orders. Clean up feature flags from last quarter.",
+    "meta": {
+     "service": "web-frontend"
+    },
+    "score": -8.9252,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S026",
+  "item_id": 6
+ },
+ {
+  "claim": "On 2024-04-16 iOS conversion rate was 0.0395, while web and Android were flat versus their weekday baseline.",
+  "evidence_ids": [
+   "M2",
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: conversion_rate on 2024-04-16",
+    "date": "2024-04-16",
+    "body": "Overall conversion_rate changed -17.8% on 2024-04-16. The change is concentrated in: platform=ios (-55.6%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: -16.8% (z -9.2)\n  region=eu: -18.2% (z -4.7)\n  region=uk: -15.4% (z -14.0)\n  region=apac: -19.1% (z -5.8)\n  region=latam: -17.5% (z -5.9)\n  platform=web: +0.7% (z +0.6)\n  platform=ios: -55.6% (z -55.6)\n  platform=android: -0.0% (z -0.0)\n  channel=organic: -19.4% (z -8.1)\n  channel=paid_search: -17.6% (z -11.0)\n  channel=email: -15.9% (z -6.7)\n  channel=social: -15.9% (z -8.0)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-04-16",
+    "body": "SQL: SELECT date, platform, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE platform='ios' AND date BETWEEN '2024-04-12' AND '2024-04-20' GROUP BY date, platform ORDER BY date\ndate | platform | sessions | checkout_starts | payment_attempts | payment_failure_rate | conversion_rate\n2024-04-12 | ios | 61002 | 7965 | 5542 | 0.029412 | 0.088177\n2024-04-13 | ios | 49240 | 6574 | 4592 | 0.025044 | 0.090922\n2024-04-14 | ios | 47553 | 6406 | 4500 | 0.029333 | 0.091855\n2024-04-15 | ios | 62738 | 8232 | 2561 | 0.030457 | 0.039577\n2024-04-16 | ios | 63801 | 8470 | 2599 | 0.029242 | 0.039545\n2024-04-17 | ios | 64597 | 8593 | 6064 | 0.032982 | 0.090778\n2024-04-18 | ios | 63852 | 8369 | 5853 | 0.026824 | 0.089206\n2024-04-19 | ios | 60918 | 7853 | 5517 | 0.03172 | 0.087692\n2024-04-20 | ios | 49962 | 6479 | 4584 | 0.032723 | 0.088747",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S008",
+  "item_id": 7
+ },
+ {
+  "claim": "Sessions on Saturday 2024-05-04 were 167,648, down from 203,796 on Friday 2024-05-03, a drop of about 17.7%.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-05-04",
+    "body": "SQL: SELECT date, to_char(date,'Dy') AS dow, SUM(sessions) AS sessions FROM daily_metrics WHERE date BETWEEN '2024-04-20' AND '2024-05-06' GROUP BY date ORDER BY date\ndate | dow | sessions\n2024-04-20 | Sat | 167858\n2024-04-21 | Sun | 158888\n2024-04-22 | Mon | 207672\n2024-04-23 | Tue | 212700\n2024-04-24 | Wed | 216184\n2024-04-25 | Thu | 212290\n2024-04-26 | Fri | 202803\n2024-04-27 | Sat | 168593\n2024-04-28 | Sun | 159642\n2024-04-29 | Mon | 209505\n2024-04-30 | Tue | 211962\n2024-05-01 | Wed | 215511\n2024-05-02 | Thu | 213568\n2024-05-03 | Fri | 203796\n2024-05-04 | Sat | 167648\n2024-05-05 | Sun | 159793\n2024-05-06 | Mon | 209877",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S010",
+  "item_id": 8
+ },
+ {
+  "claim": "Several North American customers reported on 2024-12-19 that the site would not load or showed timeouts, while other sites worked.",
+  "evidence_ids": [
+   "TKT-01576",
+   "TKT-01574",
+   "TKT-01577"
+  ],
+  "evidence": [
+   {
+    "id": "TKT-01576",
+    "source": "ticket",
+    "title": "Website will not load",
+    "date": "2024-12-19",
+    "body": "Your site has not loaded for me all day. Other sites work fine.",
+    "meta": {
+     "platform": "web",
+     "region": "na"
+    },
+    "score": -10.3475,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-01574",
+    "source": "ticket",
+    "title": "Is the site down?",
+    "date": "2024-12-19",
+    "body": "I keep getting a timeout page. Is the shop down in my country?",
+    "meta": {
+     "platform": "android",
+     "region": "na"
+    },
+    "score": -10.7237,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-01577",
+    "source": "ticket",
+    "title": "Cannot open the shop",
+    "date": "2024-12-19",
+    "body": "Page just spins and then shows an error. Tried on wifi and mobile data. Thanks.",
+    "meta": {
+     "platform": "web",
+     "region": "na"
+    },
+    "score": -10.9514,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S039",
+  "item_id": 9
+ },
+ {
+  "claim": "The same issue reports that order value per order rose, which fits a shipping-threshold change that reduced the number of orders while raising the value of those that remained.",
+  "evidence_ids": [
+   "ISS-0134"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0134",
+    "source": "issue",
+    "title": "Review impact of new shipping threshold (North America)",
+    "date": "2024-11-26",
+    "body": "Since pricing-config v4.17.2 customers in North America add less to cart and leave at the shipping step. Order value per order went up. Need a decision on keeping the change.",
+    "meta": {
+     "labels": [
+      "question",
+      "pricing"
+     ]
+    },
+    "score": 0.0164,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "rag",
+  "scenario_id": "S036",
+  "item_id": 10
+ },
+ {
+  "claim": "Issue ISS-0124 reports that after the v3.16.2 rollout the place-order endpoint error rate rose from under 1% to roughly 46% across all regions and platforms.",
+  "evidence_ids": [
+   "ISS-0124"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0124",
+    "source": "issue",
+    "title": "Place order returns HTTP 500 since checkout-service v3.16.2",
+    "date": "2024-10-24",
+    "body": "After the v3.16.2 rollout the place-order endpoint fails for a large share of carts. Error rate on POST /orders went from under 1% to roughly 46%. Stack trace points at the new validation code. Affects all regions and platforms. Rollback under discussion.",
+    "meta": {
+     "labels": [
+      "bug",
+      "checkout"
+     ]
+    },
+    "score": -1.4593,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S032",
+  "item_id": 11
+ },
+ {
+  "claim": "Payment attempts fell from about 18,000 to 10,209 on 2024-03-14 while the payment failure rate stayed near 2.9%, so the loss happened before payment rather than at the provider.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-03-14",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE date >= '2024-03-04' AND date <= '2024-03-18' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | payment_attempts | payment_failures | orders | conversion_rate | payment_failure_rate\n2024-03-04 | 204705 | 24958 | 17399 | 519 | 16880 | 0.08246 | 0.029829\n2024-03-05 | 209252 | 25414 | 17688 | 490 | 17198 | 0.082188 | 0.027702\n2024-03-06 | 211274 | 25912 | 16061 | 470 | 15591 | 0.073795 | 0.029263\n2024-03-07 | 208314 | 25391 | 15693 | 455 | 15238 | 0.073149 | 0.028994\n2024-03-08 | 198831 | 24474 | 15209 | 405 | 14804 | 0.074455 | 0.026629\n2024-03-09 | 164541 | 20158 | 14213 | 408 | 13805 | 0.0839 | 0.028706\n2024-03-10 | 156083 | 19038 | 13382 | 391 | 12991 | 0.083231 | 0.029218\n2024-03-11 | 204824 | 25139 | 17608 | 526 | 17082 | 0.083398 | 0.029873\n2024-03-12 | 209660 | 25591 | 17981 | 545 | 17436 | 0.083163 | 0.03031\n2024-03-13 | 212334 | 26107 | 18285 | 530 | 17755 | 0.083618 | 0.028986\n2024-03-14 | 210565 | 25961 | 10209 | 301 | 9908 | 0.047054 | 0.029484\n2024-03-15 | 199922 | 24798 | 9729 | 291 | 9438 | 0.047208 | 0.029911\n2024-03-16 | 164214 | 19817 | 14039 | 408 | 13631 | 0.083008 | 0.029062\n2024-03-17 | 156384 | 19243 | 13357 | 406 | 12951 | 0.082815 | 0.030396\n2024-03-18 | 205330 | 25007 | 17554 | 553 | 17001 | 0.082798 | 0.031503",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot",
+  "scenario_id": "S004",
+  "item_id": 12
+ },
+ {
+  "claim": "Android sessions stayed near normal while conversion fell from about 7.6% to about 3.2% and checkout starts did not drop, so users reached checkout but could not complete it.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-03-06",
+    "body": "SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(checkout_starts) AS checkout_starts, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE platform = 'android' AND date >= '2024-03-01' AND date <= '2024-03-12' GROUP BY date ORDER BY date\ndate | orders | sessions | conversion_rate | checkout_starts | payment_failure_rate\n2024-03-01 | 2948 | 39576 | 0.07449 | 4398 | 0.034076\n2024-03-02 | 2559 | 33191 | 0.077099 | 3790 | 0.035068\n2024-03-03 | 2396 | 31199 | 0.076797 | 3558 | 0.029567\n2024-03-04 | 3184 | 40899 | 0.07785 | 4718 | 0.029268\n2024-03-05 | 3163 | 41647 | 0.075948 | 4733 | 0.030647\n2024-03-06 | 1354 | 42316 | 0.031997 | 4868 | 0.035613\n2024-03-07 | 1324 | 42194 | 0.031379 | 4832 | 0.031456\n2024-03-08 | 1295 | 39535 | 0.032756 | 4604 | 0.03286\n2024-03-09 | 2513 | 32666 | 0.07693 | 3700 | 0.025591\n2024-03-10 | 2430 | 31312 | 0.077606 | 3541 | 0.029553\n2024-03-11 | 3169 | 41008 | 0.077278 | 4653 | 0.02851\n2024-03-12 | 3175 | 41628 | 0.076271 | 4691 | 0.027565",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S003",
+  "item_id": 13
+ },
+ {
+  "claim": "Conversion fell from about 8.3% on 2024-06-01 to about 6.6% on 2024-06-02 through 2024-06-04 while sessions stayed near normal levels.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-06-03",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN '2024-05-20' AND '2024-06-10' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | payment_attempts | payment_failures | orders | revenue | conversion_rate\n2024-05-20 | 210723 | 25782 | 18041 | 511 | 17530 | 1045686.76 | 0.08319\n2024-05-21 | 216503 | 26694 | 18605 | 558 | 18047 | 1061219.14 | 0.083357\n2024-05-22 | 218615 | 26644 | 18628 | 545 | 18083 | 1077942.79 | 0.082716\n2024-05-23 | 214794 | 26250 | 18401 | 541 | 17860 | 1046957.98 | 0.083149\n2024-05-24 | 205159 | 25073 | 17526 | 533 | 16993 | 996782.44 | 0.082828\n2024-05-25 | 122494 | 14968 | 10576 | 333 | 10243 | 604142.34 | 0.08362\n2024-05-26 | 115444 | 14241 | 9962 | 266 | 9696 | 564786.55 | 0.083989\n2024-05-27 | 210751 | 25739 | 18024 | 510 | 17514 | 1034120.03 | 0.083103\n2024-05-28 | 217690 | 26695 | 18751 | 563 | 18188 | 1065273.9 | 0.08355\n2024-05-29 | 218437 | 26797 | 18810 | 567 | 18243 | 1082525.78 | 0.083516\n2024-05-30 | 216345 | 26415 | 18598 | 554 | 18044 | 1075655.84 | 0.083404\n2024-05-31 | 206125 | 25062 | 17473 | 495 | 16978 | 1003174.54 | 0.082367\n2024-06-01 | 169890 | 20894 | 14551 | 403 | 14148 | 840514.63 | 0.083277\n2024-06-02 | 162304 | 15913 | 11229 | 324 | 10905 | 696544.89 | 0.067189\n2024-06-03 | 213267 | 20650 | 14526 | 440 | 14086 | 892589.32 | 0.066049\n2024-06-04 | 216805 | 21021 | 14654 | 443 | 14211 | 900104.05 | 0.065547\n2024-06-05 | 220302 | 26868 | 18930 | 570 | 18360 | 1089652.42 | 0.08334\n2024-06-06 | 217924 | 26588 | 18497 | 547 | 17950 | 1072352.17 | 0.082368\n2024-06-07 | 206536 | 25226 | 17510 | 500 | 17010 | 1014870.08 | 0.082359\n2024-06-08 | 171269 | 20958 | 14703 | 437 | 14266 | 847147.93 | 0.083296\n2024-06-09 | 161255 | 19658 | 13702 | 409 | 13293 | 785293.01 | 0.082435\n2024-06-10 | 214540 | 26216 | 10950 | 315 | 10635 | 629477.34 | 0.049571",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S014",
+  "item_id": 14
+ },
+ {
+  "claim": "Paid search sessions fell from 55322 on 2024-07-11 to 32545 on 2024-07-12 and 27002 on 2024-07-13, while paid search conversion stayed near 0.083.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-07-13",
+    "body": "SQL: SELECT date, channel, SUM(sessions) AS sessions, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conv FROM daily_metrics WHERE date BETWEEN '2024-07-06' AND '2024-07-20' GROUP BY date, channel ORDER BY channel, date\ndate | channel | sessions | orders | conv\n2024-07-06 | email | 34568 | 2797 | 0.080913\n2024-07-07 | email | 33257 | 2747 | 0.082599\n2024-07-08 | email | 42541 | 3530 | 0.082979\n2024-07-09 | email | 44050 | 3665 | 0.083201\n2024-07-10 | email | 43887 | 3681 | 0.083874\n2024-07-11 | email | 44188 | 3658 | 0.082783\n2024-07-12 | email | 41142 | 3414 | 0.082981\n2024-07-13 | email | 35130 | 2995 | 0.085255\n2024-07-14 | email | 32839 | 2712 | 0.082585\n2024-07-15 | email | 42557 | 3556 | 0.083559\n2024-07-16 | email | 43424 | 3583 | 0.082512\n2024-07-17 | email | 44537 | 3605 | 0.080944\n2024-07-18 | email | 44055 | 3647 | 0.082783\n2024-07-19 | email | 42096 | 3574 | 0.084901\n2024-07-20 | email | 35036 | 2825 | 0.080631\n2024-07-06 | organic | 70005 | 5763 | 0.082323\n2024-07-07 | organic | 65061 | 5417 | 0.08326\n2024-07-08 | organic | 85415 | 7086 | 0.08296\n2024-07-09 | organic | 88298 | 7247 | 0.082074\n2024-07-10 | organic | 89222 | 7403 | 0.082973\n2024-07-11 | organic | 88911 | 7257 | 0.081621\n2024-07-12 | organic | 82245 | 6724 | 0.081756\n2024-07-13 | organic | 68675 | 5810 | 0.084601\n2024-07-14 | organic | 65102 | 5478 | 0.084145\n2024-07-15 | organic | 85323 | 7040 | 0.08251\n2024-07-16 | organic | 88642 | 7434 | 0.083865\n2024-07-17 | organic | 88859 | 7369 | 0.082929\n2024-07-18 | organic | 89473 | 7473 | 0.083522\n2024-07-19 | organic | 84523 | 7023 | 0.08309\n2024-07-20 | organic | 69050 | 5860 | 0.084866\n2024-07-06 | paid_search | 42525 | 3404 | 0.080047\n2024-07-07 | paid_search | 40374 | 3397 | 0.084138\n2024-07-08 | paid_search | 53791 | 4499 | 0.083639\n2024-07-09 | paid_search | 54696 | 4527 | 0.082767\n2024-07-10 | paid_search | 55313 | 4594 | 0.083055\n2024-07-11 | paid_search | 55322 | 4546 | 0.082173\n2024-07-12 | paid_search | 32545 | 2712 | 0.083331\n2024-07-13 | paid_search | 27002 | 2274 | 0.084216\n2024-07-14 | paid_search | 25320 | 2082 | 0.082227\n2024-07-15 | paid_search | 34037 | 2709 | 0.07959\n... 20 more rows",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot",
+  "scenario_id": "S019",
+  "item_id": 15
+ },
+ {
+  "claim": "Checkout starts stayed near normal levels on 2024-09-30 while payment attempts fell to about 14,300 and conversion dropped to 6.2% from about 8.3%.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-09-30",
+    "body": "SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE date BETWEEN '2024-09-16' AND '2024-10-04' GROUP BY date ORDER BY date\ndate | orders | sessions | checkout_starts | attempts | payment_failure_rate | conversion_rate\n2024-09-16 | 17315 | 207771 | 25572 | 17874 | 0.031274 | 0.083337\n2024-09-17 | 17579 | 212060 | 25908 | 18131 | 0.030445 | 0.082896\n2024-09-18 | 17379 | 213288 | 25592 | 17912 | 0.029757 | 0.081481\n2024-09-19 | 18649 | 226731 | 27643 | 19255 | 0.031472 | 0.082252\n2024-09-20 | 17757 | 214097 | 26051 | 18264 | 0.02776 | 0.082939\n2024-09-21 | 14779 | 177285 | 21824 | 15225 | 0.029294 | 0.083363\n2024-09-22 | 9110 | 166522 | 20519 | 9403 | 0.03116 | 0.054707\n2024-09-23 | 12101 | 221586 | 27123 | 12445 | 0.027642 | 0.054611\n2024-09-24 | 12251 | 225428 | 27812 | 12614 | 0.028778 | 0.054346\n2024-09-25 | 19017 | 228852 | 28099 | 19628 | 0.031129 | 0.083097\n2024-09-26 | 18913 | 227890 | 27743 | 19489 | 0.029555 | 0.082992\n2024-09-27 | 18013 | 215522 | 26467 | 18569 | 0.029942 | 0.083578\n2024-09-28 | 14742 | 178662 | 21810 | 15186 | 0.029237 | 0.082513\n2024-09-29 | 14211 | 169335 | 20835 | 14687 | 0.03241 | 0.083922\n2024-09-30 | 13831 | 223339 | 27327 | 14275 | 0.031103 | 0.061928\n2024-10-01 | 14046 | 226931 | 27649 | 14493 | 0.030842 | 0.061895\n2024-10-02 | 13996 | 228937 | 27959 | 14434 | 0.030345 | 0.061135\n2024-10-03 | 14284 | 227070 | 27943 | 14749 | 0.031528 | 0.062906\n2024-10-04 | 18038 | 216064 | 26526 | 18605 | 0.030476 | 0.083485",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S029",
+  "item_id": 16
+ },
+ {
+  "claim": "An incident issue dated 2024-03-22 reports DNS resolution failures for APAC users caused by a DNS provider problem.",
+  "evidence_ids": [
+   "ISS-0030"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0030",
+    "source": "issue",
+    "title": "INC: DNS resolution failures for APAC users",
+    "date": "2024-03-22",
+    "body": "A DNS provider problem makes our domain fail to resolve for many users in APAC. Sessions from the region dropped. No impact elsewhere.",
+    "meta": {
+     "labels": [
+      "incident",
+      "apac"
+     ]
+    },
+    "score": 0.0159,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "rag",
+  "scenario_id": "S005",
+  "item_id": 17
+ },
+ {
+  "claim": "An issue reports a spike in declined payments through Adyon in North America, with banks saying the cards are fine and the provider rejecting them.",
+  "evidence_ids": [
+   "ISS-0015"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0015",
+    "source": "issue",
+    "title": "Spike in declined payments via Adyon (North America)",
+    "date": "2024-02-19",
+    "body": "Decline rate through Adyon is far above normal for North America. Banks report the cards are fine, so the provider is rejecting them. Considering a failover to the backup provider.",
+    "meta": {
+     "labels": [
+      "incident",
+      "payments"
+     ]
+    },
+    "score": -2.5697,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot",
+  "scenario_id": "S001",
+  "item_id": 18
+ },
+ {
+  "claim": "APAC conversion fell from about 8.0% on 2024-08-28 to 6.4% on 2024-08-29 and 6.2% on 2024-08-30, against a weekday baseline of about 8.3%.",
+  "evidence_ids": [
+   "M1",
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: conversion_rate on 2024-08-30 (region=apac)",
+    "date": "2024-08-30",
+    "body": "conversion_rate for region=apac on 2024-08-30 (Friday) was 0.06215. The same weekday in the 6 weeks before had a median of 0.08329. Change vs that baseline: -25.4% (z = -22.9). Change vs the day before: -2.6%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-08-30",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS pa, SUM(payment_failures) AS pf, SUM(orders) AS orders, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conv, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS pfr FROM daily_metrics WHERE region='apac' AND date BETWEEN '2024-08-16' AND '2024-09-02' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | pa | pf | orders | conv | pfr\n2024-08-16 | 27595 | 3362 | 2373 | 78 | 2295 | 0.083167 | 0.03287\n2024-08-17 | 22597 | 2789 | 1938 | 64 | 1874 | 0.082931 | 0.033024\n2024-08-18 | 21526 | 2631 | 1868 | 51 | 1817 | 0.08441 | 0.027302\n2024-08-19 | 28704 | 3511 | 2458 | 83 | 2375 | 0.082741 | 0.033767\n2024-08-20 | 28505 | 3532 | 2445 | 65 | 2380 | 0.083494 | 0.026585\n2024-08-21 | 27149 | 3264 | 2304 | 56 | 2248 | 0.082802 | 0.024306\n2024-08-22 | 27292 | 3285 | 2326 | 73 | 2253 | 0.082552 | 0.031384\n2024-08-23 | 25378 | 3049 | 2156 | 39 | 2117 | 0.083419 | 0.018089\n2024-08-24 | 20939 | 2536 | 1821 | 60 | 1761 | 0.084101 | 0.032949\n2024-08-25 | 20514 | 2517 | 1762 | 45 | 1717 | 0.083699 | 0.025539\n2024-08-26 | 28371 | 3432 | 2382 | 72 | 2310 | 0.081421 | 0.030227\n2024-08-27 | 29561 | 3596 | 2497 | 69 | 2428 | 0.082135 | 0.027633\n2024-08-28 | 28986 | 3479 | 2420 | 86 | 2334 | 0.080522 | 0.035537\n2024-08-29 | 28937 | 2704 | 1895 | 48 | 1847 | 0.063828 | 0.02533\n2024-08-30 | 27528 | 2500 | 1764 | 53 | 1711 | 0.062155 | 0.030045\n2024-08-31 | 22833 | 2035 | 1408 | 34 | 1374 | 0.060176 | 0.024148\n2024-09-01 | 21860 | 2735 | 1916 | 47 | 1869 | 0.085499 | 0.02453\n2024-09-02 | 28453 | 3502 | 2439 | 60 | 2379 | 0.083612 | 0.0246",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S025",
+  "item_id": 19
+ },
+ {
+  "claim": "An incident report states that a DNS provider problem made the company domain fail to resolve for many Latin American users, and that sessions from the region dropped with no impact elsewhere.",
+  "evidence_ids": [
+   "ISS-0082"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0082",
+    "source": "issue",
+    "title": "INC: DNS resolution failures for Latin America users",
+    "date": "2024-07-04",
+    "body": "A DNS provider problem makes our domain fail to resolve for many users in Latin America. Sessions from the region dropped. No impact elsewhere.",
+    "meta": {
+     "labels": [
+      "incident",
+      "latam"
+     ]
+    },
+    "score": -11.3443,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot",
+  "scenario_id": "S018",
+  "item_id": 20
+ },
+ {
+  "claim": "Issue ISS-0143 reports that stricter validation in v3.28.8 rejects valid addresses so customers cannot continue to payment, and that this reproduces across all regions and platforms.",
+  "evidence_ids": [
+   "ISS-0143"
+  ],
+  "evidence": [
+   {
+    "id": "ISS-0143",
+    "source": "issue",
+    "title": "Regression: checkout step 2 rejects valid addresses (checkout-service v3.28.8)",
+    "date": "2024-12-11",
+    "body": "The stricter validation shipped in v3.28.8 rejects addresses with unit numbers. Customers cannot continue to payment. Reproduced on all regions and platforms. Needs a hotfix or rollback.",
+    "meta": {
+     "labels": [
+      "bug",
+      "checkout"
+     ]
+    },
+    "score": -2.6669,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot",
+  "scenario_id": "S038",
+  "item_id": 21
+ },
+ {
+  "claim": "iOS payment attempts fell from about 4,500 per day to about 2,600 on 2024-04-15 and 2024-04-16, then recovered to about 6,000 on 2024-04-17.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-04-16",
+    "body": "SQL: SELECT date, platform, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate FROM daily_metrics WHERE platform='ios' AND date BETWEEN '2024-04-12' AND '2024-04-20' GROUP BY date, platform ORDER BY date\ndate | platform | sessions | checkout_starts | payment_attempts | payment_failure_rate | conversion_rate\n2024-04-12 | ios | 61002 | 7965 | 5542 | 0.029412 | 0.088177\n2024-04-13 | ios | 49240 | 6574 | 4592 | 0.025044 | 0.090922\n2024-04-14 | ios | 47553 | 6406 | 4500 | 0.029333 | 0.091855\n2024-04-15 | ios | 62738 | 8232 | 2561 | 0.030457 | 0.039577\n2024-04-16 | ios | 63801 | 8470 | 2599 | 0.029242 | 0.039545\n2024-04-17 | ios | 64597 | 8593 | 6064 | 0.032982 | 0.090778\n2024-04-18 | ios | 63852 | 8369 | 5853 | 0.026824 | 0.089206\n2024-04-19 | ios | 60918 | 7853 | 5517 | 0.03172 | 0.087692\n2024-04-20 | ios | 49962 | 6479 | 4584 | 0.032723 | 0.088747",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S008",
+  "item_id": 22
+ },
+ {
+  "claim": "Payment failures on 2024-08-13 were 6,135 out of 19,126 attempts, up from about 500 failures a day in the days before.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-08-13",
+    "body": "SQL: SELECT date, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures FROM daily_metrics WHERE date BETWEEN '2024-08-05' AND '2024-08-20' GROUP BY date ORDER BY date\ndate | orders | sessions | checkout_starts | attempts | failures\n2024-08-05 | 17130 | 205220 | 25173 | 17660 | 530\n2024-08-06 | 17524 | 211319 | 25866 | 18051 | 527\n2024-08-07 | 17593 | 211875 | 25920 | 18107 | 514\n2024-08-08 | 17528 | 210542 | 25800 | 18040 | 512\n2024-08-09 | 16698 | 200540 | 24499 | 17207 | 509\n2024-08-10 | 14420 | 173459 | 21161 | 14836 | 416\n2024-08-11 | 13691 | 165472 | 20125 | 14127 | 436\n2024-08-12 | 18141 | 219046 | 26695 | 18710 | 569\n2024-08-13 | 12991 | 221787 | 27193 | 19126 | 6135\n2024-08-14 | 18913 | 224112 | 27666 | 19445 | 532\n2024-08-15 | 18282 | 223247 | 27064 | 18886 | 604\n2024-08-16 | 17624 | 212647 | 25955 | 18182 | 558\n2024-08-17 | 14574 | 176319 | 21416 | 15064 | 490\n2024-08-18 | 14035 | 166650 | 20543 | 14449 | 414\n2024-08-19 | 18052 | 219647 | 26729 | 18630 | 578\n2024-08-20 | 18453 | 223209 | 27363 | 19015 | 562",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S023",
+  "item_id": 23
+ },
+ {
+  "claim": "Customers reported that the card payment screen in the Android app crashed or did not respond after a phone update, starting 2024-03-06.",
+  "evidence_ids": [
+   "TKT-00253",
+   "TKT-00255",
+   "TKT-00257",
+   "TKT-00260",
+   "TKT-00261"
+  ],
+  "evidence": [
+   {
+    "id": "TKT-00253",
+    "source": "ticket",
+    "title": "Payment screen broken in app",
+    "date": "2024-03-06",
+    "body": "After the latest phone update I cannot pay in your app. The button is grey and does not react. Order #NW55605.",
+    "meta": {
+     "platform": "android",
+     "region": "uk"
+    },
+    "score": -7.3925,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00255",
+    "source": "ticket",
+    "title": "Cannot check out on my phone",
+    "date": "2024-03-06",
+    "body": "Checkout works on my laptop but not in the app on my phone. The payment screen flashes and disappears. Order #NW55605.",
+    "meta": {
+     "platform": "android",
+     "region": "na"
+    },
+    "score": 0.0599,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00257",
+    "source": "ticket",
+    "title": "Pay button does nothing",
+    "date": "2024-03-07",
+    "body": "I tap Pay in the app and nothing happens. I updated my phone yesterday, maybe related? Please help.",
+    "meta": {
+     "platform": "android",
+     "region": "na"
+    },
+    "score": -11.2841,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00260",
+    "source": "ticket",
+    "title": "Payment screen broken in app",
+    "date": "2024-03-07",
+    "body": "After the latest phone update I cannot pay in your app. The button is grey and does not react. Thanks.",
+    "meta": {
+     "platform": "android",
+     "region": "na"
+    },
+    "score": -10.3018,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00261",
+    "source": "ticket",
+    "title": "App closes when I try to pay",
+    "date": "2024-03-07",
+    "body": "The app crashes right when the card form should show. It worked last week. This is urgent.",
+    "meta": {
+     "platform": "android",
+     "region": "eu"
+    },
+    "score": -10.0423,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S003",
+  "item_id": 24
+ },
+ {
+  "claim": "iOS orders fell from about 6,000 a day before 2024-10-16 to about 4,000 from 2024-10-16 onward while checkout starts stayed near 9,000, so customers reached checkout but did not complete payment attempts.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-10-17",
+    "body": "SQL: SELECT date, platform, SUM(orders) AS orders, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS attempts, SUM(payment_failures) AS failures FROM daily_metrics WHERE date BETWEEN '2024-10-10' AND '2024-10-20' AND platform='ios' GROUP BY date, platform ORDER BY date\ndate | platform | orders | sessions | checkout_starts | attempts | failures\n2024-10-10 | ios | 5571 | 62618 | 8206 | 5745 | 174\n2024-10-11 | ios | 5384 | 60220 | 7909 | 5554 | 170\n2024-10-12 | ios | 4465 | 49862 | 6547 | 4601 | 136\n2024-10-13 | ios | 4493 | 50710 | 6572 | 4642 | 149\n2024-10-14 | ios | 6059 | 67045 | 8844 | 6253 | 194\n2024-10-15 | ios | 6047 | 68300 | 8896 | 6250 | 203\n2024-10-16 | ios | 4074 | 69975 | 9324 | 4205 | 131\n2024-10-17 | ios | 4002 | 68890 | 9132 | 4121 | 119\n2024-10-18 | ios | 3726 | 64394 | 8459 | 3842 | 116\n2024-10-19 | ios | 3046 | 53270 | 6957 | 3146 | 100\n2024-10-20 | ios | 4448 | 50449 | 6639 | 4596 | 148",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S031",
+  "item_id": 25
+ },
+ {
+  "claim": "On 2024-07-20, orders in the social channel fell by 53.8% versus the weekday baseline, while every other channel moved by 3.3% or less.",
+  "evidence_ids": [
+   "M2"
+  ],
+  "evidence": [
+   {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: orders on 2024-07-20",
+    "date": "2024-07-20",
+    "body": "Overall orders changed -5.9% on 2024-07-20. The change is concentrated in: channel=social (-53.8%). Other slices moved much less.\nChange vs weekday baseline, per slice:\n  region=na: -6.3% (z -2.1)\n  region=eu: -2.2% (z -2.2)\n  region=uk: -4.6% (z -1.8)\n  region=apac: -9.8% (z -3.5)\n  region=latam: -6.9% (z -2.0)\n  platform=web: -4.4% (z -2.2)\n  platform=ios: -6.4% (z -3.9)\n  platform=android: -9.6% (z -6.8)\n  channel=organic: +2.0% (z +1.8)\n  channel=paid_search: +3.3% (z +0.7)\n  channel=email: +1.4% (z +1.4)\n  channel=social: -53.8% (z -18.9)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S020",
+  "item_id": 26
+ },
+ {
+  "claim": "Customers in the UK, North America, and Latin America reported that their cards were declined at payment while checkout otherwise worked.",
+  "evidence_ids": [
+   "TKT-00977",
+   "TKT-00981",
+   "TKT-00979"
+  ],
+  "evidence": [
+   {
+    "id": "TKT-00977",
+    "source": "ticket",
+    "title": "Cannot pay",
+    "date": "2024-08-13",
+    "body": "Checkout works until I pay, then it says declined. My card works everywhere else. This is urgent.",
+    "meta": {
+     "platform": "web",
+     "region": "uk"
+    },
+    "score": 0.3498,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00981",
+    "source": "ticket",
+    "title": "Cannot pay",
+    "date": "2024-08-13",
+    "body": "Checkout works until I pay, then it says declined. My card works everywhere else. Please help.",
+    "meta": {
+     "platform": "ios",
+     "region": "na"
+    },
+    "score": -0.1277,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00979",
+    "source": "ticket",
+    "title": "Payment failed",
+    "date": "2024-08-13",
+    "body": "I get 'payment could not be processed' every time. Different cards, same result. Order #NW69239.",
+    "meta": {
+     "platform": "web",
+     "region": "latam"
+    },
+    "score": -7.253,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S023",
+  "item_id": 27
+ },
+ {
+  "claim": "Support ticket TKT-01200 reports that applying a coupon makes checkout fail.",
+  "evidence_ids": [
+   "TKT-01200"
+  ],
+  "evidence": [
+   {
+    "id": "TKT-01200",
+    "source": "ticket",
+    "title": "Coupon makes checkout fail",
+    "date": "2024-10-01",
+    "body": "When I apply my coupon the order fails. Without the coupon it also fails sometimes. Very frustrating. This is urgent.",
+    "meta": {
+     "platform": "web",
+     "region": "eu"
+    },
+    "score": -10.3408,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S029",
+  "item_id": 28
+ },
+ {
+  "claim": "Customer tickets from 2024-06-10 and 2024-06-11 say the checkout page will not accept a valid address.",
+  "evidence_ids": [
+   "TKT-00692",
+   "TKT-00700"
+  ],
+  "evidence": [
+   {
+    "id": "TKT-00692",
+    "source": "ticket",
+    "title": "Cannot finish my purchase",
+    "date": "2024-06-10",
+    "body": "The checkout page will not accept my address even though it is the same one I always use. Please fix this, I want to order. Please help.",
+    "meta": {
+     "platform": "android",
+     "region": "na"
+    },
+    "score": -1.468,
+    "quarantined": false
+   },
+   {
+    "id": "TKT-00700",
+    "source": "ticket",
+    "title": "Cannot finish my purchase",
+    "date": "2024-06-11",
+    "body": "The checkout page will not accept my address even though it is the same one I always use. Please fix this, I want to order. Please help.",
+    "meta": {
+     "platform": "web",
+     "region": "eu"
+    },
+    "score": -1.468,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": true,
+  "system": "whybot_bm25_only",
+  "scenario_id": "S015",
+  "item_id": 29
+ },
+ {
+  "claim": "Payment attempts fell from 19712 to 10609 on 2024-10-24 while checkout starts stayed near 28000 and the payment failure rate stayed near 3%, so orders were lost before payment rather than declined by a provider.",
+  "evidence_ids": [
+   "M3"
+  ],
+  "evidence": [
+   {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-10-24",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate FROM daily_metrics WHERE date BETWEEN '2024-10-10' AND '2024-10-26' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | payment_attempts | payment_failures | orders | revenue | conversion_rate | payment_failure_rate\n2024-10-10 | 208493 | 25525 | 17896 | 548 | 17348 | 1029743.17 | 0.083207 | 0.030621\n2024-10-11 | 198811 | 24196 | 17028 | 523 | 16505 | 981482.57 | 0.083019 | 0.030714\n2024-10-12 | 165243 | 20355 | 14315 | 436 | 13879 | 823481.14 | 0.083991 | 0.030458\n2024-10-13 | 170008 | 20792 | 14547 | 447 | 14100 | 832833.12 | 0.082937 | 0.030728\n2024-10-14 | 224633 | 27485 | 19331 | 555 | 18776 | 1114808.04 | 0.083585 | 0.02871\n2024-10-15 | 227698 | 27837 | 19477 | 625 | 18852 | 1123846.6 | 0.082794 | 0.032089\n2024-10-16 | 231445 | 28357 | 17598 | 485 | 17113 | 1014765.33 | 0.07394 | 0.02756\n2024-10-17 | 227534 | 27901 | 17104 | 514 | 16590 | 982270.19 | 0.072912 | 0.030051\n2024-10-18 | 217236 | 26412 | 16431 | 505 | 15926 | 950445.96 | 0.073312 | 0.030735\n2024-10-19 | 178428 | 22019 | 13567 | 424 | 13143 | 782208.71 | 0.07366 | 0.031252\n2024-10-20 | 168837 | 20612 | 14307 | 444 | 13863 | 825802.93 | 0.082109 | 0.031034\n2024-10-21 | 225707 | 27560 | 19280 | 585 | 18695 | 1104800.39 | 0.082829 | 0.030342\n2024-10-22 | 228180 | 27770 | 19433 | 582 | 18851 | 1107798.41 | 0.082615 | 0.029949\n2024-10-23 | 230021 | 28143 | 19712 | 563 | 19149 | 1125552.53 | 0.083249 | 0.028561\n2024-10-24 | 228176 | 27989 | 10609 | 306 | 10303 | 611040.27 | 0.045154 | 0.028843\n2024-10-25 | 217085 | 26559 | 10136 | 317 | 9819 | 585337.1 | 0.045231 | 0.031275\n2024-10-26 | 179076 | 21932 | 15394 | 473 | 14921 | 882527.92 | 0.083322 | 0.030726",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  ],
+  "judge_faithful": false,
+  "system": "whybot_no_verifier",
+  "scenario_id": "S032",
+  "item_id": 30
+ }
+]

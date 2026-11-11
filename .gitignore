@@ -17,3 +17,4 @@ bench/cache/live/
 !.env.example
 .vercel
 .env*
+.claude/

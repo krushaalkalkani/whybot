@@ -1,0 +1,832 @@
+{
+ "id": "ex-S004",
+ "created_at": "2026-11-11T17:37:08.185277+00:00",
+ "question": "Order volume had a 43% drop on 2024-03-14. What happened?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: orders on 2024-03-14",
+   "detail": "Pull daily orders for 2024-03-14 and compare against the prior 7 days and the same weekday in earlier weeks to confirm the size of the drop. | Break the orders change down by region, platform and channel to find which segments account for most of the decline. | Check the deploy changelog (CHG-...) for releases around 2024-03-13 to 2024-03-14 that touch checkout, payments or the affected segments. | Check GitHub issues (ISS-...) and support tickets (TKT-...) from the same window for outages, payment errors or client bugs. | Compare conversion_rate, sessions and payment_failure_rate on that date to separate a traffic loss from a checkout or payment problem, then assign a cause type.",
+   "input": {},
+   "output": {
+    "metric": "orders",
+    "date": "2024-03-14",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily orders for 2024-03-14 and compare against the prior 7 days and the same weekday in earlier weeks to confirm the size of the drop.",
+     "Break the orders change down by region, platform and channel to find which segments account for most of the decline.",
+     "Check the deploy changelog (CHG-...) for releases around 2024-03-13 to 2024-03-14 that touch checkout, payments or the affected segments.",
+     "Check GitHub issues (ISS-...) and support tickets (TKT-...) from the same window for outages, payment errors or client bugs.",
+     "Compare conversion_rate, sessions and payment_failure_rate on that date to separate a traffic loss from a checkout or payment problem, then assign a cause type."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2401,
+   "input_tokens": 1359,
+   "output_tokens": 285,
+   "cost_usd": 0.0002784
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: orders on 2024-03-14",
+   "detail": "orders on 2024-03-14 (Thursday) was 9908. The same weekday in the 6 weeks before had a median of 1.732e+04. Change vs that baseline: -42.8% (z = -42.8). Change vs the day before: -44.2%. This is unusual (|z| >= 3).",
+   "input": {
+    "metric": "orders",
+    "date": "2024-03-14"
+   },
+   "output": {
+    "metric": "orders",
+    "date": "2024-03-14",
+    "filters": {},
+    "value": 9908.0,
+    "baseline": 17315.5,
+    "pct_change": -42.78,
+    "z_score": -42.78,
+    "day_before_value": 17755.0,
+    "pct_change_vs_day_before": -44.2,
+    "is_anomaly": true,
+    "explanation": "orders on 2024-03-14 (Thursday) was 9908. The same weekday in the 6 weeks before had a median of 1.732e+04. Change vs that baseline: -42.8% (z = -42.8). Change vs the day before: -44.2%. This is unusual (|z| >= 3)."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 1,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: orders on 2024-03-14",
+   "detail": "Overall orders changed -42.8% on 2024-03-14. No single region, platform or channel stands out; the slices moved about the same.",
+   "input": {
+    "metric": "orders",
+    "date": "2024-03-14"
+   },
+   "output": {
+    "metric": "orders",
+    "date": "2024-03-14",
+    "overall_pct_change": -42.78,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 3972.0,
+      "baseline": 6917.5,
+      "pct_change": -42.58,
+      "z_score": -23.51
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 2422.0,
+      "baseline": 4336.5,
+      "pct_change": -44.15,
+      "z_score": -44.15
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 1175.0,
+      "baseline": 2044.5,
+      "pct_change": -42.53,
+      "z_score": -24.44
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 1307.0,
+      "baseline": 2286.5,
+      "pct_change": -42.84,
+      "z_score": -41.29
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 1032.0,
+      "baseline": 1711.5,
+      "pct_change": -39.7,
+      "z_score": -26.96
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 4939.0,
+      "baseline": 8464.0,
+      "pct_change": -41.65,
+      "z_score": -41.65
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 3117.0,
+      "baseline": 5595.0,
+      "pct_change": -44.29,
+      "z_score": -44.29
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 1852.0,
+      "baseline": 3211.5,
+      "pct_change": -42.33,
+      "z_score": -40.75
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 4024.0,
+      "baseline": 6921.0,
+      "pct_change": -41.86,
+      "z_score": -41.86
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 2416.0,
+      "baseline": 4329.0,
+      "pct_change": -44.19,
+      "z_score": -15.36
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 1943.0,
+      "baseline": 3498.5,
+      "pct_change": -44.46,
+      "z_score": -18.9
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 1525.0,
+      "baseline": 2539.5,
+      "pct_change": -39.95,
+      "z_score": -9.78
+     }
+    ],
+    "concentrated_in": [],
+    "explanation": "Overall orders changed -42.8% on 2024-03-14. No single region, platform or channel stands out; the slices moved about the same."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2700,
+   "input_tokens": 3460,
+   "output_tokens": 590,
+   "cost_usd": 0.000641
+  },
+  {
+   "index": 4,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "run_metric_query failed",
+   "detail": "Could not parse SQL: Error tokenizing '04' AND '2024-03-18' GROUP BY date ORDER BY date'",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(revenue) AS revenue, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate FROM daily_metrics WHERE date BETWEEN '2024-03-04' AND '2024-03-18' GROUP BY date ORDER BY date\""
+   },
+   "output": {},
+   "evidence_ids": [],
+   "is_error": true,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 5,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: deploy checkout payments release",
+   "detail": "8 documents: CHG-0036, CHG-0035, ISS-0025, TKT-00292, TKT-00289, TKT-00288, TKT-00293, TKT-00294",
+   "input": {
+    "date_from": "2024-03-12",
+    "date_to": "2024-03-16",
+    "query": "deploy checkout payments release"
+   },
+   "output": {
+    "query": "deploy checkout payments release",
+    "results": [
+     {
+      "id": "CHG-0036",
+      "title": "checkout-service v4.9.6",
+      "date": "2024-03-15",
+      "score": -5.8365
+     },
+     {
+      "id": "CHG-0035",
+      "title": "checkout-service v4.19.1",
+      "date": "2024-03-14",
+      "score": -6.7278
+     },
+     {
+      "id": "ISS-0025",
+      "title": "Place order returns HTTP 500 since checkout-service v4.19.1",
+      "date": "2024-03-14",
+      "score": -7.2642
+     },
+     {
+      "id": "TKT-00292",
+      "title": "Urgent: Orders dropping at checkout",
+      "date": "2024-03-14",
+      "score": -9.2663
+     },
+     {
+      "id": "TKT-00289",
+      "title": "Urgent: Orders dropping at checkout",
+      "date": "2024-03-14",
+      "score": -9.3252
+     },
+     {
+      "id": "TKT-00288",
+      "title": "Coupon makes checkout fail",
+      "date": "2024-03-14",
+      "score": -10.4063
+     },
+     {
+      "id": "TKT-00293",
+      "title": "Coupon makes checkout fail",
+      "date": "2024-03-14",
+      "score": -10.4442
+     },
+     {
+      "id": "TKT-00294",
+      "title": "My cart keeps emptying",
+      "date": "2024-03-15",
+      "score": -11.2025
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0036",
+    "CHG-0035",
+    "ISS-0025",
+    "TKT-00292",
+    "TKT-00289",
+    "TKT-00288",
+    "TKT-00293",
+    "TKT-00294"
+   ],
+   "is_error": false,
+   "latency_ms": 88,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 6,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: outage payment errors orders drop checkout failing",
+   "detail": "8 documents: TKT-00292, TKT-00289, ISS-0025, TKT-00288, TKT-00293, CHG-0035, TKT-00298, TKT-00287",
+   "input": {
+    "date_from": "2024-03-12",
+    "date_to": "2024-03-16",
+    "query": "outage payment errors orders drop checkout failing"
+   },
+   "output": {
+    "query": "outage payment errors orders drop checkout failing",
+    "results": [
+     {
+      "id": "TKT-00292",
+      "title": "Urgent: Orders dropping at checkout",
+      "date": "2024-03-14",
+      "score": 4.0731
+     },
+     {
+      "id": "TKT-00289",
+      "title": "Urgent: Orders dropping at checkout",
+      "date": "2024-03-14",
+      "score": 3.8793
+     },
+     {
+      "id": "ISS-0025",
+      "title": "Place order returns HTTP 500 since checkout-service v4.19.1",
+      "date": "2024-03-14",
+      "score": 2.0755
+     },
+     {
+      "id": "TKT-00288",
+      "title": "Coupon makes checkout fail",
+      "date": "2024-03-14",
+      "score": 0.8764
+     },
+     {
+      "id": "TKT-00293",
+      "title": "Coupon makes checkout fail",
+      "date": "2024-03-14",
+      "score": 0.8323
+     },
+     {
+      "id": "CHG-0035",
+      "title": "checkout-service v4.19.1",
+      "date": "2024-03-14",
+      "score": -7.2665
+     },
+     {
+      "id": "TKT-00298",
+      "title": "Order would not go through",
+      "date": "2024-03-15",
+      "score": -7.3907
+     },
+     {
+      "id": "TKT-00287",
+      "title": "Order would not go through",
+      "date": "2024-03-14",
+      "score": -7.8087
+     }
+    ]
+   },
+   "evidence_ids": [
+    "TKT-00292",
+    "TKT-00289",
+    "ISS-0025",
+    "TKT-00288",
+    "TKT-00293",
+    "CHG-0035",
+    "TKT-00298",
+    "TKT-00287"
+   ],
+   "is_error": false,
+   "latency_ms": 91,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 7,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 1699,
+   "input_tokens": 5697,
+   "output_tokens": 310,
+   "cost_usd": 0.0007247
+  },
+  {
+   "index": 8,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "Run metric query",
+   "detail": "15 rows",
+   "input": {
+    "sql": "SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE date >= '2024-03-04' AND date <= '2024-03-18' GROUP BY date ORDER BY date"
+   },
+   "output": {
+    "columns": [
+     "date",
+     "sessions",
+     "checkout_starts",
+     "payment_attempts",
+     "payment_failures",
+     "orders",
+     "conversion_rate",
+     "payment_failure_rate"
+    ],
+    "rows": [
+     [
+      "2024-03-04",
+      204705,
+      24958,
+      17399,
+      519,
+      16880,
+      0.08246,
+      0.029829
+     ],
+     [
+      "2024-03-05",
+      209252,
+      25414,
+      17688,
+      490,
+      17198,
+      0.082188,
+      0.027702
+     ],
+     [
+      "2024-03-06",
+      211274,
+      25912,
+      16061,
+      470,
+      15591,
+      0.073795,
+      0.029263
+     ],
+     [
+      "2024-03-07",
+      208314,
+      25391,
+      15693,
+      455,
+      15238,
+      0.073149,
+      0.028994
+     ],
+     [
+      "2024-03-08",
+      198831,
+      24474,
+      15209,
+      405,
+      14804,
+      0.074455,
+      0.026629
+     ],
+     [
+      "2024-03-09",
+      164541,
+      20158,
+      14213,
+      408,
+      13805,
+      0.0839,
+      0.028706
+     ],
+     [
+      "2024-03-10",
+      156083,
+      19038,
+      13382,
+      391,
+      12991,
+      0.083231,
+      0.029218
+     ],
+     [
+      "2024-03-11",
+      204824,
+      25139,
+      17608,
+      526,
+      17082,
+      0.083398,
+      0.029873
+     ],
+     [
+      "2024-03-12",
+      209660,
+      25591,
+      17981,
+      545,
+      17436,
+      0.083163,
+      0.03031
+     ],
+     [
+      "2024-03-13",
+      212334,
+      26107,
+      18285,
+      530,
+      17755,
+      0.083618,
+      0.028986
+     ],
+     [
+      "2024-03-14",
+      210565,
+      25961,
+      10209,
+      301,
+      9908,
+      0.047054,
+      0.029484
+     ],
+     [
+      "2024-03-15",
+      199922,
+      24798,
+      9729,
+      291,
+      9438,
+      0.047208,
+      0.029911
+     ],
+     [
+      "2024-03-16",
+      164214,
+      19817,
+      14039,
+      408,
+      13631,
+      0.083008,
+      0.029062
+     ],
+     [
+      "2024-03-17",
+      156384,
+      19243,
+      13357,
+      406,
+      12951,
+      0.082815,
+      0.030396
+     ],
+     [
+      "2024-03-18",
+      205330,
+      25007,
+      17554,
+      553,
+      17001,
+      0.082798,
+      0.031503
+     ]
+    ],
+    "row_count": 15,
+    "truncated": false
+   },
+   "evidence_ids": [
+    "M3"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 9,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Finished investigating",
+   "detail": "The 43% drop is a checkout-service failure, not a traffic loss or a payment-provider problem. Cause type: **bad_deploy**. Sessions and checkout starts were normal on 2024-03-14, but payment attempts fell from about 18,000 to 10,200 and orders fell to 9,908 (conversion 8.4% to 4.7%). The drop hit every region, platform and channel alike, which fits a single shared service. The deploy that matches t",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2909,
+   "input_tokens": 6992,
+   "output_tokens": 496,
+   "cost_usd": 0.0009472
+  },
+  {
+   "index": 10,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "checkout-service v4.19.1 release broke place-order across all markets",
+   "input": {},
+   "output": {
+    "abstain": false,
+    "abstain_reason": "",
+    "summary": "Orders fell 42.8% on 2024-03-14 against the same-weekday baseline, with the drop spread evenly across all regions, platforms and channels. The timing matches the checkout-service v4.19.1 release, and an issue report ties that release to HTTP 500 errors on place-order, so the most likely cause is a bad deploy.",
+    "causes": [
+     {
+      "cause_type": "bad_deploy",
+      "segment_dimension": "all",
+      "segment_value": "all",
+      "title": "checkout-service v4.19.1 release broke place-order across all markets",
+      "confidence": "high",
+      "claims": [
+       {
+        "text": "Orders on 2024-03-14 were 9908, down 42.8% from the same-weekday baseline of about 17320.",
+        "evidence_ids": [
+         "M1"
+        ]
+       },
+       {
+        "text": "The drop was similar in every region, platform and channel, with no single slice standing out.",
+        "evidence_ids": [
+         "M2"
+        ]
+       },
+       {
+        "text": "Checkout-service v4.19.1 was released on 2024-03-14 and enabled a new address normalizer for all orders.",
+        "evidence_ids": [
+         "CHG-0035"
+        ]
+       },
+       {
+        "text": "An issue reports that place-order returns HTTP 500 since v4.19.1, with the POST /orders error rate rising from under 1% to roughly 44% across all regions and platforms.",
+        "evidence_ids": [
+         "ISS-0025"
+        ]
+       },
+       {
+        "text": "Payment attempts fell from about 18,000 to 10,209 on 2024-03-14 while the payment failure rate stayed near 2.9%, so the loss happened before payment rather than at the provider.",
+        "evidence_ids": [
+         "M3"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4777,
+   "input_tokens": 4495,
+   "output_tokens": 1107,
+   "cost_usd": 0.001003
+  },
+  {
+   "index": 11,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "5 claims supported, 0 dropped",
+   "input": {},
+   "output": {
+    "kept": 5,
+    "dropped": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4828,
+   "input_tokens": 2772,
+   "output_tokens": 1048,
+   "cost_usd": 0.0008012000000000001
+  },
+  {
+   "index": 12,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: answered",
+   "detail": "",
+   "input": {},
+   "output": {
+    "verdict": "answered",
+    "notes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "answered",
+  "summary": "Orders fell 42.8% on 2024-03-14 against the same-weekday baseline, with the drop spread evenly across all regions, platforms and channels. The timing matches the checkout-service v4.19.1 release, and an issue report ties that release to HTTP 500 errors on place-order, so the most likely cause is a bad deploy.",
+  "causes": [
+   {
+    "rank": 1,
+    "cause_type": "bad_deploy",
+    "segment_dimension": "all",
+    "segment_value": "all",
+    "title": "checkout-service v4.19.1 release broke place-order across all markets",
+    "confidence": "high",
+    "claims": [
+     {
+      "text": "Orders on 2024-03-14 were 9908, down 42.8% from the same-weekday baseline of about 17320.",
+      "evidence_ids": [
+       "M1"
+      ],
+      "verified": true,
+      "note": "The evidence gives 9908 orders, a same-weekday median of 1.732e4 (about 17320), and a -42.8% change."
+     },
+     {
+      "text": "The drop was similar in every region, platform and channel, with no single slice standing out.",
+      "evidence_ids": [
+       "M2"
+      ],
+      "verified": true,
+      "note": "The evidence states no single region, platform or channel stands out, and the per-slice changes all fall between -39.7% and -44.5%."
+     },
+     {
+      "text": "Checkout-service v4.19.1 was released on 2024-03-14 and enabled a new address normalizer for all orders.",
+      "evidence_ids": [
+       "CHG-0035"
+      ],
+      "verified": true,
+      "note": "The changelog for checkout-service v4.19.1 dated 2024-03-14 says to enable the new address normalizer for all orders."
+     },
+     {
+      "text": "An issue reports that place-order returns HTTP 500 since v4.19.1, with the POST /orders error rate rising from under 1% to roughly 44% across all regions and platforms.",
+      "evidence_ids": [
+       "ISS-0025"
+      ],
+      "verified": true,
+      "note": "The issue states the v4.19.1 rollout caused place-order failures, POST /orders errors rose from under 1% to roughly 44%, and it affects all regions and platforms."
+     },
+     {
+      "text": "Payment attempts fell from about 18,000 to 10,209 on 2024-03-14 while the payment failure rate stayed near 2.9%, so the loss happened before payment rather than at the provider.",
+      "evidence_ids": [
+       "M3"
+      ],
+      "verified": true,
+      "note": "The table shows 10,209 payment attempts on 2024-03-14 versus 18,285 the day before, with a payment failure rate of 0.029484, and checkout_starts stayed flat, so the drop is before payment rather than at the provider."
+     }
+    ]
+   }
+  ],
+  "evidence": {
+   "M1": {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: orders on 2024-03-14",
+    "date": "2024-03-14",
+    "body": "orders on 2024-03-14 (Thursday) was 9908. The same weekday in the 6 weeks before had a median of 1.732e+04. Change vs that baseline: -42.8% (z = -42.8). Change vs the day before: -44.2%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M2": {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: orders on 2024-03-14",
+    "date": "2024-03-14",
+    "body": "Overall orders changed -42.8% on 2024-03-14. No single region, platform or channel stands out; the slices moved about the same.\nChange vs weekday baseline, per slice:\n  region=na: -42.6% (z -23.5)\n  region=eu: -44.1% (z -44.1)\n  region=uk: -42.5% (z -24.4)\n  region=apac: -42.8% (z -41.3)\n  region=latam: -39.7% (z -27.0)\n  platform=web: -41.6% (z -41.6)\n  platform=ios: -44.3% (z -44.3)\n  platform=android: -42.3% (z -40.8)\n  channel=organic: -41.9% (z -41.9)\n  channel=paid_search: -44.2% (z -15.4)\n  channel=email: -44.5% (z -18.9)\n  channel=social: -40.0% (z -9.8)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "CHG-0035": {
+    "id": "CHG-0035",
+    "source": "changelog",
+    "title": "checkout-service v4.19.1",
+    "date": "2024-03-14",
+    "body": "Enable new address normalizer for all orders. Clean up feature flags from last quarter.",
+    "meta": {
+     "service": "checkout-service"
+    },
+    "score": -6.7278,
+    "quarantined": false
+   },
+   "ISS-0025": {
+    "id": "ISS-0025",
+    "source": "issue",
+    "title": "Place order returns HTTP 500 since checkout-service v4.19.1",
+    "date": "2024-03-14",
+    "body": "After the v4.19.1 rollout the place-order endpoint fails for a large share of carts. Error rate on POST /orders went from under 1% to roughly 44%. Stack trace points at the new validation code. Affects all regions and platforms. Rollback under discussion.",
+    "meta": {
+     "labels": [
+      "bug",
+      "checkout"
+     ]
+    },
+    "score": -7.2642,
+    "quarantined": false
+   },
+   "M3": {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-03-14",
+    "body": "SQL: SELECT date, SUM(sessions) AS sessions, SUM(checkout_starts) AS checkout_starts, SUM(payment_attempts) AS payment_attempts, SUM(payment_failures) AS payment_failures, SUM(orders) AS orders, SUM(orders)::float / SUM(sessions) AS conversion_rate, SUM(payment_failures)::float / SUM(payment_attempts) AS payment_failure_rate FROM daily_metrics WHERE date >= '2024-03-04' AND date <= '2024-03-18' GROUP BY date ORDER BY date\ndate | sessions | checkout_starts | payment_attempts | payment_failures | orders | conversion_rate | payment_failure_rate\n2024-03-04 | 204705 | 24958 | 17399 | 519 | 16880 | 0.08246 | 0.029829\n2024-03-05 | 209252 | 25414 | 17688 | 490 | 17198 | 0.082188 | 0.027702\n2024-03-06 | 211274 | 25912 | 16061 | 470 | 15591 | 0.073795 | 0.029263\n2024-03-07 | 208314 | 25391 | 15693 | 455 | 15238 | 0.073149 | 0.028994\n2024-03-08 | 198831 | 24474 | 15209 | 405 | 14804 | 0.074455 | 0.026629\n2024-03-09 | 164541 | 20158 | 14213 | 408 | 13805 | 0.0839 | 0.028706\n2024-03-10 | 156083 | 19038 | 13382 | 391 | 12991 | 0.083231 | 0.029218\n2024-03-11 | 204824 | 25139 | 17608 | 526 | 17082 | 0.083398 | 0.029873\n2024-03-12 | 209660 | 25591 | 17981 | 545 | 17436 | 0.083163 | 0.03031\n2024-03-13 | 212334 | 26107 | 18285 | 530 | 17755 | 0.083618 | 0.028986\n2024-03-14 | 210565 | 25961 | 10209 | 301 | 9908 | 0.047054 | 0.029484\n2024-03-15 | 199922 | 24798 | 9729 | 291 | 9438 | 0.047208 | 0.029911\n2024-03-16 | 164214 | 19817 | 14039 | 408 | 13631 | 0.083008 | 0.029062\n2024-03-17 | 156384 | 19243 | 13357 | 406 | 12951 | 0.082815 | 0.030396\n2024-03-18 | 205330 | 25007 | 17554 | 553 | 17001 | 0.082798 | 0.031503",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  },
+  "dropped_claims": [],
+  "quarantined_ids": [
+   "TKT-00292",
+   "TKT-00289"
+  ],
+  "notes": [],
+  "totals": {
+   "latency_ms": 19500,
+   "input_tokens": 24775,
+   "output_tokens": 3836,
+   "cost_usd": 0.004396,
+   "llm_calls": 6,
+   "tool_calls": 6
+  }
+ },
+ "error": null
+}

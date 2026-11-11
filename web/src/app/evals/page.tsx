@@ -109,7 +109,12 @@ function MetricsTable({ split, group }: { split: SplitResult | null | undefined;
             <tr key={row.system} className="border-t border-line first:border-t-0">
               <RowHead>{row.label ?? row.system}</RowHead>
               {metricDefs.map((m) => (
-                <Cell key={m.key} value={fmtMetric(m.kind, row.metrics?.[m.key])} />
+                <Cell
+                  key={m.key}
+                  value={
+                    row.complete && row.metrics?.[m.key] == null ? "n/a" : fmtMetric(m.kind, row.metrics?.[m.key])
+                  }
+                />
               ))}
             </tr>
           ))}

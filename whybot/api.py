@@ -123,9 +123,13 @@ def live(question: str, run_id: str) -> Iterator[str]:
                 yield sse("step", event.model_dump_json())
     except LLMError as exc:
         error = str(exc)
-        yield sse(
-            "error", {"code": "internal", "message": "The language model call failed. Please try again."}
-        )
+        if "usage limits" in error or "credit balance" in error:
+            # The API account itself is out of budget. Say so plainly; examples still work.
+            message = "The demo's API budget is used up. Examples still work."
+            yield sse("error", {"code": "spend_cap", "message": message})
+        else:
+            message = "The language model call failed. Please try again."
+            yield sse("error", {"code": "internal", "message": message})
     except Exception as exc:  # never leak a stack trace to the browser
         error = f"{type(exc).__name__}: {exc}"
         yield sse("error", {"code": "internal", "message": "Something went wrong while investigating."})

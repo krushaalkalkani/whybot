@@ -1,0 +1,785 @@
+{
+ "id": "ex-S015",
+ "created_at": "2026-11-11T17:37:07.804313+00:00",
+ "question": "What caused the 40% fall in checkout conversion on 2024-06-10?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: conversion_rate on 2024-06-10",
+   "detail": "Pull daily conversion_rate for 2024-06-10 and compare with the prior 14 days to confirm the roughly 40% drop. | Break the drop down by region, platform and channel to find where it is concentrated. | Check the deploy changelog (CHG entries) and GitHub issues (ISS entries) for releases or incidents around 2024-06-10. | Check support tickets (TKT entries) and payment_failure_rate for the same date to see if customers reported checkout or payment problems. | Match the strongest evidence to one cause type (bad_deploy, pricing_change, regional_outage, platform_bug, campaign_end, payment_provider_error or seasonality) and report it with the metric results as evidence.",
+   "input": {},
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-06-10",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily conversion_rate for 2024-06-10 and compare with the prior 14 days to confirm the roughly 40% drop.",
+     "Break the drop down by region, platform and channel to find where it is concentrated.",
+     "Check the deploy changelog (CHG entries) and GitHub issues (ISS entries) for releases or incidents around 2024-06-10.",
+     "Check support tickets (TKT entries) and payment_failure_rate for the same date to see if customers reported checkout or payment problems.",
+     "Match the strongest evidence to one cause type (bad_deploy, pricing_change, regional_outage, platform_bug, campaign_end, payment_provider_error or seasonality) and report it with the metric results as evidence."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2231,
+   "input_tokens": 1360,
+   "output_tokens": 288,
+   "cost_usd": 0.00028
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: conversion_rate on 2024-06-10",
+   "detail": "conversion_rate on 2024-06-10 (Monday) was 0.04957. The same weekday in the 6 weeks before had a median of 0.08282. Change vs that baseline: -40.1% (z = -40.1). Change vs the day before: -39.9%. This is unusual (|z| >= 3).",
+   "input": {
+    "metric": "conversion_rate",
+    "date": "2024-06-10"
+   },
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-06-10",
+    "filters": {},
+    "value": 0.049571,
+    "baseline": 0.082821,
+    "pct_change": -40.15,
+    "z_score": -40.15,
+    "day_before_value": 0.082435,
+    "pct_change_vs_day_before": -39.87,
+    "is_anomaly": true,
+    "explanation": "conversion_rate on 2024-06-10 (Monday) was 0.04957. The same weekday in the 6 weeks before had a median of 0.08282. Change vs that baseline: -40.1% (z = -40.1). Change vs the day before: -39.9%. This is unusual (|z| >= 3)."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 1,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: conversion_rate on 2024-06-10",
+   "detail": "Overall conversion_rate changed -40.1% on 2024-06-10. No single region, platform or channel stands out; the slices moved about the same.",
+   "input": {
+    "metric": "conversion_rate",
+    "date": "2024-06-10"
+   },
+   "output": {
+    "metric": "conversion_rate",
+    "date": "2024-06-10",
+    "overall_pct_change": -40.15,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 0.049382,
+      "baseline": 0.082149,
+      "pct_change": -39.89,
+      "z_score": -39.89
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 0.050131,
+      "baseline": 0.082444,
+      "pct_change": -39.19,
+      "z_score": -36.74
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 0.050635,
+      "baseline": 0.083237,
+      "pct_change": -39.17,
+      "z_score": -14.73
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 0.049286,
+      "baseline": 0.083621,
+      "pct_change": -41.06,
+      "z_score": -15.63
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 0.048047,
+      "baseline": 0.083086,
+      "pct_change": -42.17,
+      "z_score": -7.56
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 0.048209,
+      "baseline": 0.081091,
+      "pct_change": -40.55,
+      "z_score": -33.22
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 0.0529,
+      "baseline": 0.089062,
+      "pct_change": -40.6,
+      "z_score": -40.6
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 0.047983,
+      "baseline": 0.076689,
+      "pct_change": -37.43,
+      "z_score": -25.91
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 0.049061,
+      "baseline": 0.082653,
+      "pct_change": -40.64,
+      "z_score": -33.62
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 0.049952,
+      "baseline": 0.082445,
+      "pct_change": -39.41,
+      "z_score": -26.73
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 0.050891,
+      "baseline": 0.083046,
+      "pct_change": -38.72,
+      "z_score": -19.86
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 0.048514,
+      "baseline": 0.083194,
+      "pct_change": -41.69,
+      "z_score": -31.65
+     }
+    ],
+    "concentrated_in": [],
+    "explanation": "Overall conversion_rate changed -40.1% on 2024-06-10. No single region, platform or channel stands out; the slices moved about the same."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Choose next tools",
+   "detail": "",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2903,
+   "input_tokens": 3475,
+   "output_tokens": 755,
+   "cost_usd": 0.000725
+  },
+  {
+   "index": 4,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: checkout conversion drop deploy release",
+   "detail": "3 documents: CHG-0097, CHG-0096, CHG-0098",
+   "input": {
+    "date_from": "2024-06-08",
+    "date_to": "2024-06-12",
+    "query": "checkout conversion drop deploy release",
+    "source": "changelog"
+   },
+   "output": {
+    "query": "checkout conversion drop deploy release",
+    "results": [
+     {
+      "id": "CHG-0097",
+      "title": "checkout-service v7.19.0",
+      "date": "2024-06-10",
+      "score": -5.7387
+     },
+     {
+      "id": "CHG-0096",
+      "title": "cart-service v5.17.9",
+      "date": "2024-06-10",
+      "score": -11.3483
+     },
+     {
+      "id": "CHG-0098",
+      "title": "marketing-config v7.19.0",
+      "date": "2024-06-12",
+      "score": -11.386
+     }
+    ]
+   },
+   "evidence_ids": [
+    "CHG-0097",
+    "CHG-0096",
+    "CHG-0098"
+   ],
+   "is_error": false,
+   "latency_ms": 10,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 5,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: checkout broken payment error incident",
+   "detail": "4 documents: ISS-0068, ISS-0069, ISS-0067, ISS-0066",
+   "input": {
+    "date_from": "2024-06-08",
+    "date_to": "2024-06-12",
+    "query": "checkout broken payment error incident",
+    "source": "issue"
+   },
+   "output": {
+    "query": "checkout broken payment error incident",
+    "results": [
+     {
+      "id": "ISS-0068",
+      "title": "Regression: checkout step 2 rejects valid addresses (checkout-service v7.19.0)",
+      "date": "2024-06-10",
+      "score": -3.4983
+     },
+     {
+      "id": "ISS-0069",
+      "title": "Add dark mode to help centre",
+      "date": "2024-06-12",
+      "score": -11.3499
+     },
+     {
+      "id": "ISS-0067",
+      "title": "Upgrade analytics SDK",
+      "date": "2024-06-09",
+      "score": -11.3869
+     },
+     {
+      "id": "ISS-0066",
+      "title": "Dashboard: conversion chart y-axis starts at wrong value",
+      "date": "2024-06-08",
+      "score": -11.4245
+     }
+    ]
+   },
+   "evidence_ids": [
+    "ISS-0068",
+    "ISS-0069",
+    "ISS-0067",
+    "ISS-0066"
+   ],
+   "is_error": false,
+   "latency_ms": 17,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 6,
+   "kind": "tool",
+   "name": "search_evidence",
+   "title": "Search evidence: customer cannot complete checkout or payment declined",
+   "detail": "8 documents: TKT-00692, TKT-00700, TKT-00689, TKT-00696, TKT-00691, TKT-00685, TKT-00690, TKT-00695",
+   "input": {
+    "date_from": "2024-06-08",
+    "date_to": "2024-06-12",
+    "query": "customer cannot complete checkout or payment declined",
+    "source": "ticket"
+   },
+   "output": {
+    "query": "customer cannot complete checkout or payment declined",
+    "results": [
+     {
+      "id": "TKT-00692",
+      "title": "Cannot finish my purchase",
+      "date": "2024-06-10",
+      "score": -1.5368
+     },
+     {
+      "id": "TKT-00700",
+      "title": "Cannot finish my purchase",
+      "date": "2024-06-11",
+      "score": -1.5368
+     },
+     {
+      "id": "TKT-00689",
+      "title": "Checkout broken?",
+      "date": "2024-06-10",
+      "score": -4.721
+     },
+     {
+      "id": "TKT-00696",
+      "title": "Checkout broken?",
+      "date": "2024-06-11",
+      "score": -4.8007
+     },
+     {
+      "id": "TKT-00691",
+      "title": "Coupon makes checkout fail",
+      "date": "2024-06-10",
+      "score": -5.2366
+     },
+     {
+      "id": "TKT-00685",
+      "title": "Question about checkout",
+      "date": "2024-06-09",
+      "score": -7.573
+     },
+     {
+      "id": "TKT-00690",
+      "title": "Question about checkout",
+      "date": "2024-06-10",
+      "score": -7.573
+     },
+     {
+      "id": "TKT-00695",
+      "title": "My cart keeps emptying",
+      "date": "2024-06-11",
+      "score": -10.1665
+     }
+    ]
+   },
+   "evidence_ids": [
+    "TKT-00692",
+    "TKT-00700",
+    "TKT-00689",
+    "TKT-00696",
+    "TKT-00691",
+    "TKT-00685",
+    "TKT-00690",
+    "TKT-00695"
+   ],
+   "is_error": false,
+   "latency_ms": 43,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 7,
+   "kind": "tool",
+   "name": "run_metric_query",
+   "title": "Run metric query",
+   "detail": "19 rows",
+   "input": {
+    "sql": "SELECT date, SUM(checkout_starts)::float/NULLIF(SUM(sessions),0) AS checkout_start_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(sessions) AS sessions FROM daily_metrics WHERE date BETWEEN '2024-05-27' AND '2024-06-14' GROUP BY date ORDER BY date"
+   },
+   "output": {
+    "columns": [
+     "date",
+     "checkout_start_rate",
+     "payment_failure_rate",
+     "conversion_rate",
+     "sessions"
+    ],
+    "rows": [
+     [
+      "2024-05-27",
+      0.12213,
+      0.028296,
+      0.083103,
+      210751
+     ],
+     [
+      "2024-05-28",
+      0.122629,
+      0.030025,
+      0.08355,
+      217690
+     ],
+     [
+      "2024-05-29",
+      0.122676,
+      0.030144,
+      0.083516,
+      218437
+     ],
+     [
+      "2024-05-30",
+      0.122097,
+      0.029788,
+      0.083404,
+      216345
+     ],
+     [
+      "2024-05-31",
+      0.121586,
+      0.028329,
+      0.082367,
+      206125
+     ],
+     [
+      "2024-06-01",
+      0.122985,
+      0.027696,
+      0.083277,
+      169890
+     ],
+     [
+      "2024-06-02",
+      0.098044,
+      0.028854,
+      0.067189,
+      162304
+     ],
+     [
+      "2024-06-03",
+      0.096827,
+      0.030291,
+      0.066049,
+      213267
+     ],
+     [
+      "2024-06-04",
+      0.096958,
+      0.030231,
+      0.065547,
+      216805
+     ],
+     [
+      "2024-06-05",
+      0.12196,
+      0.030111,
+      0.08334,
+      220302
+     ],
+     [
+      "2024-06-06",
+      0.122006,
+      0.029572,
+      0.082368,
+      217924
+     ],
+     [
+      "2024-06-07",
+      0.122139,
+      0.028555,
+      0.082359,
+      206536
+     ],
+     [
+      "2024-06-08",
+      0.122369,
+      0.029722,
+      0.083296,
+      171269
+     ],
+     [
+      "2024-06-09",
+      0.121906,
+      0.02985,
+      0.082435,
+      161255
+     ],
+     [
+      "2024-06-10",
+      0.122196,
+      0.028767,
+      0.049571,
+      214540
+     ],
+     [
+      "2024-06-11",
+      0.122851,
+      0.028711,
+      0.049547,
+      217125
+     ],
+     [
+      "2024-06-12",
+      0.122579,
+      0.029224,
+      0.083481,
+      220446
+     ],
+     [
+      "2024-06-13",
+      0.123019,
+      0.028539,
+      0.083919,
+      217008
+     ],
+     [
+      "2024-06-14",
+      0.121461,
+      0.02818,
+      0.082193,
+      206429
+     ]
+    ],
+    "row_count": 19,
+    "truncated": false
+   },
+   "evidence_ids": [
+    "M3"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 8,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Finished investigating",
+   "detail": "The 40% conversion drop on 2024-06-10 was a bad_deploy: checkout-service v7.19.0 (CHG-0097, enabled the new address normalizer) shipped that day, and ISS-0068 reports that its stricter validation rejects valid addresses with unit numbers, blocking customers before payment.\n\n- **Size and spread:** conversion fell from about 0.083 to 0.0496 (-40.1% vs the weekday baseline). Every region, platform an",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4075,
+   "input_tokens": 6505,
+   "output_tokens": 795,
+   "cost_usd": 0.001048
+  },
+  {
+   "index": 9,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "checkout-service v7.19.0 address validation blocks checkout",
+   "input": {},
+   "output": {
+    "abstain": false,
+    "abstain_reason": "",
+    "summary": "Conversion fell about 40% on 2024-06-10 and stayed low on 2024-06-11, then recovered by 2024-06-12. The drop hit every region and platform evenly, and the checkout start rate did not move, so customers were lost after they started checkout. The checkout-service v7.19.0 release shipped on 2024-06-10 with stricter address validation, which a bug report ties to rejected addresses at checkout.",
+    "causes": [
+     {
+      "cause_type": "bad_deploy",
+      "segment_dimension": "all",
+      "segment_value": "all",
+      "title": "checkout-service v7.19.0 address validation blocks checkout",
+      "confidence": "high",
+      "claims": [
+       {
+        "text": "Conversion rate fell 40.1% on 2024-06-10 against the same weekday baseline, and the drop was about equal across all regions and platforms.",
+        "evidence_ids": [
+         "M1",
+         "M2"
+        ]
+       },
+       {
+        "text": "Checkout-service v7.19.0 was released on 2024-06-10 and enabled a new address normalizer for all orders.",
+        "evidence_ids": [
+         "CHG-0097"
+        ]
+       },
+       {
+        "text": "A regression issue reports that the stricter validation in v7.19.0 rejects valid addresses with unit numbers, so customers cannot continue to payment on any region or platform.",
+        "evidence_ids": [
+         "ISS-0068"
+        ]
+       },
+       {
+        "text": "The checkout start rate stayed near 0.122 on 2024-06-10 while conversion dropped to 0.0496, so the loss happened after customers started checkout.",
+        "evidence_ids": [
+         "M3"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 5802,
+   "input_tokens": 4773,
+   "output_tokens": 1273,
+   "cost_usd": 0.0011137999999999999
+  },
+  {
+   "index": 10,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "4 claims supported, 0 dropped",
+   "input": {},
+   "output": {
+    "kept": 4,
+    "dropped": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4558,
+   "input_tokens": 2649,
+   "output_tokens": 849,
+   "cost_usd": 0.0006894000000000001
+  },
+  {
+   "index": 11,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: answered",
+   "detail": "",
+   "input": {},
+   "output": {
+    "verdict": "answered",
+    "notes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "answered",
+  "summary": "Conversion fell about 40% on 2024-06-10 and stayed low on 2024-06-11, then recovered by 2024-06-12. The drop hit every region and platform evenly, and the checkout start rate did not move, so customers were lost after they started checkout. The checkout-service v7.19.0 release shipped on 2024-06-10 with stricter address validation, which a bug report ties to rejected addresses at checkout.",
+  "causes": [
+   {
+    "rank": 1,
+    "cause_type": "bad_deploy",
+    "segment_dimension": "all",
+    "segment_value": "all",
+    "title": "checkout-service v7.19.0 address validation blocks checkout",
+    "confidence": "high",
+    "claims": [
+     {
+      "text": "Conversion rate fell 40.1% on 2024-06-10 against the same weekday baseline, and the drop was about equal across all regions and platforms.",
+      "evidence_ids": [
+       "M1",
+       "M2"
+      ],
+      "verified": true,
+      "note": "M1 gives the -40.1% change against the same-weekday baseline, and M2 shows all region, platform and channel slices falling between about -37% and -42%, with none standing out."
+     },
+     {
+      "text": "Checkout-service v7.19.0 was released on 2024-06-10 and enabled a new address normalizer for all orders.",
+      "evidence_ids": [
+       "CHG-0097"
+      ],
+      "verified": true,
+      "note": "CHG-0097 is a checkout-service v7.19.0 change dated 2024-06-10 that enables the new address normalizer for all orders."
+     },
+     {
+      "text": "A regression issue reports that the stricter validation in v7.19.0 rejects valid addresses with unit numbers, so customers cannot continue to payment on any region or platform.",
+      "evidence_ids": [
+       "ISS-0068"
+      ],
+      "verified": true,
+      "note": "ISS-0068 is a regression report saying the v7.19.0 stricter validation rejects valid addresses with unit numbers, blocks payment, and was reproduced on all regions and platforms."
+     },
+     {
+      "text": "The checkout start rate stayed near 0.122 on 2024-06-10 while conversion dropped to 0.0496, so the loss happened after customers started checkout.",
+      "evidence_ids": [
+       "M3"
+      ],
+      "verified": true,
+      "note": "On 2024-06-10 the checkout start rate is 0.122196 while conversion is 0.049571, and the payment failure rate stays near 0.029, so the drop sits downstream of checkout start."
+     }
+    ]
+   }
+  ],
+  "evidence": {
+   "M1": {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: conversion_rate on 2024-06-10",
+    "date": "2024-06-10",
+    "body": "conversion_rate on 2024-06-10 (Monday) was 0.04957. The same weekday in the 6 weeks before had a median of 0.08282. Change vs that baseline: -40.1% (z = -40.1). Change vs the day before: -39.9%. This is unusual (|z| >= 3).",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "M2": {
+    "id": "M2",
+    "source": "metric",
+    "title": "decompose_by_segment: conversion_rate on 2024-06-10",
+    "date": "2024-06-10",
+    "body": "Overall conversion_rate changed -40.1% on 2024-06-10. No single region, platform or channel stands out; the slices moved about the same.\nChange vs weekday baseline, per slice:\n  region=na: -39.9% (z -39.9)\n  region=eu: -39.2% (z -36.7)\n  region=uk: -39.2% (z -14.7)\n  region=apac: -41.1% (z -15.6)\n  region=latam: -42.2% (z -7.6)\n  platform=web: -40.5% (z -33.2)\n  platform=ios: -40.6% (z -40.6)\n  platform=android: -37.4% (z -25.9)\n  channel=organic: -40.6% (z -33.6)\n  channel=paid_search: -39.4% (z -26.7)\n  channel=email: -38.7% (z -19.9)\n  channel=social: -41.7% (z -31.6)",
+    "meta": {
+     "tool": "decompose_by_segment"
+    },
+    "score": null,
+    "quarantined": false
+   },
+   "CHG-0097": {
+    "id": "CHG-0097",
+    "source": "changelog",
+    "title": "checkout-service v7.19.0",
+    "date": "2024-06-10",
+    "body": "Enable new address normalizer for all orders. Clean up feature flags from last quarter.",
+    "meta": {
+     "service": "checkout-service"
+    },
+    "score": -5.7387,
+    "quarantined": false
+   },
+   "ISS-0068": {
+    "id": "ISS-0068",
+    "source": "issue",
+    "title": "Regression: checkout step 2 rejects valid addresses (checkout-service v7.19.0)",
+    "date": "2024-06-10",
+    "body": "The stricter validation shipped in v7.19.0 rejects addresses with unit numbers. Customers cannot continue to payment. Reproduced on all regions and platforms. Needs a hotfix or rollback.",
+    "meta": {
+     "labels": [
+      "bug",
+      "checkout"
+     ]
+    },
+    "score": -3.4983,
+    "quarantined": false
+   },
+   "M3": {
+    "id": "M3",
+    "source": "metric",
+    "title": "Run metric query",
+    "date": "2024-06-10",
+    "body": "SQL: SELECT date, SUM(checkout_starts)::float/NULLIF(SUM(sessions),0) AS checkout_start_rate, SUM(payment_failures)::float/NULLIF(SUM(payment_attempts),0) AS payment_failure_rate, SUM(orders)::float/NULLIF(SUM(sessions),0) AS conversion_rate, SUM(sessions) AS sessions FROM daily_metrics WHERE date BETWEEN '2024-05-27' AND '2024-06-14' GROUP BY date ORDER BY date\ndate | checkout_start_rate | payment_failure_rate | conversion_rate | sessions\n2024-05-27 | 0.12213 | 0.028296 | 0.083103 | 210751\n2024-05-28 | 0.122629 | 0.030025 | 0.08355 | 217690\n2024-05-29 | 0.122676 | 0.030144 | 0.083516 | 218437\n2024-05-30 | 0.122097 | 0.029788 | 0.083404 | 216345\n2024-05-31 | 0.121586 | 0.028329 | 0.082367 | 206125\n2024-06-01 | 0.122985 | 0.027696 | 0.083277 | 169890\n2024-06-02 | 0.098044 | 0.028854 | 0.067189 | 162304\n2024-06-03 | 0.096827 | 0.030291 | 0.066049 | 213267\n2024-06-04 | 0.096958 | 0.030231 | 0.065547 | 216805\n2024-06-05 | 0.12196 | 0.030111 | 0.08334 | 220302\n2024-06-06 | 0.122006 | 0.029572 | 0.082368 | 217924\n2024-06-07 | 0.122139 | 0.028555 | 0.082359 | 206536\n2024-06-08 | 0.122369 | 0.029722 | 0.083296 | 171269\n2024-06-09 | 0.121906 | 0.02985 | 0.082435 | 161255\n2024-06-10 | 0.122196 | 0.028767 | 0.049571 | 214540\n2024-06-11 | 0.122851 | 0.028711 | 0.049547 | 217125\n2024-06-12 | 0.122579 | 0.029224 | 0.083481 | 220446\n2024-06-13 | 0.123019 | 0.028539 | 0.083919 | 217008\n2024-06-14 | 0.121461 | 0.02818 | 0.082193 | 206429",
+    "meta": {
+     "tool": "run_metric_query"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  },
+  "dropped_claims": [],
+  "quarantined_ids": [],
+  "notes": [],
+  "totals": {
+   "latency_ms": 19646,
+   "input_tokens": 18762,
+   "output_tokens": 3960,
+   "cost_usd": 0.003856,
+   "llm_calls": 5,
+   "tool_calls": 6
+  }
+ },
+ "error": null
+}

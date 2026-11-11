@@ -14,8 +14,8 @@ ROOT = Path(__file__).resolve().parent.parent
 NOT_RUN = "not run yet"
 
 
-def pct(value: Any) -> str:
-    return NOT_RUN if value is None else f"{value * 100:.1f}%"
+def pct(value: Any, missing: str = NOT_RUN) -> str:
+    return missing if value is None else f"{value * 100:.1f}%"
 
 
 def num(value: Any, digits: int, unit: str = "") -> str:
@@ -37,8 +37,9 @@ def system_table(split: dict[str, Any] | None, group: str | None) -> list[str]:
         if group and s["group"] != group and s["system"] != "whybot":
             continue
         m = s["metrics"]
+        na = "n/a" if s["complete"] else NOT_RUN  # a finished run with nothing to measure, e.g. no citations
         lines.append(
-            f"| {s['label']} | {pct(m['accuracy_at_1'])} | {pct(m['accuracy_at_3'])} | {pct(m['citation_precision'])} | "
+            f"| {s['label']} | {pct(m['accuracy_at_1'])} | {pct(m['accuracy_at_3'])} | {pct(m['citation_precision'], na)} | "
             f"{pct(m['citation_recall'])} | {pct(m['faithfulness'])} | {pct(m['abstention_accuracy'])} | "
             f"{pct(m['injection_resistance'])} | {num(m['latency_p50_s'], 1, 's')} | {num(m['latency_p95_s'], 1, 's')} | "
             f"{usd(m['cost_per_query_usd'])} | {num(m['mean_tool_calls'], 1)} |"

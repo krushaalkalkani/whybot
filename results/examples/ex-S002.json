@@ -1,0 +1,369 @@
+{
+ "id": "ex-S002",
+ "created_at": "2026-11-11T17:37:07.886624+00:00",
+ "question": "Why did site traffic drop 17% on 2024-03-02 compared with the day before?",
+ "system": "whybot",
+ "status": "done",
+ "steps": [
+  {
+   "index": 0,
+   "kind": "plan",
+   "name": "plan",
+   "title": "Plan: sessions on 2024-03-02",
+   "detail": "Pull daily sessions for 2024-03-02 and 2024-03-01 to confirm the 17% drop and its size. | Break the sessions change down by region, platform and channel to find where the loss is concentrated. | Check whether the drop matches a normal repeating pattern such as a weekday or weekend effect. | Search the deploy changelog, GitHub issues and support tickets for releases, outages or campaign changes around 2024-03-01 to 2024-03-02. | Summarize the most likely cause type (bad_deploy, regional_outage, platform_bug, campaign_end or seasonality) with the supporting evidence and metric IDs.",
+   "input": {},
+   "output": {
+    "metric": "sessions",
+    "date": "2024-03-02",
+    "direction": "drop",
+    "region": null,
+    "platform": null,
+    "channel": null,
+    "steps": [
+     "Pull daily sessions for 2024-03-02 and 2024-03-01 to confirm the 17% drop and its size.",
+     "Break the sessions change down by region, platform and channel to find where the loss is concentrated.",
+     "Check whether the drop matches a normal repeating pattern such as a weekday or weekend effect.",
+     "Search the deploy changelog, GitHub issues and support tickets for releases, outages or campaign changes around 2024-03-01 to 2024-03-02.",
+     "Summarize the most likely cause type (bad_deploy, regional_outage, platform_bug, campaign_end or seasonality) with the supporting evidence and metric IDs."
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2664,
+   "input_tokens": 1363,
+   "output_tokens": 263,
+   "cost_usd": 0.0002678
+  },
+  {
+   "index": 1,
+   "kind": "tool",
+   "name": "detect_anomaly",
+   "title": "detect_anomaly: sessions on 2024-03-02",
+   "detail": "sessions on 2024-03-02 (Saturday) was 1.645e+05. The same weekday in the 6 weeks before had a median of 1.625e+05. Change vs that baseline: +1.2% (z = +1.2). Change vs the day before: -16.7%. This is within the normal range for this weekday, so it is not an anomaly.",
+   "input": {
+    "metric": "sessions",
+    "date": "2024-03-02"
+   },
+   "output": {
+    "metric": "sessions",
+    "date": "2024-03-02",
+    "filters": {},
+    "value": 164463.0,
+    "baseline": 162456.0,
+    "pct_change": 1.24,
+    "z_score": 1.24,
+    "day_before_value": 197549.0,
+    "pct_change_vs_day_before": -16.75,
+    "is_anomaly": false,
+    "explanation": "sessions on 2024-03-02 (Saturday) was 1.645e+05. The same weekday in the 6 weeks before had a median of 1.625e+05. Change vs that baseline: +1.2% (z = +1.2). Change vs the day before: -16.7%. This is within the normal range for this weekday, so it is not an anomaly."
+   },
+   "evidence_ids": [
+    "M1"
+   ],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 2,
+   "kind": "tool",
+   "name": "decompose_by_segment",
+   "title": "decompose_by_segment: sessions on 2024-03-02",
+   "detail": "Overall sessions changed +1.2% on 2024-03-02. No single region, platform or channel stands out; the slices moved about the same.",
+   "input": {
+    "metric": "sessions",
+    "date": "2024-03-02"
+   },
+   "output": {
+    "metric": "sessions",
+    "date": "2024-03-02",
+    "overall_pct_change": 1.24,
+    "segments": [
+     {
+      "dimension": "region",
+      "value": "na",
+      "metric_value": 65569.0,
+      "baseline": 64951.5,
+      "pct_change": 0.95,
+      "z_score": 0.95
+     },
+     {
+      "dimension": "region",
+      "value": "eu",
+      "metric_value": 41335.0,
+      "baseline": 40708.5,
+      "pct_change": 1.54,
+      "z_score": 1.54
+     },
+     {
+      "dimension": "region",
+      "value": "uk",
+      "metric_value": 19701.0,
+      "baseline": 19537.5,
+      "pct_change": 0.84,
+      "z_score": 0.44
+     },
+     {
+      "dimension": "region",
+      "value": "apac",
+      "metric_value": 21094.0,
+      "baseline": 21134.5,
+      "pct_change": -0.19,
+      "z_score": -0.19
+     },
+     {
+      "dimension": "region",
+      "value": "latam",
+      "metric_value": 16764.0,
+      "baseline": 16165.0,
+      "pct_change": 3.71,
+      "z_score": 3.04
+     },
+     {
+      "dimension": "platform",
+      "value": "web",
+      "metric_value": 82029.0,
+      "baseline": 81236.0,
+      "pct_change": 0.98,
+      "z_score": 0.98
+     },
+     {
+      "dimension": "platform",
+      "value": "ios",
+      "metric_value": 49243.0,
+      "baseline": 48977.0,
+      "pct_change": 0.54,
+      "z_score": 0.52
+     },
+     {
+      "dimension": "platform",
+      "value": "android",
+      "metric_value": 33191.0,
+      "baseline": 32153.5,
+      "pct_change": 3.23,
+      "z_score": 3.23
+     },
+     {
+      "dimension": "channel",
+      "value": "organic",
+      "metric_value": 65754.0,
+      "baseline": 64871.5,
+      "pct_change": 1.36,
+      "z_score": 1.36
+     },
+     {
+      "dimension": "channel",
+      "value": "paid_search",
+      "metric_value": 40895.0,
+      "baseline": 40725.5,
+      "pct_change": 0.42,
+      "z_score": 0.42
+     },
+     {
+      "dimension": "channel",
+      "value": "email",
+      "metric_value": 33406.0,
+      "baseline": 32482.0,
+      "pct_change": 2.84,
+      "z_score": 2.84
+     },
+     {
+      "dimension": "channel",
+      "value": "social",
+      "metric_value": 24408.0,
+      "baseline": 24312.0,
+      "pct_change": 0.39,
+      "z_score": 0.35
+     }
+    ],
+    "concentrated_in": [],
+    "explanation": "Overall sessions changed +1.2% on 2024-03-02. No single region, platform or channel stands out; the slices moved about the same."
+   },
+   "evidence_ids": [
+    "M2"
+   ],
+   "is_error": false,
+   "latency_ms": 3,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  },
+  {
+   "index": 3,
+   "kind": "llm",
+   "name": "investigate",
+   "title": "Finished investigating",
+   "detail": "The 17% drop on 2024-03-02 is a normal weekend dip (seasonality), not an incident. Saturday's sessions were 164.5k, within 1.2% of the median for prior Saturdays (z = +1.2), and no region, platform or channel stands out (M1, M2). No deploy, outage or campaign search is needed.",
+   "input": {},
+   "output": {},
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 2210,
+   "input_tokens": 3455,
+   "output_tokens": 352,
+   "cost_usd": 0.0005215
+  },
+  {
+   "index": 4,
+   "kind": "rank",
+   "name": "rank",
+   "title": "Rank hypotheses",
+   "detail": "Normal weekend dip in sessions on Saturday",
+   "input": {},
+   "output": {
+    "abstain": false,
+    "abstain_reason": "",
+    "summary": "Sessions fell about 17% on 2024-03-02 compared with the day before, but that day was a Saturday. Sessions were within the normal range for a Saturday, so the drop reflects the usual weekday pattern rather than an incident.",
+    "causes": [
+     {
+      "cause_type": "seasonality",
+      "segment_dimension": "all",
+      "segment_value": "all",
+      "title": "Normal weekend dip in sessions on Saturday",
+      "confidence": "high",
+      "claims": [
+       {
+        "text": "Sessions on 2024-03-02 were 1.645e+05, which is 16.7% below the day before.",
+        "evidence_ids": [
+         "M1"
+        ]
+       },
+       {
+        "text": "Compared with the median for the same weekday over the prior six weeks, sessions on 2024-03-02 were up 1.2%, which is within the normal range for a Saturday.",
+        "evidence_ids": [
+         "M1"
+        ]
+       },
+       {
+        "text": "No single region, platform or channel stood out on 2024-03-02, and all slices moved by similar amounts relative to the weekday baseline.",
+        "evidence_ids": [
+         "M2"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 4836,
+   "input_tokens": 2603,
+   "output_tokens": 800,
+   "cost_usd": 0.0006603
+  },
+  {
+   "index": 5,
+   "kind": "verify",
+   "name": "verify",
+   "title": "Verify citations",
+   "detail": "2 claims supported, 1 dropped",
+   "input": {},
+   "output": {
+    "kept": 2,
+    "dropped": [
+     {
+      "text": "No single region, platform or channel stood out on 2024-03-02, and all slices moved by similar amounts relative to the weekday baseline.",
+      "evidence_ids": [
+       "M2"
+      ],
+      "verified": false,
+      "note": "The document says no slice stands out, but the per-slice figures range from -0.2% to +3.7%, including latam +3.7% and android +3.2%, so the claim that all slices moved by similar amounts is not clearly supported."
+     }
+    ]
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 1910,
+   "input_tokens": 1616,
+   "output_tokens": 214,
+   "cost_usd": 0.0002686
+  },
+  {
+   "index": 6,
+   "kind": "guard",
+   "name": "guard",
+   "title": "Guardrails: answered",
+   "detail": "",
+   "input": {},
+   "output": {
+    "verdict": "answered",
+    "notes": []
+   },
+   "evidence_ids": [],
+   "is_error": false,
+   "latency_ms": 0,
+   "input_tokens": 0,
+   "output_tokens": 0,
+   "cost_usd": 0.0
+  }
+ ],
+ "report": {
+  "verdict": "answered",
+  "summary": "Sessions fell about 17% on 2024-03-02 compared with the day before, but that day was a Saturday. Sessions were within the normal range for a Saturday, so the drop reflects the usual weekday pattern rather than an incident.",
+  "causes": [
+   {
+    "rank": 1,
+    "cause_type": "seasonality",
+    "segment_dimension": "all",
+    "segment_value": "all",
+    "title": "Normal weekend dip in sessions on Saturday",
+    "confidence": "medium",
+    "claims": [
+     {
+      "text": "Sessions on 2024-03-02 were 1.645e+05, which is 16.7% below the day before.",
+      "evidence_ids": [
+       "M1"
+      ],
+      "verified": true,
+      "note": "Evidence gives sessions of 1.645e+05 and a -16.7% change vs the day before."
+     },
+     {
+      "text": "Compared with the median for the same weekday over the prior six weeks, sessions on 2024-03-02 were up 1.2%, which is within the normal range for a Saturday.",
+      "evidence_ids": [
+       "M1"
+      ],
+      "verified": true,
+      "note": "Evidence states +1.2% vs the six-week same-weekday median and that it is within the normal range for this weekday."
+     }
+    ]
+   }
+  ],
+  "evidence": {
+   "M1": {
+    "id": "M1",
+    "source": "metric",
+    "title": "detect_anomaly: sessions on 2024-03-02",
+    "date": "2024-03-02",
+    "body": "sessions on 2024-03-02 (Saturday) was 1.645e+05. The same weekday in the 6 weeks before had a median of 1.625e+05. Change vs that baseline: +1.2% (z = +1.2). Change vs the day before: -16.7%. This is within the normal range for this weekday, so it is not an anomaly.",
+    "meta": {
+     "tool": "detect_anomaly"
+    },
+    "score": null,
+    "quarantined": false
+   }
+  },
+  "dropped_claims": [
+   {
+    "text": "No single region, platform or channel stood out on 2024-03-02, and all slices moved by similar amounts relative to the weekday baseline.",
+    "evidence_ids": [
+     "M2"
+    ],
+    "verified": false,
+    "note": "The document says no slice stands out, but the per-slice figures range from -0.2% to +3.7%, including latam +3.7% and android +3.2%, so the claim that all slices moved by similar amounts is not clearly supported."
+   }
+  ],
+  "quarantined_ids": [],
+  "notes": [],
+  "totals": {
+   "latency_ms": 11623,
+   "input_tokens": 9037,
+   "output_tokens": 1629,
+   "cost_usd": 0.001718,
+   "llm_calls": 4,
+   "tool_calls": 2
+  }
+ },
+ "error": null
+}

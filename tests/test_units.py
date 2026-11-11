@@ -50,6 +50,8 @@ def test_strict_schema_closes_objects() -> None:
     schema = strict_schema(DraftReport)
     assert schema["additionalProperties"] is False and set(schema["required"]) == set(schema["properties"])
     assert schema["$defs"]["Claim"]["additionalProperties"] is False
+    assert "title" in schema["$defs"]["DraftCause"]["properties"]  # a field named title must survive
+    assert "title" not in schema
 
 
 def test_cost_uses_price_table() -> None:

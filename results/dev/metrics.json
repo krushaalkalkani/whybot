@@ -1,0 +1,172 @@
+{
+  "agent_effort": "medium",
+  "agent_model": "claude-haiku-5-5",
+  "judge_model": "claude-sonnet-5-5",
+  "n": 40,
+  "run_date": "2026-11-11",
+  "smoke": false,
+  "split": "dev",
+  "systems": {
+    "llm_only": {
+      "group": "main",
+      "label": "A. LLM only",
+      "metrics": {
+        "abstain_recall": 0.0,
+        "abstention_accuracy": 0.9,
+        "accuracy_at_1": 0.325,
+        "accuracy_at_3": 0.45,
+        "citation_precision": null,
+        "citation_recall": 0.0,
+        "cost_per_query_usd": 0.000634,
+        "errors": 0,
+        "faithfulness": 0.0,
+        "false_abstain_rate": 0.0,
+        "injection_resistance": 1.0,
+        "judged_claims": 147,
+        "latency_p50_s": 4.99,
+        "latency_p95_s": 6.3,
+        "mean_tool_calls": 0.0,
+        "n": 40,
+        "type_accuracy_at_1": 0.35
+      }
+    },
+    "rag": {
+      "group": "main",
+      "label": "B. Vector RAG, no tools",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 0.275,
+        "accuracy_at_1": 0.275,
+        "accuracy_at_3": 0.275,
+        "citation_precision": 1.0,
+        "citation_recall": 0.1515,
+        "cost_per_query_usd": 0.000565,
+        "errors": 0,
+        "faithfulness": 0.9231,
+        "false_abstain_rate": 0.8056,
+        "injection_resistance": 1.0,
+        "judged_claims": 13,
+        "latency_p50_s": 3.34,
+        "latency_p95_s": 4.87,
+        "mean_tool_calls": 1.0,
+        "n": 40,
+        "type_accuracy_at_1": 0.275
+      }
+    },
+    "whybot": {
+      "group": "main",
+      "label": "C. WhyBot (full)",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 1.0,
+        "accuracy_at_1": 1.0,
+        "accuracy_at_3": 1.0,
+        "citation_precision": 1.0,
+        "citation_recall": 0.9545,
+        "cost_per_query_usd": 0.003663,
+        "errors": 0,
+        "faithfulness": 0.9118,
+        "false_abstain_rate": 0.0,
+        "injection_resistance": 1.0,
+        "judged_claims": 136,
+        "latency_p50_s": 17.41,
+        "latency_p95_s": 23.05,
+        "mean_tool_calls": 5.3,
+        "n": 40,
+        "type_accuracy_at_1": 1.0
+      }
+    },
+    "whybot_bm25_only": {
+      "group": "ablation",
+      "label": "C with BM25 only",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 1.0,
+        "accuracy_at_1": 1.0,
+        "accuracy_at_3": 1.0,
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "cost_per_query_usd": 0.003626,
+        "errors": 0,
+        "faithfulness": 0.8958,
+        "false_abstain_rate": 0.0,
+        "injection_resistance": 1.0,
+        "judged_claims": 144,
+        "latency_p50_s": 17.79,
+        "latency_p95_s": 22.81,
+        "mean_tool_calls": 5.5,
+        "n": 40,
+        "type_accuracy_at_1": 1.0
+      }
+    },
+    "whybot_dense_only": {
+      "group": "ablation",
+      "label": "C with dense only",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 1.0,
+        "accuracy_at_1": 1.0,
+        "accuracy_at_3": 1.0,
+        "citation_precision": 1.0,
+        "citation_recall": 0.9545,
+        "cost_per_query_usd": 0.003655,
+        "errors": 0,
+        "faithfulness": 0.8849,
+        "false_abstain_rate": 0.0,
+        "injection_resistance": 1.0,
+        "judged_claims": 139,
+        "latency_p50_s": 17.54,
+        "latency_p95_s": 23.21,
+        "mean_tool_calls": 5.3,
+        "n": 40,
+        "type_accuracy_at_1": 1.0
+      }
+    },
+    "whybot_no_rerank": {
+      "group": "ablation",
+      "label": "C without reranker",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 0.975,
+        "accuracy_at_1": 0.975,
+        "accuracy_at_3": 0.975,
+        "citation_precision": 1.0,
+        "citation_recall": 0.9545,
+        "cost_per_query_usd": 0.003732,
+        "errors": 0,
+        "faithfulness": 0.9,
+        "false_abstain_rate": 0.0278,
+        "injection_resistance": 1.0,
+        "judged_claims": 130,
+        "latency_p50_s": 18.06,
+        "latency_p95_s": 24.06,
+        "mean_tool_calls": 5.375,
+        "n": 40,
+        "type_accuracy_at_1": 0.975
+      }
+    },
+    "whybot_no_verifier": {
+      "group": "ablation",
+      "label": "C without verifier",
+      "metrics": {
+        "abstain_recall": 1.0,
+        "abstention_accuracy": 1.0,
+        "accuracy_at_1": 1.0,
+        "accuracy_at_3": 1.0,
+        "citation_precision": 1.0,
+        "citation_recall": 0.9848,
+        "cost_per_query_usd": 0.003052,
+        "errors": 0,
+        "faithfulness": 0.8591,
+        "false_abstain_rate": 0.0,
+        "injection_resistance": 1.0,
+        "judged_claims": 149,
+        "latency_p50_s": 13.51,
+        "latency_p95_s": 17.46,
+        "mean_tool_calls": 5.3,
+        "n": 40,
+        "type_accuracy_at_1": 1.0
+      }
+    }
+  }
+}

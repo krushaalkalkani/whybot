@@ -86,9 +86,14 @@ def strict_schema(model: type[BaseModel]) -> dict[str, Any]:
     Every object must list all its properties as required and forbid extra ones.
     """
 
-    def fix(node: Any) -> Any:
+    def fix(node: Any, is_property_map: bool = False) -> Any:
         if isinstance(node, dict):
-            node = {k: fix(v) for k, v in node.items() if k not in ("title", "default")}
+            # Drop the schema keywords "title" and "default", but keep a property that is named "title".
+            node = {
+                k: fix(v, is_property_map=(k in ("properties", "$defs")))
+                for k, v in node.items()
+                if is_property_map or k not in ("title", "default")
+            }
             if node.get("type") == "object" and "properties" in node:
                 node["required"] = list(node["properties"])
                 node["additionalProperties"] = False

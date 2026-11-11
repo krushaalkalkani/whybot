@@ -54,6 +54,21 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def log_requests(request: Request, call_next: Any) -> Any:
+    """One JSON log line per request: method, path, status, latency."""
+    started = time.time()
+    response = await call_next(request)
+    log(
+        "request",
+        method=request.method,
+        path=request.url.path,
+        status=response.status_code,
+        latency_ms=int((time.time() - started) * 1000),
+    )
+    return response
+
+
 @lru_cache(maxsize=1)
 def shared_retriever() -> Retriever:
     """Loaded once per process: the BM25 index and the two ONNX models."""
@@ -188,17 +203,29 @@ def get_evals() -> dict[str, Any]:
 
 
 @app.get("/health")
-def health() -> dict[str, Any]:
+def health(deep: bool = False) -> dict[str, Any]:
+    """Liveness check. With ?deep=true it also runs one hybrid search (BM25 + ONNX models + pgvector)."""
     try:
         conn = connect(settings.database_url)
         row = conn.execute("SELECT count(*) AS n FROM documents").fetchone()
-        documents = row["n"] if row else 0
-        conn.close()
-        return {
+        body: dict[str, Any] = {
             "status": "ok",
-            "documents": documents,
+            "documents": row["n"] if row else 0,
             "llm_configured": settings.has_llm_key,
             "agent_model": settings.agent_model,
         }
+        if deep:
+            started = time.time()
+            cards = (
+                shared_retriever()
+                .share(conn)
+                .search("card declined at checkout", AgentConfig().retrieval, k=3)
+            )
+            body["search"] = {
+                "results": [c.id for c in cards],
+                "latency_ms": int((time.time() - started) * 1000),
+            }
+        conn.close()
+        return body
     except psycopg.Error as exc:
         raise HTTPException(503, {"code": "db_down", "message": str(exc).splitlines()[0]}) from exc

@@ -1,0 +1,22 @@
+# The API project ships only what the function needs. The web app is its own Vercel project (web/).
+web
+tests
+docs
+scripts
+bench
+.venv
+.git
+.github
+.env
+.env.*
+.mypy_cache
+.ruff_cache
+.pytest_cache
+*.egg-info
+docker-compose.yml
+Dockerfile
+uv.lock
+results/dev
+results/test
+results/dev_smoke
+results/calibration

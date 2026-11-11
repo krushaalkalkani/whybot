@@ -5,7 +5,7 @@ An agent that explains why a business metric moved, with proof.
 Ask "Why did checkout conversion drop 12% on 2025-10-03?". WhyBot investigates a company's data and returns up to 3 likely root causes, ranked. Every claim links to the evidence behind it: a metric query result, a GitHub issue, a support ticket or a deploy changelog entry. If the evidence is weak it says "not enough evidence" and does not guess.
 
 - Live demo: not deployed yet
-- API docs: not deployed yet
+- API: https://whybot-api.vercel.app/docs (health: https://whybot-api.vercel.app/health?deep=true)
 - Dataset: not published yet
 
 The company is synthetic. I generate it with planted root causes, so every system can be scored against known answers. That benchmark is half of the project.
@@ -174,6 +174,16 @@ claude mcp add whybot -- "$PWD/.venv/bin/python" -m whybot.mcp_server
 - Live questions: 5 per visitor per day (by salted IP hash).
 - A global daily spend cap of 1 USD is kept in Postgres. When it is hit the site says so and stays in cached mode.
 - The API key lives only on the server.
+
+## Deployment
+
+| Part | Where | Why |
+| --- | --- | --- |
+| Web app | Vercel (Next.js) | Static pages plus one client that calls the API. |
+| API | Vercel (FastAPI on the Python runtime) | It fits: the two quantized ONNX models are 56 MB and the bundle is about 245 MB. One hybrid search takes about 1.5 s cold and 0.35 s warm there (measured with `/health?deep=true`). Render's free tier was the fallback; it sleeps after 15 minutes and has 512 MB of memory. |
+| Database | Neon free tier (Postgres 17 + pgvector) | Serverless Postgres in the same region as the function. |
+
+The SQL tool connects with a separate SELECT-only role (`DATABASE_URL_READONLY`).
 
 ## What I would change
 

@@ -13,3 +13,7 @@ node_modules/
 bench/cache/live/
 *.egg-info/
 .DS_Store
+.env.*
+!.env.example
+.vercel
+.env*

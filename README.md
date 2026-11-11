@@ -180,6 +180,8 @@ Source: `results/security.json` (pytest). 34 of 34 test cases pass.
 - The injection filter is a list of regular expressions. It only catches known wordings.
 - The judge is an LLM. Its agreement with a human is measured on 30 claims only.
 - Current Claude models do not accept a `temperature` setting, so the judge cannot be pinned to temperature 0. Repeatability comes from caching each request by its hash.
+- The verifier checks each claim, but not the short summary at the top of a report. In the first stored example the summary writes the provider's name as "Adyen" while the evidence says "Adyon". The claims under it are correct. Verifying the summary too is an open item.
+- Judge calibration against human labels is not done yet (30 claims are prepared in `results/calibration/`).
 - The spend cap is checked before a run and updated after it, so it can overshoot by the cost of one run.
 
 ## Run it

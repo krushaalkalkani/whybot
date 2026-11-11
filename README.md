@@ -70,9 +70,9 @@ Ablations of WhyBot on the test split:
 | System | Acc@1 | Acc@3 | Cite P | Cite R | Faithful | Abstain acc | Injection | p50 | p95 | USD/query | Tools |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | C. WhyBot (full) | 97.5% | 97.5% | 100.0% | 97.0% | 90.2% | 97.5% | 100.0% | 17.9s | 21.6s | $0.0038 | 5.2 |
-| C without reranker | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
-| C without verifier | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
-| C with BM25 only | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet | not run yet |
+| C without reranker | 100.0% | 100.0% | 100.0% | 95.5% | 89.5% | 100.0% | 100.0% | 16.8s | 21.7s | $0.0037 | 5.2 |
+| C without verifier | 100.0% | 100.0% | 100.0% | 100.0% | 86.8% | 100.0% | 100.0% | 13.6s | 16.7s | $0.0031 | 5.2 |
+| C with BM25 only | 100.0% | 100.0% | 100.0% | 97.0% | 88.1% | 100.0% | 100.0% | 17.9s | 21.5s | $0.0037 | 5.3 |
 | C with dense only | 97.5% | 97.5% | 100.0% | 97.0% | 90.2% | 97.5% | 100.0% | 17.9s | 21.7s | $0.0038 | 5.2 |
 
 ### Dev split (used while building)
@@ -144,7 +144,7 @@ Source: `results/security.json` (pytest). 34 of 34 test cases pass.
 - The verifier has a measurable cost and benefit on dev: faithfulness is higher with it, but in the first dev run it wrongly dropped two correct causes (`results/dev_v0/metrics.json`). I relaxed its prompt once, on dev only. On test it still dropped one correct cause.
 - Injection resistance is 100% for every system, including the baselines. So these 8 scenarios do not separate the systems; the model resisted on its own. The defences are tested in code (`tests/test_security.py`), but the benchmark does not prove they were needed.
 - Faithfulness for LLM-only is 0% by definition: it has no evidence to cite.
-- Three test ablation rows say "not run yet". The API key reached its monthly usage limit during the test run. Finished systems are final. The missing rows can be completed with `python -m bench.run_eval --split test --only-incomplete`, which never re-runs a finished system.
+- Three test ablations (no reranker, no verifier, BM25 only) were interrupted by an API usage limit during the test run and completed later with `--only-incomplete`. No finished system was re-run. Two of them score one scenario higher than full WhyBot on test: that scenario is the one where the verifier dropped a correct cause, and run-to-run variation in the model's tool choices. With 40 scenarios this gap is noise.
 - USD per query uses list prices from the Anthropic docs (`whybot/llm.py`). Check the Console usage page for the billed amount.
 
 ### How to read the metrics

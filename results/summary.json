@@ -302,81 +302,81 @@
           "system": "whybot_no_rerank",
           "label": "C without reranker",
           "group": "ablation",
-          "complete": false,
+          "complete": true,
           "metrics": {
-            "accuracy_at_1": null,
-            "accuracy_at_3": null,
-            "citation_precision": null,
-            "citation_recall": null,
-            "faithfulness": null,
-            "abstention_accuracy": null,
-            "injection_resistance": null,
-            "latency_p50_s": null,
-            "latency_p95_s": null,
-            "cost_per_query_usd": null,
-            "mean_tool_calls": null
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9545,
+            "faithfulness": 0.8947,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 16.82,
+            "latency_p95_s": 21.74,
+            "cost_per_query_usd": 0.003736,
+            "mean_tool_calls": 5.175
           },
           "extra": {
             "abstain_recall": 1.0,
-            "errors": 24,
+            "errors": 0,
             "false_abstain_rate": 0.0,
-            "judged_claims": 58,
+            "judged_claims": 133,
             "n": 40,
-            "type_accuracy_at_1": 0.4
+            "type_accuracy_at_1": 1.0
           }
         },
         {
           "system": "whybot_no_verifier",
           "label": "C without verifier",
           "group": "ablation",
-          "complete": false,
+          "complete": true,
           "metrics": {
-            "accuracy_at_1": null,
-            "accuracy_at_3": null,
-            "citation_precision": null,
-            "citation_recall": null,
-            "faithfulness": null,
-            "abstention_accuracy": null,
-            "injection_resistance": null,
-            "latency_p50_s": null,
-            "latency_p95_s": null,
-            "cost_per_query_usd": null,
-            "mean_tool_calls": null
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 1.0,
+            "faithfulness": 0.8684,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 13.61,
+            "latency_p95_s": 16.7,
+            "cost_per_query_usd": 0.003121,
+            "mean_tool_calls": 5.225
           },
           "extra": {
             "abstain_recall": 1.0,
-            "errors": 13,
+            "errors": 0,
             "false_abstain_rate": 0.0,
-            "judged_claims": 96,
+            "judged_claims": 152,
             "n": 40,
-            "type_accuracy_at_1": 0.675
+            "type_accuracy_at_1": 1.0
           }
         },
         {
           "system": "whybot_bm25_only",
           "label": "C with BM25 only",
           "group": "ablation",
-          "complete": false,
+          "complete": true,
           "metrics": {
-            "accuracy_at_1": null,
-            "accuracy_at_3": null,
-            "citation_precision": null,
-            "citation_recall": null,
-            "faithfulness": null,
-            "abstention_accuracy": null,
-            "injection_resistance": null,
-            "latency_p50_s": null,
-            "latency_p95_s": null,
-            "cost_per_query_usd": null,
-            "mean_tool_calls": null
+            "accuracy_at_1": 1.0,
+            "accuracy_at_3": 1.0,
+            "citation_precision": 1.0,
+            "citation_recall": 0.9697,
+            "faithfulness": 0.8806,
+            "abstention_accuracy": 1.0,
+            "injection_resistance": 1.0,
+            "latency_p50_s": 17.86,
+            "latency_p95_s": 21.5,
+            "cost_per_query_usd": 0.00372,
+            "mean_tool_calls": 5.35
           },
           "extra": {
-            "abstain_recall": null,
-            "errors": 36,
+            "abstain_recall": 1.0,
+            "errors": 0,
             "false_abstain_rate": 0.0,
-            "judged_claims": 13,
+            "judged_claims": 134,
             "n": 40,
-            "type_accuracy_at_1": 0.1
+            "type_accuracy_at_1": 1.0
           }
         },
         {

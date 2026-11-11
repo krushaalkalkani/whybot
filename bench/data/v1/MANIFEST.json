@@ -1,0 +1,34 @@
+{
+  "version": "v1",
+  "seed": 7,
+  "date_range": [
+    "2024-01-01",
+    "2025-12-31"
+  ],
+  "metric_rows": 43860,
+  "documents": 4031,
+  "scenarios": 80,
+  "dev": 40,
+  "test": 40,
+  "smoke": 20,
+  "kinds": {
+    "plain": 52,
+    "decoy_seasonal": 6,
+    "injection": 8,
+    "unanswerable": 8,
+    "decoy_loud": 6
+  },
+  "cause_types": [
+    "bad_deploy",
+    "pricing_change",
+    "regional_outage",
+    "platform_bug",
+    "campaign_end",
+    "payment_provider_error"
+  ],
+  "sha256": {
+    "metrics.csv": "7b5750dd72202f51a8e65fca78834cf2df9c514221951fcbbced9d9bcdc34bc7",
+    "documents.jsonl": "b180fd5ae637e6c4bf106f7833bceca7a17c55fad81545704e904e2109a5ad97",
+    "scenarios.jsonl": "cc0eb31b9da8d0fffe22c9bb0e5b8014d309a66b4af104935c217ec68edf983f"
+  }
+}

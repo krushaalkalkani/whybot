@@ -1,0 +1,229 @@
+{
+  "generated_at": "2026-11-11",
+  "benchmark": {
+    "version": "v1",
+    "seed": 7,
+    "scenarios": 80,
+    "dev": 40,
+    "test": 40,
+    "decoys": 12,
+    "unanswerable": 8,
+    "injection": 8,
+    "cause_types": 6,
+    "documents": 4031,
+    "metric_rows": 43860
+  },
+  "models": {
+    "agent": null,
+    "judge": null
+  },
+  "splits": {
+    "dev": null,
+    "test": null
+  },
+  "retrieval": {
+    "split": "dev",
+    "n_queries": 33,
+    "window_days": 2,
+    "rows": [
+      {
+        "config": "BM25 only",
+        "recall_at_10": 0.5,
+        "mrr": 0.3896
+      },
+      {
+        "config": "Dense only",
+        "recall_at_10": 0.6667,
+        "mrr": 0.4614
+      },
+      {
+        "config": "Hybrid (RRF)",
+        "recall_at_10": 0.7121,
+        "mrr": 0.4794
+      },
+      {
+        "config": "Hybrid + reranker",
+        "recall_at_10": 0.6212,
+        "mrr": 0.4511
+      }
+    ]
+  },
+  "judge_calibration": null,
+  "security": {
+    "passed": 34,
+    "total": 34,
+    "tests": [
+      {
+        "name": "test_document_text_cannot_close_the_evidence_tag",
+        "owasp": "LLM01 Prompt injection",
+        "passed": true
+      },
+      {
+        "name": "test_every_prompt_that_shows_evidence_carries_the_security_rule",
+        "owasp": "LLM01 Prompt injection",
+        "passed": true
+      },
+      {
+        "name": "test_filter_flags_obvious_injections_and_no_normal_document",
+        "owasp": "LLM01 Prompt injection",
+        "passed": true
+      },
+      {
+        "name": "test_quarantined_text_never_reaches_the_model_and_cannot_be_cited",
+        "owasp": "LLM01 Prompt injection",
+        "passed": true
+      },
+      {
+        "name": "test_ip_addresses_are_stored_only_as_salted_hashes",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_readonly_role_is_denied_other_tables_even_without_the_guard",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT * FROM daily_metrics UNION SELECT id, question, 'a', 'b', 1, 1, 1, 1, 1, 1 FROM runs]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT * FROM documents]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT * FROM information_schema.tables]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT * FROM pg_catalog.pg_user]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT * FROM runs]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT current_setting('server_version')]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT ip_hash FROM ask_counts]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[SELECT pg_read_file('/etc/passwd')]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_sql_tool_cannot_read_anything_but_metrics[WITH x AS (SELECT * FROM runs) SELECT * FROM x]",
+        "owasp": "LLM02 Sensitive information disclosure",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[COPY daily_metrics TO '/tmp/x']",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[CREATE TABLE x AS SELECT * FROM daily_metrics]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[DELETE FROM daily_metrics]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[DROP TABLE daily_metrics]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[INSERT INTO daily_metrics VALUES (1)]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[SELECT * FROM daily_metrics -- x\\n; DELETE FROM runs]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[SELECT * INTO backup FROM daily_metrics]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[SELECT 1; DROP TABLE runs]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[SET statement_timeout = 0]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[UPDATE daily_metrics SET orders = 0]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_model_written_sql_is_parsed_and_only_single_selects_pass[this is not sql]",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_safe_sql_is_rebuilt_from_the_parse_tree",
+        "owasp": "LLM05 Improper output handling",
+        "passed": true
+      },
+      {
+        "name": "test_agent_has_only_the_four_read_tools",
+        "owasp": "LLM06 Excessive agency",
+        "passed": true
+      },
+      {
+        "name": "test_database_refuses_writes_from_the_sql_tool_connection",
+        "owasp": "LLM06 Excessive agency",
+        "passed": true
+      },
+      {
+        "name": "test_tool_budget_stops_a_model_that_never_stops",
+        "owasp": "LLM06 Excessive agency",
+        "passed": true
+      },
+      {
+        "name": "test_unsupported_claim_is_removed_from_the_answer",
+        "owasp": "LLM09 Misinformation",
+        "passed": true
+      },
+      {
+        "name": "test_per_ip_daily_limit_and_spend_cap",
+        "owasp": "LLM10 Unbounded consumption",
+        "passed": true
+      },
+      {
+        "name": "test_question_length_is_limited_and_no_key_means_no_live_run",
+        "owasp": "LLM10 Unbounded consumption",
+        "passed": true
+      },
+      {
+        "name": "test_sql_results_are_capped",
+        "owasp": "LLM10 Unbounded consumption",
+        "passed": true
+      }
+    ]
+  },
+  "error_analysis": null
+}

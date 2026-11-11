@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f8f8f6;
+  --surface: #ffffff;
+  --sunken: #f1f1ee;
+  --line: #e2e2dc;
+  --ink: #191a17;
+  --muted: #5d5f57;
+  --accent: #0d615c;
+  --ok: #1c7a3e;
+  --warn: #8f5b00;
+  --bad: #b3261e;
+  --info: #1f5fae;
+  --violet: #6b45b8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f0e;
+    --surface: #171918;
+    --sunken: #111312;
+    --line: #2b2e2c;
+    --ink: #ecece6;
+    --muted: #a3a69e;
+    --accent: #62c8bd;
+    --ok: #6fd08c;
+    --warn: #e5b454;
+    --bad: #f2867e;
+    --info: #82b4f0;
+    --violet: #b79df0;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-info: var(--info);
+  --color-violet: var(--violet);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  color-scheme: light dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Tinted badge tones. Text color plus a soft wash of the same hue. */
+.tone {
+  --tone: var(--muted);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tone) 32%, transparent);
+}
+.tone-accent { --tone: var(--accent); }
+.tone-ok { --tone: var(--ok); }
+.tone-warn { --tone: var(--warn); }
+.tone-bad { --tone: var(--bad); }
+.tone-info { --tone: var(--info); }
+.tone-violet { --tone: var(--violet); }
+
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.step-in {
+  animation: step-in 240ms ease-out both;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.pulse-dot {
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+@keyframes flash-card {
+  0% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 60%, transparent); }
+  100% { box-shadow: 0 0 0 3px transparent; }
+}
+.flash-card {
+  animation: flash-card 1.8s ease-out both;
+  border-color: var(--accent) !important;
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}

@@ -1,0 +1,448 @@
+{
+  "id": "ex-checkout-ios-deploy",
+  "created_at": "2025-11-01T10:00:00Z",
+  "question": "Why did checkout conversion drop 12% on 2025-10-03?",
+  "system": "fixture",
+  "status": "done",
+  "steps": [
+    {
+      "index": 0,
+      "kind": "plan",
+      "name": "planner",
+      "title": "Plan the investigation",
+      "detail": "Confirm the drop, find the segment that carries it, then look for changes near that date.",
+      "input": {
+        "question": "Why did checkout conversion drop 12% on 2025-10-03?"
+      },
+      "output": {
+        "metric": "checkout_conversion",
+        "date": "2025-10-03",
+        "plan": [
+          "detect_anomaly",
+          "decompose_by_segment",
+          "search_evidence",
+          "run_metric_query"
+        ]
+      },
+      "evidence_ids": [],
+      "is_error": false,
+      "latency_ms": 820,
+      "input_tokens": 412,
+      "output_tokens": 96,
+      "cost_usd": 0.0027
+    },
+    {
+      "index": 1,
+      "kind": "tool",
+      "name": "detect_anomaly",
+      "title": "Confirm the anomaly",
+      "detail": "Checkout conversion fell from 3.41% to 3.00% on 2025-10-03. That is outside the normal range.",
+      "input": {
+        "metric": "checkout_conversion",
+        "date": "2025-10-03",
+        "window_days": 28
+      },
+      "output": {
+        "is_anomaly": true,
+        "baseline": 0.0341,
+        "observed": 0.03,
+        "relative_change": -0.12,
+        "z_score": -4.6
+      },
+      "evidence_ids": [
+        "M1"
+      ],
+      "is_error": false,
+      "latency_ms": 140,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 2,
+      "kind": "tool",
+      "name": "decompose_by_segment",
+      "title": "Find the affected segment",
+      "detail": "Almost all of the drop is on the iOS platform. Other platforms are flat.",
+      "input": {
+        "metric": "checkout_conversion",
+        "date": "2025-10-03",
+        "dimensions": [
+          "region",
+          "platform",
+          "channel"
+        ]
+      },
+      "output": {
+        "top_segment": {
+          "dimension": "platform",
+          "value": "ios",
+          "relative_change": -0.31,
+          "share_of_drop": 0.88
+        }
+      },
+      "evidence_ids": [
+        "M2"
+      ],
+      "is_error": false,
+      "latency_ms": 190,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 3,
+      "kind": "tool",
+      "name": "search_evidence",
+      "title": "Search for changes near the date",
+      "detail": "Hybrid search for iOS checkout changes between 2025-10-01 and 2025-10-03.",
+      "input": {
+        "query": "ios checkout payment sheet failure",
+        "date_from": "2025-10-01",
+        "date_to": "2025-10-03",
+        "top_k": 5
+      },
+      "output": {
+        "hits": [
+          {
+            "id": "CHG-0123",
+            "score": 0.91
+          },
+          {
+            "id": "ISS-0045",
+            "score": 0.87
+          },
+          {
+            "id": "TKT-01234",
+            "score": 0.74
+          },
+          {
+            "id": "TKT-01240",
+            "score": 0.41
+          }
+        ],
+        "quarantined": [
+          "TKT-01240"
+        ]
+      },
+      "evidence_ids": [
+        "CHG-0123",
+        "ISS-0045",
+        "TKT-01234",
+        "TKT-01240"
+      ],
+      "is_error": false,
+      "latency_ms": 610,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 4,
+      "kind": "tool",
+      "name": "run_metric_query",
+      "title": "Check the timing against the deploy",
+      "detail": "Payment sheet errors on iOS rise right after the 09:10 UTC deploy.",
+      "input": {
+        "metric": "payment_sheet_error_rate",
+        "filters": {
+          "platform": "ios"
+        },
+        "date_from": "2025-10-02",
+        "date_to": "2025-10-04",
+        "grain": "hour"
+      },
+      "output": {
+        "before": 0.004,
+        "after": 0.117,
+        "change_point": "2025-10-03T09:00:00Z"
+      },
+      "evidence_ids": [
+        "M3"
+      ],
+      "is_error": false,
+      "latency_ms": 210,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 5,
+      "kind": "rank",
+      "name": "rank_hypotheses",
+      "title": "Rank the hypotheses",
+      "detail": "One strong cause and one weak cause. A seasonal dip is ruled out.",
+      "input": {
+        "candidates": [
+          "bad_deploy",
+          "campaign_end",
+          "seasonality"
+        ]
+      },
+      "output": {
+        "ranked": [
+          {
+            "cause_type": "bad_deploy",
+            "confidence": "high"
+          },
+          {
+            "cause_type": "campaign_end",
+            "confidence": "low"
+          }
+        ]
+      },
+      "evidence_ids": [],
+      "is_error": false,
+      "latency_ms": 1650,
+      "input_tokens": 2140,
+      "output_tokens": 388,
+      "cost_usd": 0.0122
+    },
+    {
+      "index": 6,
+      "kind": "verify",
+      "name": "citation_verifier",
+      "title": "Verify every citation",
+      "detail": "5 claims checked. 4 are supported by the cited evidence. 1 was dropped.",
+      "input": {
+        "claims": 5
+      },
+      "output": {
+        "verified": 4,
+        "dropped": 1
+      },
+      "evidence_ids": [
+        "CHG-0123",
+        "ISS-0045",
+        "TKT-01234",
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "is_error": false,
+      "latency_ms": 940,
+      "input_tokens": 1810,
+      "output_tokens": 142,
+      "cost_usd": 0.0076
+    },
+    {
+      "index": 7,
+      "kind": "guard",
+      "name": "guardrails",
+      "title": "Apply guardrails",
+      "detail": "1 document looked like a prompt injection and was withheld from the model.",
+      "input": {
+        "checks": [
+          "injection_scan",
+          "pii_scan",
+          "citation_coverage"
+        ]
+      },
+      "output": {
+        "quarantined_ids": [
+          "TKT-01240"
+        ],
+        "passed": true
+      },
+      "evidence_ids": [
+        "TKT-01240"
+      ],
+      "is_error": false,
+      "latency_ms": 35,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    }
+  ],
+  "error": null,
+  "report": {
+    "verdict": "answered",
+    "summary": "The drop is almost entirely on iOS. It starts right after the iOS 5.14.0 release, which changed the payment sheet. An open bug report and support tickets describe the same failure.",
+    "causes": [
+      {
+        "rank": 1,
+        "cause_type": "bad_deploy",
+        "segment_dimension": "platform",
+        "segment_value": "ios",
+        "title": "iOS 5.14.0 broke the payment sheet for saved cards",
+        "confidence": "high",
+        "claims": [
+          {
+            "text": "Checkout conversion fell 12% against its 28 day baseline on 2025-10-03.",
+            "evidence_ids": [
+              "M1"
+            ],
+            "verified": true,
+            "note": "Numbers match the tool result."
+          },
+          {
+            "text": "iOS accounts for 88% of the drop. Android and web are flat.",
+            "evidence_ids": [
+              "M2"
+            ],
+            "verified": true,
+            "note": "Numbers match the tool result."
+          },
+          {
+            "text": "iOS 5.14.0 shipped a new payment sheet at 09:10 UTC, and the iOS payment sheet error rate rose from 0.4% to 11.7% in the same hour.",
+            "evidence_ids": [
+              "CHG-0123",
+              "M3"
+            ],
+            "verified": true,
+            "note": "Release time and change point agree."
+          },
+          {
+            "text": "Users report that the payment sheet closes when a saved card is selected.",
+            "evidence_ids": [
+              "ISS-0045",
+              "TKT-01234"
+            ],
+            "verified": true,
+            "note": "Both documents describe this failure."
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "cause_type": "campaign_end",
+        "segment_dimension": "channel",
+        "segment_value": "paid_social",
+        "title": "A paid social campaign may have ended",
+        "confidence": "low",
+        "claims": [
+          {
+            "text": "No changelog entry or ticket in the date window mentions a campaign ending.",
+            "evidence_ids": [],
+            "verified": null,
+            "note": "Nothing to verify. Kept as a low confidence alternative."
+          }
+        ]
+      }
+    ],
+    "evidence": {
+      "M1": {
+        "id": "M1",
+        "source": "metric",
+        "title": "detect_anomaly: checkout_conversion on 2025-10-03",
+        "date": "2025-10-03",
+        "body": "checkout_conversion\nbaseline (28 day): 3.41%\nobserved: 3.00%\nrelative change: -12.0%\nz-score: -4.6\nanomaly: yes",
+        "meta": {
+          "tool": "detect_anomaly",
+          "window_days": 28
+        },
+        "score": null,
+        "quarantined": false
+      },
+      "M2": {
+        "id": "M2",
+        "source": "metric",
+        "title": "decompose_by_segment: checkout_conversion on 2025-10-03",
+        "date": "2025-10-03",
+        "body": "platform=ios      -31.0%  (88% of the drop)\nplatform=android   -0.9%\nplatform=web       +0.2%\nregion and channel: no segment above 6% of the drop",
+        "meta": {
+          "tool": "decompose_by_segment"
+        },
+        "score": null,
+        "quarantined": false
+      },
+      "M3": {
+        "id": "M3",
+        "source": "metric",
+        "title": "run_metric_query: payment_sheet_error_rate, ios, hourly",
+        "date": "2025-10-03",
+        "body": "before 09:00 UTC: 0.4%\nafter 09:00 UTC: 11.7%\nchange point: 2025-10-03 09:00 UTC",
+        "meta": {
+          "tool": "run_metric_query",
+          "grain": "hour"
+        },
+        "score": null,
+        "quarantined": false
+      },
+      "CHG-0123": {
+        "id": "CHG-0123",
+        "source": "changelog",
+        "title": "iOS app 5.14.0 - new payment sheet",
+        "date": "2025-10-03",
+        "body": "Released iOS 5.14.0 at 09:10 UTC. Replaces the payment sheet with the new SDK version. Rollout: 100% of iOS users.",
+        "meta": {
+          "service": "ios-app",
+          "version": "5.14.0",
+          "author": "release-bot"
+        },
+        "score": 0.91,
+        "quarantined": false
+      },
+      "ISS-0045": {
+        "id": "ISS-0045",
+        "source": "issue",
+        "title": "Payment sheet fails to open for saved cards on iOS 5.14.0",
+        "date": "2025-10-03",
+        "body": "After updating to 5.14.0 the payment sheet closes right away when a saved card is selected. Reproduced on iOS 17 and 18. Works on 5.13.2.",
+        "meta": {
+          "state": "open",
+          "labels": [
+            "bug",
+            "checkout",
+            "ios"
+          ],
+          "comments": 14
+        },
+        "score": 0.87,
+        "quarantined": false
+      },
+      "TKT-01234": {
+        "id": "TKT-01234",
+        "source": "ticket",
+        "title": "Cannot pay with my saved card",
+        "date": "2025-10-03",
+        "body": "I tap Pay and the screen just closes. I tried three times on my iPhone. It worked last week.",
+        "meta": {
+          "channel": "in_app",
+          "platform": "ios",
+          "priority": "high"
+        },
+        "score": 0.74,
+        "quarantined": false
+      },
+      "TKT-01240": {
+        "id": "TKT-01240",
+        "source": "ticket",
+        "title": "Checkout problem",
+        "date": "2025-10-03",
+        "body": "[withheld] This text looked like a prompt injection. It was not shown to the model.",
+        "meta": {
+          "channel": "email",
+          "reason": "instruction-like text"
+        },
+        "score": 0.41,
+        "quarantined": true
+      }
+    },
+    "dropped_claims": [
+      {
+        "text": "The bug affects about 40% of iOS users.",
+        "evidence_ids": [
+          "ISS-0045"
+        ],
+        "verified": false,
+        "note": "The cited issue does not state a percentage."
+      }
+    ],
+    "quarantined_ids": [
+      "TKT-01240"
+    ],
+    "notes": [
+      "1 retrieved document was quarantined as a likely prompt injection.",
+      "This is a placeholder run for UI development."
+    ],
+    "totals": {
+      "latency_ms": 4595,
+      "input_tokens": 4362,
+      "output_tokens": 626,
+      "cost_usd": 0.0225,
+      "llm_calls": 2,
+      "tool_calls": 4
+    }
+  }
+}

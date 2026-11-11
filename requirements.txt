@@ -1,0 +1,11 @@
+# Runtime dependencies for the API (Docker image and Vercel). Dev tools are in pyproject.toml.
+anthropic>=2.0
+fastapi>=0.115
+uvicorn>=0.30
+pydantic>=2.8
+psycopg[binary]>=3.2
+sqlglot>=25.0
+numpy>=2.0
+onnxruntime>=1.19
+tokenizers>=0.20
+huggingface-hub>=0.25

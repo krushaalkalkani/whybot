@@ -1,0 +1,12 @@
+[
+  {
+    "id": "ex-checkout-ios-deploy",
+    "question": "Why did checkout conversion drop 12% on 2025-10-03?",
+    "tag": "Bad deploy"
+  },
+  {
+    "id": "ex-aov-eu-unanswerable",
+    "question": "Why did average order value rise 4% in the EU on 2025-08-19?",
+    "tag": "Unanswerable"
+  }
+]

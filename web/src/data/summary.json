@@ -1,0 +1,157 @@
+{
+  "generated_at": null,
+  "benchmark": {
+    "version": "v1",
+    "seed": 7,
+    "scenarios": 80,
+    "dev": 40,
+    "test": 40,
+    "decoys": 12,
+    "unanswerable": 8,
+    "injection": 8,
+    "cause_types": 6
+  },
+  "models": {
+    "agent": null,
+    "judge": null
+  },
+  "splits": {
+    "dev": {
+      "run_date": null,
+      "n": 40,
+      "systems": [
+        {
+          "system": "llm_only",
+          "label": "A. LLM only",
+          "group": "main",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "rag",
+          "label": "B. Vector RAG, no tools",
+          "group": "main",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "whybot",
+          "label": "C. WhyBot (full)",
+          "group": "main",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "whybot_no_rerank",
+          "label": "C without reranker",
+          "group": "ablation",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "whybot_no_verifier",
+          "label": "C without verifier",
+          "group": "ablation",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "whybot_bm25_only",
+          "label": "C with BM25 only",
+          "group": "ablation",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        },
+        {
+          "system": "whybot_dense_only",
+          "label": "C with dense only",
+          "group": "ablation",
+          "metrics": {
+            "accuracy_at_1": null,
+            "accuracy_at_3": null,
+            "citation_precision": null,
+            "citation_recall": null,
+            "faithfulness": null,
+            "abstention_accuracy": null,
+            "injection_resistance": null,
+            "latency_p50_s": null,
+            "latency_p95_s": null,
+            "cost_per_query_usd": null,
+            "mean_tool_calls": null
+          }
+        }
+      ]
+    },
+    "test": null
+  },
+  "retrieval": null,
+  "judge_calibration": null,
+  "security": null,
+  "error_analysis": null
+}

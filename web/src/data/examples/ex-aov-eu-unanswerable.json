@@ -1,0 +1,212 @@
+{
+  "id": "ex-aov-eu-unanswerable",
+  "created_at": "2025-11-01T10:05:00Z",
+  "question": "Why did average order value rise 4% in the EU on 2025-08-19?",
+  "system": "fixture",
+  "status": "done",
+  "steps": [
+    {
+      "index": 0,
+      "kind": "plan",
+      "name": "planner",
+      "title": "Plan the investigation",
+      "detail": "Confirm the change, then look for pricing or catalog changes in the EU.",
+      "input": {
+        "question": "Why did average order value rise 4% in the EU on 2025-08-19?"
+      },
+      "output": {
+        "metric": "average_order_value",
+        "date": "2025-08-19",
+        "segment": {
+          "region": "eu"
+        }
+      },
+      "evidence_ids": [],
+      "is_error": false,
+      "latency_ms": 760,
+      "input_tokens": 398,
+      "output_tokens": 88,
+      "cost_usd": 0.0025
+    },
+    {
+      "index": 1,
+      "kind": "tool",
+      "name": "detect_anomaly",
+      "title": "Confirm the anomaly",
+      "detail": "The 4% rise is inside the normal day to day range for this metric.",
+      "input": {
+        "metric": "average_order_value",
+        "date": "2025-08-19",
+        "filters": {
+          "region": "eu"
+        },
+        "window_days": 28
+      },
+      "output": {
+        "is_anomaly": false,
+        "relative_change": 0.04,
+        "z_score": 1.1
+      },
+      "evidence_ids": [
+        "M1"
+      ],
+      "is_error": false,
+      "latency_ms": 150,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 2,
+      "kind": "tool",
+      "name": "search_evidence",
+      "title": "Search for changes near the date",
+      "detail": "No strong matches. The best hit is about a different region.",
+      "input": {
+        "query": "eu pricing change average order value",
+        "date_from": "2025-08-17",
+        "date_to": "2025-08-19",
+        "top_k": 5
+      },
+      "output": {
+        "hits": [
+          {
+            "id": "CHG-0098",
+            "score": 0.22
+          }
+        ]
+      },
+      "evidence_ids": [
+        "CHG-0098"
+      ],
+      "is_error": false,
+      "latency_ms": 540,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 3,
+      "kind": "tool",
+      "name": "search_evidence",
+      "title": "Search again with a wider window",
+      "detail": "The search tool timed out. The agent continued without it.",
+      "input": {
+        "query": "eu catalog promotion bundle",
+        "date_from": "2025-08-10",
+        "date_to": "2025-08-19",
+        "top_k": 5
+      },
+      "output": {
+        "error": "timeout after 8000 ms"
+      },
+      "evidence_ids": [],
+      "is_error": true,
+      "latency_ms": 8000,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0
+    },
+    {
+      "index": 4,
+      "kind": "rank",
+      "name": "rank_hypotheses",
+      "title": "Rank the hypotheses",
+      "detail": "No hypothesis has supporting evidence.",
+      "input": {
+        "candidates": [
+          "pricing_change",
+          "seasonality"
+        ]
+      },
+      "output": {
+        "ranked": []
+      },
+      "evidence_ids": [],
+      "is_error": false,
+      "latency_ms": 1210,
+      "input_tokens": 1320,
+      "output_tokens": 160,
+      "cost_usd": 0.0064
+    },
+    {
+      "index": 5,
+      "kind": "verify",
+      "name": "citation_verifier",
+      "title": "Verify every citation",
+      "detail": "No claims passed. The report abstains.",
+      "input": {
+        "claims": 1
+      },
+      "output": {
+        "verified": 0,
+        "dropped": 1
+      },
+      "evidence_ids": [
+        "CHG-0098"
+      ],
+      "is_error": false,
+      "latency_ms": 610,
+      "input_tokens": 720,
+      "output_tokens": 64,
+      "cost_usd": 0.0031
+    }
+  ],
+  "error": null,
+  "report": {
+    "verdict": "insufficient_evidence",
+    "summary": "Not enough evidence. The change is within normal variation and no document in the date window explains it.",
+    "causes": [],
+    "evidence": {
+      "M1": {
+        "id": "M1",
+        "source": "metric",
+        "title": "detect_anomaly: average_order_value, eu, 2025-08-19",
+        "date": "2025-08-19",
+        "body": "average_order_value (region=eu)\nrelative change: +4.0%\nz-score: 1.1\nanomaly: no",
+        "meta": {
+          "tool": "detect_anomaly",
+          "window_days": 28
+        },
+        "score": null,
+        "quarantined": false
+      },
+      "CHG-0098": {
+        "id": "CHG-0098",
+        "source": "changelog",
+        "title": "Shipping fee update for APAC",
+        "date": "2025-08-18",
+        "body": "Updated flat rate shipping fees for APAC markets. No change to other regions.",
+        "meta": {
+          "service": "pricing",
+          "author": "ops"
+        },
+        "score": 0.22,
+        "quarantined": false
+      }
+    },
+    "dropped_claims": [
+      {
+        "text": "A shipping fee update raised EU order values.",
+        "evidence_ids": [
+          "CHG-0098"
+        ],
+        "verified": false,
+        "note": "The cited changelog entry is about APAC, not the EU."
+      }
+    ],
+    "quarantined_ids": [],
+    "notes": [
+      "One search call timed out.",
+      "This is a placeholder run for UI development."
+    ],
+    "totals": {
+      "latency_ms": 11270,
+      "input_tokens": 2438,
+      "output_tokens": 312,
+      "cost_usd": 0.012,
+      "llm_calls": 2,
+      "tool_calls": 3
+    }
+  }
+}

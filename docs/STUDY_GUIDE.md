@@ -240,6 +240,12 @@ The LLM cache: every request is hashed (model, system prompt, messages, tools, s
 
 ## 11. Things to be ready to admit
 
+- The benchmark turned out too easy for the full system (dev accuracy at the ceiling). So the ablations do not show that the reranker, BM25 or dense search matters end to end. Say this before the interviewer finds it.
+- Every system scored 100% on injection resistance, even the baselines. The model resisted by itself. My code defences are unit-tested, but the benchmark does not prove they were needed.
+- LLM-only beat plain RAG on accuracy@1 because it always guesses and RAG abstains. Explain why that is not a win for LLM-only (0% faithfulness, wrong on every unanswerable question).
+- The verifier wrongly dropped correct causes: two in the first dev run, one on test. I changed its prompt once after the dev run. That is tuning on dev, and it is written down (`results/dev_v0`).
+- Three test ablation rows are missing because the API key hit its usage limit mid-run.
+
 - I wrote the benchmark and the system. That is a bias risk. The time split, the frozen test run and the decoy, unanswerable and subtle-injection cases are how I reduce it.
 - Accuracy is strict (type and segment). `results/*/metrics.json` also has `type_accuracy_at_1`, which is looser.
 - The baselines are simple on purpose. Plain RAG has no date filter. A stronger RAG baseline would close some of the gap.

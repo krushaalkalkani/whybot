@@ -6,7 +6,8 @@ Ask "Why did checkout conversion drop 12% on 2025-10-03?". WhyBot investigates a
 
 - Live demo: https://whybot-ecru.vercel.app
 - API: https://whybot-api.vercel.app/docs (health: https://whybot-api.vercel.app/health?deep=true)
-- Dataset: not published yet
+- Dataset: https://huggingface.co/datasets/krushalkalkani/whybot-rca-bench (published by `scripts/publish.sh`)
+- Code: https://github.com/krushaalkalkani/whybot
 
 The company is synthetic. I generate it with planted root causes, so every system can be scored against known answers. That benchmark is half of the project.
 

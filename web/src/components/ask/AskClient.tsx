@@ -90,7 +90,7 @@ function setRunParam(id: string | null) {
   window.history.replaceState(null, "", url);
 }
 
-export function AskClient() {
+export function AskClient({ hideIntro = false }: { hideIntro?: boolean }) {
   const [limitsState, setLimitsState] = useState<LimitsState>(
     API_URL ? { kind: "loading" } : { kind: "disabled" },
   );
@@ -314,10 +314,12 @@ export function AskClient() {
 
   return (
     <div>
-      <div className="max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{ask.heading}</h1>
-        <p className="mt-3 text-base leading-relaxed text-muted">{ask.intro}</p>
-      </div>
+      {hideIntro ? null : (
+        <div className="max-w-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{ask.heading}</h1>
+          <p className="mt-3 text-base leading-relaxed text-muted">{ask.intro}</p>
+        </div>
+      )}
 
       <p
         role="status"

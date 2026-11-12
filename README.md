@@ -4,8 +4,7 @@ An agent that explains why a business metric moved, with proof.
 
 Ask "Why did checkout conversion drop 12% on 2025-10-03?". WhyBot investigates a company's data and returns up to 3 likely root causes, ranked. Every claim links to the evidence behind it: a metric query result, a GitHub issue, a support ticket or a deploy changelog entry. If the evidence is weak it says "not enough evidence" and does not guess.
 
-- Project page: https://whybot-ecru.vercel.app
-- Live demo: https://whybot-ecru.vercel.app/demo
+- Live demo (one page): https://whybot-ecru.vercel.app
 - API: https://whybot-api.vercel.app/docs (health: https://whybot-api.vercel.app/health?deep=true)
 - Dataset: https://huggingface.co/datasets/krushalkalkani/whybot-rca-bench (published by `scripts/publish.sh`)
 - Code: https://github.com/krushaalkalkani/whybot
@@ -29,7 +28,7 @@ When a metric drops, an analyst checks dashboards, deploy logs, incident channel
 | Eval harness | 3 systems + 4 ablations, LLM judge, CI gate | `bench/run_eval.py` |
 | API | FastAPI, answers stream as server-sent events | `whybot/api.py` |
 | MCP server | `search_evidence`, `run_metric_query`, `get_run` for any MCP client | `whybot/mcp_server.py` |
-| Web app | Next.js: Ask, Evals, How it works | `web/` |
+| Web app | Next.js, one page: the demo, three results, six steps | `web/` |
 
 ## Architecture
 

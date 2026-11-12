@@ -196,3 +196,41 @@
   .cf-mascot { animation: none; }
   .cf-steps li, .cf-trap, .cf-primary { transition: none; }
 }
+
+/* ---- one-page layout (simplified version) */
+.cf-demo, .cf-caveat { max-width: 1120px; margin-inline: auto; }
+.cf-hero { padding-block: 40px 28px; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); }
+.cf-hero .cf-brand { margin: 0 0 22px; }
+.cf-hero h1 { margin-top: 0; font-size: clamp(36px, 5.4vw, 66px); }
+.cf-hero-art { min-height: 0; }
+.cf-hero-art::before { inset: 4% 6%; }
+.cf-mascot { width: min(100%, 250px); }
+.cf-demo {
+  /* The demo uses the app's theme tokens. Pin them to the light paper look of this page. */
+  --bg: #f7f2e7; --surface: #fffdf8; --sunken: #f1ebdc; --line: #e4dcc9; --ink: #201d18; --muted: #5b554a;
+  --accent: #b83a29; --ok: #1c7a3e; --warn: #8f5b00; --bad: #b3261e; --info: #1f5fae; --violet: #6b45b8;
+  color: var(--ink);
+  background: var(--card);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 10px clamp(16px, 3vw, 34px) clamp(20px, 3vw, 34px);
+  margin-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px));
+  font-size: 16px;
+}
+@media (min-width: 1160px) { .cf-demo { margin-inline: auto; } }
+.cf-stats { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding-block: 44px 0; }
+.cf-caveat { font-size: 15px; color: var(--soft); padding: 14px max(20px, env(safe-area-inset-left, 0px)) 0; margin-block: 0; }
+.cf-section { padding-block: 64px 56px; }
+.cf-section h2 { margin-bottom: 22px; }
+.cf-steps { grid-template-columns: repeat(auto-fit, minmax(min(100%, 165px), 1fr)); gap: 14px; }
+.cf-steps li { padding: 18px 16px 16px; box-shadow: none; background: transparent; border: 1.5px solid var(--line); }
+.cf-steps li:hover { transform: none; }
+.cf-steps li::after { font-size: 26px; top: 14px; right: 14px; }
+.cf-steps h3 { font-size: 20px; margin-top: 12px; }
+.cf-steps p { font-size: 15px; }
+.cf-icon { width: 44px; height: 44px; border-radius: 14px; }
+.cf-icon svg { width: 22px; height: 22px; }
+@media (max-width: 720px) {
+  .cf-hero { grid-template-columns: minmax(0, 1fr); }
+  .cf-hero-art { display: none; }
+}

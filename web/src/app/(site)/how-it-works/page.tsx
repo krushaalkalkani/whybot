@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArchitectureDiagram } from "../../components/ArchitectureDiagram";
-import { PageIntro, SectionHeading } from "../../components/ui";
-import { howItWorks } from "../../lib/content";
+import { ArchitectureDiagram } from "../../../components/ArchitectureDiagram";
+import { PageIntro, SectionHeading } from "../../../components/ui";
+import { howItWorks } from "../../../lib/content";
 
 export const metadata: Metadata = {
   title: "How it works",
@@ -57,8 +57,8 @@ export default function HowItWorksPage() {
           Evals page
         </Link>{" "}
         or try a stored run on the{" "}
-        <Link href="/" className="text-accent underline underline-offset-2">
-          Ask page
+        <Link href="/demo" className="text-accent underline underline-offset-2">
+          Demo page
         </Link>
         .
       </p>

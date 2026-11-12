@@ -4,7 +4,8 @@ An agent that explains why a business metric moved, with proof.
 
 Ask "Why did checkout conversion drop 12% on 2025-10-03?". WhyBot investigates a company's data and returns up to 3 likely root causes, ranked. Every claim links to the evidence behind it: a metric query result, a GitHub issue, a support ticket or a deploy changelog entry. If the evidence is weak it says "not enough evidence" and does not guess.
 
-- Live demo: https://whybot-ecru.vercel.app
+- Project page: https://whybot-ecru.vercel.app
+- Live demo: https://whybot-ecru.vercel.app/demo
 - API: https://whybot-api.vercel.app/docs (health: https://whybot-api.vercel.app/health?deep=true)
 - Dataset: https://huggingface.co/datasets/krushalkalkani/whybot-rca-bench (published by `scripts/publish.sh`)
 - Code: https://github.com/krushaalkalkani/whybot

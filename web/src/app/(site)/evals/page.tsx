@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Badge, Card, PageIntro, SectionHeading } from "../../components/ui";
-import { evals, metricDefs } from "../../lib/content";
-import { NOT_RUN, fmtDecimal, fmtInt, fmtMetric, fmtPercent, fmtText } from "../../lib/format";
-import { summary, systemsInGroup, type SplitResult } from "../../lib/summary";
+import { Badge, Card, PageIntro, SectionHeading } from "../../../components/ui";
+import { evals, metricDefs } from "../../../lib/content";
+import { NOT_RUN, fmtDecimal, fmtInt, fmtMetric, fmtPercent, fmtText } from "../../../lib/format";
+import { summary, systemsInGroup, type SplitResult } from "../../../lib/summary";
 
 export const metadata: Metadata = {
   title: "Evals",

@@ -11,7 +11,7 @@ export const site = {
     "WhyBot is an AI agent that investigates why a business metric moved. It returns up to 3 ranked root causes, and every claim links to evidence.",
   footer: "Synthetic data. Built by Krushal Kalkani.",
   nav: [
-    { href: "/", label: "Ask" },
+    { href: "/demo", label: "Demo" },
     { href: "/evals", label: "Evals" },
     { href: "/how-it-works", label: "How it works" },
   ],
